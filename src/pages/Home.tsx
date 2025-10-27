@@ -36,7 +36,7 @@ const Home = () => {
             className="rounded-full flex items-center justify-center p-2"
             style={{ backgroundColor: 'rgba(53, 28, 117, 0.15)' }}
           >
-            <img src={whiteLogo} alt="Logo" style={{ width: '90px' }} />
+            <img src={whiteLogo} alt="Logo" style={{ width: '75px' }} />
           </div>
           <nav className="flex items-center gap-[10px]">
             <span className="text-white text-sm cursor-pointer hover:opacity-80">Configuration</span>
