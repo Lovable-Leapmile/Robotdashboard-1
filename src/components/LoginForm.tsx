@@ -47,7 +47,6 @@ const LoginForm = () => {
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
             Login
           </h1>
-          <p className="text-sm text-gray-500 mt-2">Welcome back! Please login to continue</p>
         </div>
 
         {/* Form */}
