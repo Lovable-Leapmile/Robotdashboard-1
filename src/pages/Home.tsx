@@ -74,13 +74,11 @@ const Home = () => {
         style={{ backgroundColor: '#eeeeee', height: '55px' }}
       >
         <span 
-          className="text-sm cursor-pointer px-5 py-2 rounded-md font-semibold transition-all"
-          style={{ 
-            backgroundColor: '#351C75', 
-            color: 'white'
-          }}
+          className="text-sm cursor-pointer px-5 py-2 rounded-md transition-all font-medium relative group" 
+          style={{ color: '#555' }}
         >
           Robot
+          <span className="absolute bottom-0 left-0 w-full h-0.5 bg-purple-600"></span>
         </span>
         <span 
           className="text-sm cursor-pointer px-5 py-2 rounded-md transition-all font-medium hover:shadow-md relative group" 
