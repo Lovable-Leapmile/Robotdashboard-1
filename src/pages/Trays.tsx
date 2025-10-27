@@ -9,12 +9,12 @@ import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 
 interface TrayData {
-  tray_id: number;
+  tray_id: string;
   tray_status: string;
-  tray_divider: string;
+  tray_divider: number;
   tray_height: number;
   tray_weight: number;
-  tags: string[];
+  tags: string[] | null;
   created_at: string;
   updated_at: string;
 }
@@ -119,12 +119,12 @@ const Trays = () => {
       <AppHeader selectedTab="Trays" />
       
       <main className="p-6">
-        <div className="ag-theme-alpine" style={{ height: 600, width: '100%' }}>
-          {loading ? (
-            <div className="flex items-center justify-center h-full">
-              <p style={{ color: '#351C75' }}>Loading trays data...</p>
-            </div>
-          ) : (
+        {loading ? (
+          <div className="flex items-center justify-center" style={{ height: 600 }}>
+            <p style={{ color: '#351C75' }}>Loading trays data...</p>
+          </div>
+        ) : (
+          <div className="ag-theme-alpine w-full" style={{ height: 600 }}>
             <AgGridReact
               rowData={rowData}
               columnDefs={columnDefs}
@@ -134,10 +134,9 @@ const Trays = () => {
               }}
               pagination={true}
               paginationPageSize={20}
-              domLayout="normal"
             />
-          )}
-        </div>
+          </div>
+        )}
       </main>
     </div>
   );
