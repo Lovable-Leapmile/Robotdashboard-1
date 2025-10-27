@@ -30,20 +30,16 @@ const LoginForm = () => {
         {/* Decorative Top Border */}
         <div className="h-1.5 bg-gradient-to-r from-primary via-accent to-primary"></div>
         
-        {/* Login Illustration */}
-        <div className="flex justify-center pt-6 pb-3">
+        {/* Login Illustration and Title - Side by Side */}
+        <div className="flex items-center justify-center gap-6 pt-6 pb-4">
           <div className="relative">
             <div className="absolute inset-0 bg-accent/20 blur-2xl rounded-full"></div>
             <img 
               src={loginIllustration} 
               alt="Login illustration" 
-              className="w-36 h-36 object-contain relative z-10 hover:scale-110 transition-transform duration-300"
+              className="w-24 h-24 object-contain relative z-10 hover:scale-110 transition-transform duration-300"
             />
           </div>
-        </div>
-
-        {/* Login Title */}
-        <div className="text-center pb-4">
           <h1 className="text-4xl font-bold" style={{ color: '#8E77C3' }}>
             Login
           </h1>
