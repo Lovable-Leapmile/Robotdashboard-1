@@ -31,7 +31,7 @@ const LoginForm = () => {
         <div className="h-1.5 bg-gradient-to-r from-primary via-accent to-primary"></div>
         
         {/* Login Illustration */}
-        <div className="flex justify-center pt-10 pb-4">
+        <div className="flex justify-center pt-6 pb-3">
           <div className="relative">
             <div className="absolute inset-0 bg-accent/20 blur-2xl rounded-full"></div>
             <img 
@@ -43,14 +43,14 @@ const LoginForm = () => {
         </div>
 
         {/* Login Title */}
-        <div className="text-center pb-8">
+        <div className="text-center pb-4">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
             Login
           </h1>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleLogin} className="px-8 md:px-10 pb-10 space-y-6">
+        <form onSubmit={handleLogin} className="px-6 md:px-8 pb-6 space-y-5">
           {/* Mobile Number Field */}
           <div className="space-y-2">
             <Label htmlFor="mobile" className="text-sm font-semibold text-gray-700">
