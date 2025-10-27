@@ -119,8 +119,6 @@ const Trays = () => {
       <AppHeader selectedTab="Trays" />
       
       <main className="p-6">
-        <h1 className="text-2xl font-bold mb-6" style={{ color: '#351C75' }}>Trays Management</h1>
-        
         <div className="ag-theme-alpine" style={{ height: 600, width: '100%' }}>
           {loading ? (
             <div className="flex items-center justify-center h-full">
