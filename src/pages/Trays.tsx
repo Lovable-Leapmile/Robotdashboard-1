@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import AppHeader from "@/components/AppHeader";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-alpine.css";
+import "ag-grid-community/styles/ag-theme-quartz.css";
 import { ColDef } from "ag-grid-community";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
@@ -23,6 +23,8 @@ const Trays = () => {
   const [userName, setUserName] = useState("");
   const [rowData, setRowData] = useState<TrayData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [quickFilter, setQuickFilter] = useState("");
+  const gridApiRef = useRef<any>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -101,7 +103,16 @@ const Trays = () => {
       }
 
       const data = await response.json();
-      setRowData(data.records || []);
+      console.log("Fetched trays:", data?.records?.length);
+      const mapped = (data.records || []).map((r: any) => ({
+        ...r,
+        tags: Array.isArray(r.tags)
+          ? r.tags
+          : typeof r.tags === "string"
+          ? r.tags.split(",").map((s: string) => s.trim()).filter(Boolean)
+          : [],
+      }));
+      setRowData(mapped);
     } catch (error) {
       toast({
         title: "Error",
@@ -118,25 +129,41 @@ const Trays = () => {
     <div className="min-h-screen" style={{ backgroundColor: '#fafafa' }}>
       <AppHeader selectedTab="Trays" />
       
-      <main className="p-6">
-        {loading ? (
-          <div className="flex items-center justify-center" style={{ height: 600 }}>
-            <p style={{ color: '#351C75' }}>Loading trays data...</p>
-          </div>
-        ) : (
-          <div className="ag-theme-alpine w-full" style={{ height: 600 }}>
+      <main className="p-6 space-y-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-muted-foreground">Records: {rowData.length}</p>
+          <input
+            type="text"
+            placeholder="Quick filter..."
+            value={quickFilter}
+            onChange={(e) => {
+              setQuickFilter(e.target.value);
+              gridApiRef.current?.setGridOption('quickFilterText', e.target.value);
+            }}
+            className="w-full sm:w-72 rounded-md border border-border px-3 py-2 text-sm bg-background"
+            aria-label="Quick filter"
+          />
+        </div>
+        <div className="ag-theme-quartz w-full" style={{ height: 600 }}>
             <AgGridReact
               rowData={rowData}
               columnDefs={columnDefs}
               defaultColDef={{
                 resizable: true,
-                minWidth: 100
+                minWidth: 100,
+                sortable: true,
+                filter: true
               }}
               pagination={true}
               paginationPageSize={20}
+              onGridReady={(params) => {
+                gridApiRef.current = params.api;
+                params.api.setGridOption('quickFilterText', quickFilter);
+                params.api.sizeColumnsToFit();
+              }}
             />
           </div>
-        )}
+        
       </main>
     </div>
   );
