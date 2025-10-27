@@ -26,22 +26,20 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5 flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl mx-auto">
-        <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 md:p-12 text-center">
-          <h1 className="text-4xl font-bold mb-4" style={{ color: '#351C75' }}>
-            Welcome, {userName}!
-          </h1>
-          <p className="text-gray-600 mb-8 text-lg">
-            You have successfully logged in to your account.
-          </p>
-          <Button
-            onClick={handleLogout}
-            className="rounded-xl px-8 py-6 font-semibold text-base"
-            style={{ backgroundColor: '#351C75' }}
-          >
-            Logout
-          </Button>
-        </div>
+      <div className="w-full max-w-2xl mx-auto text-center">
+        <h1 className="text-4xl font-bold mb-4" style={{ color: '#351C75' }}>
+          Welcome, {userName}!
+        </h1>
+        <p className="text-gray-600 mb-8 text-lg">
+          You have successfully logged in to your account.
+        </p>
+        <Button
+          onClick={handleLogout}
+          className="rounded-xl px-8 py-6 font-semibold text-base"
+          style={{ backgroundColor: '#351C75' }}
+        >
+          Logout
+        </Button>
       </div>
     </div>
   );
