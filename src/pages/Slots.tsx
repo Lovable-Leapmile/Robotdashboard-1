@@ -32,9 +32,30 @@ const Slots = () => {
   const { toast } = useToast();
 
   const columnDefs: ColDef<SlotData>[] = [
-    { field: "slot_id", headerName: "Slot ID", sortable: true, filter: true, flex: 1 },
-    { field: "tray_id", headerName: "Tray ID", sortable: true, filter: true, flex: 1 },
-    { field: "slot_name", headerName: "Friendly Name", sortable: true, filter: true, flex: 1 },
+    { 
+      field: "slot_id", 
+      headerName: "Slot ID", 
+      sortable: true, 
+      filter: true, 
+      flex: 1,
+      valueFormatter: (params) => params.value ?? "N/A"
+    },
+    { 
+      field: "tray_id", 
+      headerName: "Tray ID", 
+      sortable: true, 
+      filter: true, 
+      flex: 1,
+      valueFormatter: (params) => params.value ?? "N/A"
+    },
+    { 
+      field: "slot_name", 
+      headerName: "Friendly Name", 
+      sortable: true, 
+      filter: true, 
+      flex: 1,
+      valueFormatter: (params) => params.value ?? "N/A"
+    },
     { 
       field: "tags", 
       headerName: "Tags", 
@@ -46,8 +67,22 @@ const Slots = () => {
         return params.value.join(", ");
       }
     },
-    { field: "slot_height", headerName: "Height (mm)", sortable: true, filter: true, flex: 1 },
-    { field: "status", headerName: "Status", sortable: true, filter: true, flex: 1 },
+    { 
+      field: "slot_height", 
+      headerName: "Height (mm)", 
+      sortable: true, 
+      filter: true, 
+      flex: 1,
+      valueFormatter: (params) => params.value ?? "N/A"
+    },
+    { 
+      field: "status", 
+      headerName: "Status", 
+      sortable: true, 
+      filter: true, 
+      flex: 1,
+      valueFormatter: (params) => params.value ?? "N/A"
+    },
     { 
       field: "updated_at", 
       headerName: "Updated At", 
@@ -55,7 +90,7 @@ const Slots = () => {
       filter: true, 
       flex: 1.5,
       valueFormatter: (params) => {
-        if (!params.value) return "";
+        if (!params.value) return "N/A";
         try {
           return format(new Date(params.value), "dd-MM-yyyy HH:mm:ss");
         } catch {
