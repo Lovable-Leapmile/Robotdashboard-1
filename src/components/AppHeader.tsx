@@ -268,9 +268,9 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, isMonitorPage, isC
               Do you want to logout?
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmLogout}>Confirm</AlertDialogAction>
+          <AlertDialogFooter className="gap-4">
+            <AlertDialogCancel className="w-32">Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmLogout} className="w-32">Confirm</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
