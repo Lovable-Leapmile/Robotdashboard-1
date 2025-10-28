@@ -5,7 +5,7 @@ const Monitor = () => {
   const [monitorUrl, setMonitorUrl] = useState("");
 
   useEffect(() => {
-    const robotId = localStorage.getItem("user_id") || "";
+    const robotId = "AMSSTORES1-Nano";
     setMonitorUrl(`https://amsstores1.leapmile.com:5870/detail.html?robot_id=${robotId}`);
   }, []);
 
