@@ -11,7 +11,7 @@ const Monitor = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <AppHeader selectedTab="Monitor" />
+      <AppHeader selectedTab="" isMonitorPage={true} />
       <main className="flex-1">
         {monitorUrl && (
           <iframe

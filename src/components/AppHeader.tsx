@@ -24,9 +24,10 @@ interface AppHeaderProps {
   isTasksPage?: boolean;
   activeTaskTab?: string;
   onTaskTabChange?: (tab: string) => void;
+  isMonitorPage?: boolean;
 }
 
-const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, onTaskTabChange }: AppHeaderProps) => {
+const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, onTaskTabChange, isMonitorPage }: AppHeaderProps) => {
   const navigate = useNavigate();
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
@@ -113,7 +114,12 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, onTaskTabChange }:
               <TooltipTrigger asChild>
                 <div 
                   className="rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-white/30"
-                  style={{ backgroundColor: 'rgba(255, 255, 255, 0.20)', width: '40px', height: '40px' }}
+                  style={{ 
+                    backgroundColor: isMonitorPage ? 'rgba(255, 255, 255, 0.40)' : 'rgba(255, 255, 255, 0.20)', 
+                    width: '40px', 
+                    height: '40px',
+                    boxShadow: isMonitorPage ? '0 0 0 2px rgba(255, 255, 255, 0.5)' : 'none'
+                  }}
                   onClick={() => navigate("/monitor")}
                 >
                   <Activity className="text-white" size={18} />
