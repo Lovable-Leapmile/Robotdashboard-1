@@ -123,10 +123,11 @@ All colors MUST be HSL.
 
 .ag-theme-quartz .ag-header-cell {
   padding: 0 12px !important;
-  line-height: 1.5;
+  line-height: 50px !important;
   color: white !important;
-  height: 60px !important;
-  min-height: 60px !important;
+  height: 50px !important;
+  display: flex !important;
+  align-items: center !important;
 }
 
 .ag-theme-quartz .ag-icon {
@@ -139,17 +140,15 @@ All colors MUST be HSL.
 
 .ag-theme-quartz .ag-cell {
   padding: 0 12px !important;
-  line-height: 1.5;
-  display: flex;
-  align-items: center;
-  min-height: 60px !important;
-  height: 60px !important;
+  line-height: 50px !important;
+  display: flex !important;
+  align-items: center !important;
+  height: 50px !important;
 }
 
 .ag-theme-quartz .ag-row {
   border-bottom: 1px solid hsl(var(--border));
-  min-height: 60px !important;
-  height: 60px !important;
+  height: 50px !important;
 }
 
 .ag-theme-quartz .ag-header {
@@ -158,6 +157,7 @@ All colors MUST be HSL.
   top: 0 !important;
   z-index: 10 !important;
   background-color: #8e77c3 !important;
+  height: 50px !important;
 }
 
 .ag-theme-quartz .ag-paging-panel .ag-icon,
