@@ -136,5 +136,9 @@ All colors MUST be HSL.
   position: sticky !important;
   top: 0 !important;
   z-index: 10 !important;
-  background-color: white !important;
+  background-color: #8e77c3 !important;
+}
+
+.ag-theme-quartz .ag-header-cell-label {
+  color: white;
 }
