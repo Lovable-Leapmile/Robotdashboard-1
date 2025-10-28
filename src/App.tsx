@@ -14,6 +14,7 @@ import ApkLink from "./pages/ApkLink";
 import Monitor from "./pages/Monitor";
 import Camera from "./pages/Camera";
 import Reports from "./pages/Reports";
+import Logs from "./pages/Logs";
 import Tasks from "./pages/Tasks";
 import Pending from "./pages/Pending";
 import TrayReady from "./pages/TrayReady";
@@ -41,6 +42,7 @@ const App = () => (
           <Route path="/monitor" element={<Monitor />} />
           <Route path="/camera" element={<Camera />} />
           <Route path="/reports" element={<Reports />} />
+          <Route path="/logs" element={<Logs />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/pending" element={<Pending />} />
           <Route path="/tray-ready" element={<TrayReady />} />
