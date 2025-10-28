@@ -133,22 +133,8 @@ const Trays = () => {
     <div className="min-h-screen" style={{ backgroundColor: '#fafafa' }}>
       <AppHeader selectedTab="Trays" />
       
-      <main className="p-6 space-y-4">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-muted-foreground">Total Trays: {totalCount}</p>
-          <input
-            type="text"
-            placeholder="Quick filter..."
-            value={quickFilter}
-            onChange={(e) => {
-              setQuickFilter(e.target.value);
-              gridApiRef.current?.setGridOption('quickFilterText', e.target.value);
-            }}
-            className="w-full sm:w-72 rounded-md border border-border px-3 py-2 text-sm bg-background"
-            aria-label="Quick filter"
-          />
-        </div>
-        <div className="ag-theme-quartz w-full" style={{ height: 600 }}>
+      <main className="p-6">
+        <div className="ag-theme-quartz w-full" style={{ height: 'calc(100vh - 180px)' }}>
             <AgGridReact
               rowData={rowData}
               columnDefs={columnDefs}
