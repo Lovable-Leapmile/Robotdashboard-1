@@ -124,3 +124,11 @@ All colors MUST be HSL.
   padding-top: 12px !important;
   padding-bottom: 12px !important;
 }
+
+.ag-theme-quartz .ag-row {
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.ag-theme-quartz .ag-header {
+  border-bottom: 2px solid hsl(var(--border));
+}
