@@ -140,10 +140,12 @@ All colors MUST be HSL.
   line-height: 1.5;
   display: flex;
   align-items: center;
+  min-height: 50px !important;
 }
 
 .ag-theme-quartz .ag-row {
   border-bottom: 1px solid hsl(var(--border));
+  min-height: 50px !important;
 }
 
 .ag-theme-quartz .ag-header {
@@ -152,4 +154,9 @@ All colors MUST be HSL.
   top: 0 !important;
   z-index: 10 !important;
   background-color: #8e77c3 !important;
+}
+
+.ag-theme-quartz .ag-paging-panel .ag-icon,
+.ag-theme-quartz .ag-paging-panel {
+  color: black !important;
 }
