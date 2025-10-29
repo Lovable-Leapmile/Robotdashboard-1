@@ -165,7 +165,7 @@ const SlotDetailsPanel = ({ slotDetails, isVisible, onClose }: SlotDetailsPanelP
 
       {/* QR Code Dialog */}
       <Dialog open={qrDialogOpen} onOpenChange={setQrDialogOpen}>
-        <DialogContent className="p-0 gap-0" style={{ width: 'fit-content' }}>
+        <DialogContent className="p-0 gap-0 border-0" style={{ width: '275px', maxWidth: '275px' }}>
           <div 
             className="flex flex-col items-center justify-center rounded-lg" 
             style={{ 
