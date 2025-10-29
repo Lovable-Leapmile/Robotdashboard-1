@@ -167,28 +167,46 @@ const SlotDetailsPanel = ({ slotDetails, isVisible, onClose }: SlotDetailsPanelP
       <Dialog open={qrDialogOpen} onOpenChange={setQrDialogOpen}>
         <DialogContent className="p-0 gap-0 border-0 [&>button]:hidden" style={{ width: '275px', maxWidth: '275px' }}>
           <div
-            className="flex flex-col items-center justify-center rounded-lg" 
+            className="flex flex-col rounded-lg" 
             style={{ 
               width: '275px',
-              height: '330px',
+              height: '335px',
               background: 'linear-gradient(135deg, #f3f0ff 0%, #ffffff 100%)',
               border: '2px solid #351c75'
             }}
           >
-            <div className="text-center text-lg font-semibold mb-4" style={{ color: '#351c75' }}>
-              {qrTitle}
+            {/* Row 1: Title and Close Button */}
+            <div className="flex items-center justify-center relative px-4 pt-6 pb-4">
+              <h3 className="text-lg font-semibold" style={{ color: '#351c75' }}>
+                {qrTitle}
+              </h3>
+              <button
+                onClick={() => setQrDialogOpen(false)}
+                className="absolute right-4 p-1 hover:bg-white/50 rounded-md transition-colors"
+                aria-label="Close"
+              >
+                <X className="h-5 w-5" style={{ color: '#351c75' }} />
+              </button>
             </div>
-            <div className="bg-white p-3 rounded-lg shadow-lg">
-              <QRCodeSVG 
-                value={qrValue} 
-                size={200} 
-                level="H"
-                fgColor="#351c75"
-                bgColor="#ffffff"
-              />
+
+            {/* Row 2: QR Code */}
+            <div className="flex items-center justify-center flex-1">
+              <div className="bg-white p-3 rounded-lg shadow-lg">
+                <QRCodeSVG 
+                  value={qrValue} 
+                  size={180} 
+                  level="H"
+                  fgColor="#351c75"
+                  bgColor="#ffffff"
+                />
+              </div>
             </div>
-            <div className="mt-3 text-center text-sm font-medium" style={{ color: '#351c75' }}>
-              {qrValue}
+
+            {/* Row 3: Text Value */}
+            <div className="flex items-center justify-center px-4 pb-6 pt-3">
+              <p className="text-sm font-medium text-center break-all" style={{ color: '#351c75' }}>
+                {qrValue}
+              </p>
             </div>
           </div>
         </DialogContent>
