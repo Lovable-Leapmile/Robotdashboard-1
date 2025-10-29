@@ -68,7 +68,12 @@ const SlotDetailsPanel = ({ slotDetails, isVisible, onClose }: SlotDetailsPanelP
                 </span>
                 <button
                   onClick={() => showQrCode(slotDetails.slot_id, "Slot ID")}
-                  className="p-2 hover:bg-muted rounded-md transition-colors flex-shrink-0"
+                  className="p-2 rounded-md transition-all flex-shrink-0 hover:scale-110 animate-pulse"
+                  style={{
+                    background: 'linear-gradient(135deg, #f3f0ff 0%, #e8dfff 100%)',
+                    boxShadow: '0 2px 8px rgba(53, 28, 117, 0.3)',
+                    border: '1px solid #351c75'
+                  }}
                   aria-label="Show QR Code"
                 >
                   <QrCode className="h-5 w-5" style={{ color: '#351c75' }} />
@@ -88,7 +93,12 @@ const SlotDetailsPanel = ({ slotDetails, isVisible, onClose }: SlotDetailsPanelP
                   </span>
                   <button
                     onClick={() => showQrCode(slotDetails.slot_name, "Station")}
-                    className="p-2 hover:bg-muted rounded-md transition-colors flex-shrink-0"
+                    className="p-2 rounded-md transition-all flex-shrink-0 hover:scale-110 animate-pulse"
+                    style={{
+                      background: 'linear-gradient(135deg, #f3f0ff 0%, #e8dfff 100%)',
+                      boxShadow: '0 2px 8px rgba(53, 28, 117, 0.3)',
+                      border: '1px solid #351c75'
+                    }}
                     aria-label="Show QR Code"
                   >
                     <QrCode className="h-5 w-5" style={{ color: '#351c75' }} />
@@ -109,7 +119,12 @@ const SlotDetailsPanel = ({ slotDetails, isVisible, onClose }: SlotDetailsPanelP
                   </span>
                   <button
                     onClick={() => showQrCode(slotDetails.tray_id!, "Tray ID")}
-                    className="p-2 hover:bg-muted rounded-md transition-colors flex-shrink-0"
+                    className="p-2 rounded-md transition-all flex-shrink-0 hover:scale-110 animate-pulse"
+                    style={{
+                      background: 'linear-gradient(135deg, #f3f0ff 0%, #e8dfff 100%)',
+                      boxShadow: '0 2px 8px rgba(53, 28, 117, 0.3)',
+                      border: '1px solid #351c75'
+                    }}
                     aria-label="Show QR Code"
                   >
                     <QrCode className="h-5 w-5" style={{ color: '#351c75' }} />
