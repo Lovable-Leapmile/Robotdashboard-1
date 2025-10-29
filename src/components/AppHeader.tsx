@@ -154,25 +154,27 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, isMonitorPage, isC
               </Tooltip>
             )}
 
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div 
-                  className="rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-white/30"
-                  style={{ 
-                    backgroundColor: isLogsPage ? 'rgba(255, 255, 255, 0.40)' : 'rgba(255, 255, 255, 0.20)', 
-                    width: '40px', 
-                    height: '40px',
-                    boxShadow: isLogsPage ? '0 0 0 2px rgba(255, 255, 255, 0.5)' : 'none'
-                  }}
-                  onClick={() => navigate("/logs")}
-                >
-                  <ScrollText className="text-white" size={18} />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent side="bottom" className="bg-white text-gray-800 border border-gray-200">
-                <p>Logs</p>
-              </TooltipContent>
-            </Tooltip>
+            {selectedTab === "Robot" && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div 
+                    className="rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-white/30"
+                    style={{ 
+                      backgroundColor: isLogsPage ? 'rgba(255, 255, 255, 0.40)' : 'rgba(255, 255, 255, 0.20)', 
+                      width: '40px', 
+                      height: '40px',
+                      boxShadow: isLogsPage ? '0 0 0 2px rgba(255, 255, 255, 0.5)' : 'none'
+                    }}
+                    onClick={() => navigate("/logs")}
+                  >
+                    <ScrollText className="text-white" size={18} />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="bg-white text-gray-800 border border-gray-200">
+                  <p>Logs</p>
+                </TooltipContent>
+              </Tooltip>
+            )}
 
             <Tooltip>
               <TooltipTrigger asChild>
