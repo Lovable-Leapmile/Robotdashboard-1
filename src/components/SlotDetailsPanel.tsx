@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import { QrCode } from "lucide-react";
+import { QrCode, X } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { format } from "date-fns";
@@ -18,9 +18,10 @@ interface SlotDetails {
 interface SlotDetailsPanelProps {
   slotDetails: SlotDetails | null;
   isVisible: boolean;
+  onClose: () => void;
 }
 
-const SlotDetailsPanel = ({ slotDetails, isVisible }: SlotDetailsPanelProps) => {
+const SlotDetailsPanel = ({ slotDetails, isVisible, onClose }: SlotDetailsPanelProps) => {
   const [qrDialogOpen, setQrDialogOpen] = useState(false);
   const [qrValue, setQrValue] = useState("");
   const [qrTitle, setQrTitle] = useState("");
@@ -43,12 +44,19 @@ const SlotDetailsPanel = ({ slotDetails, isVisible }: SlotDetailsPanelProps) => 
   return (
     <>
       <div 
-        className="animate-slide-in-right"
+        className="animate-slide-in-right relative"
         style={{ 
           width: '320px',
           marginLeft: '30px'
         }}
       >
+        <button
+          onClick={onClose}
+          className="absolute -right-2 -top-2 p-1.5 hover:bg-muted rounded-md transition-colors z-10 bg-background border border-border shadow-sm"
+          aria-label="Close details"
+        >
+          <X className="h-4 w-4" style={{ color: '#351c75' }} />
+        </button>
         <div className="space-y-4">
           {/* Slot ID Section */}
           <Card>

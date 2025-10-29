@@ -296,6 +296,10 @@ const Racks = () => {
                 <SlotDetailsPanel 
                   slotDetails={slotDetails} 
                   isVisible={selectedSlotId !== null} 
+                  onClose={() => {
+                    setSelectedSlotId(null);
+                    setSlotDetails(null);
+                  }}
                 />
               </div>
             </div>
