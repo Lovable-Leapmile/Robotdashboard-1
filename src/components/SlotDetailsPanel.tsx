@@ -142,23 +142,20 @@ const SlotDetailsPanel = ({ slotDetails, isVisible }: SlotDetailsPanelProps) => 
 
       {/* QR Code Dialog */}
       <Dialog open={qrDialogOpen} onOpenChange={setQrDialogOpen}>
-        <DialogContent className="sm:max-w-sm">
-          <DialogHeader>
-            <DialogTitle className="text-center text-lg font-semibold" style={{ color: '#351c75' }}>
-              {qrTitle}
-            </DialogTitle>
-          </DialogHeader>
+        <DialogContent className="sm:max-w-sm p-0 gap-0">
           <div 
-            className="flex flex-col items-center justify-center rounded-lg p-6" 
+            className="flex flex-col items-center justify-center rounded-lg" 
             style={{ 
               width: '275px',
-              height: '320px',
+              height: '330px',
               background: 'linear-gradient(135deg, #f3f0ff 0%, #ffffff 100%)',
-              border: '2px solid #351c75',
-              margin: '0 auto'
+              border: '2px solid #351c75'
             }}
           >
-            <div className="bg-white p-4 rounded-lg shadow-lg">
+            <div className="text-center text-lg font-semibold mb-4" style={{ color: '#351c75' }}>
+              {qrTitle}
+            </div>
+            <div className="bg-white p-3 rounded-lg shadow-lg">
               <QRCodeSVG 
                 value={qrValue} 
                 size={200} 
@@ -167,7 +164,7 @@ const SlotDetailsPanel = ({ slotDetails, isVisible }: SlotDetailsPanelProps) => 
                 bgColor="#ffffff"
               />
             </div>
-            <div className="mt-4 text-center text-sm font-medium" style={{ color: '#351c75' }}>
+            <div className="mt-3 text-center text-sm font-medium" style={{ color: '#351c75' }}>
               {qrValue}
             </div>
           </div>
