@@ -69,9 +69,10 @@ const Home = () => {
                       style={{
                         width: '75px',
                         height: '25px',
-                        backgroundColor: '#351C75',
+                        backgroundColor: '#ffffff',
                         borderRadius: '4px',
-                        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+                        border: '2px solid #351C75',
+                        boxShadow: '0 4px 12px rgba(53, 28, 117, 0.3)'
                       }}
                     />
                   ))}
@@ -94,9 +95,10 @@ const Home = () => {
                       style={{
                         width: '75px',
                         height: '25px',
-                        backgroundColor: '#351C75',
+                        backgroundColor: '#ffffff',
                         borderRadius: '4px',
-                        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+                        border: '2px solid #351C75',
+                        boxShadow: '0 4px 12px rgba(53, 28, 117, 0.3)'
                       }}
                     />
                   ))}
