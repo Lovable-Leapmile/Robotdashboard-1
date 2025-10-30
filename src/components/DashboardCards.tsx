@@ -105,8 +105,8 @@ export const DashboardCards = () => {
       const occupiedData = await occupiedResponse.json();
       const freeData = await freeResponse.json();
 
-      const occupiedTrays = occupiedData.countOccupied || 0;
-      const freeTrays = freeData.countFree || 0;
+      const occupiedTrays = occupiedData.records?.[0]?.count || 0;
+      const freeTrays = freeData.records?.[0]?.count || 0;
       const totalTrays = occupiedTrays + freeTrays;
       const occupiedPercent = totalTrays > 0 ? (occupiedTrays / totalTrays) * 100 : 0;
 
@@ -150,7 +150,7 @@ export const DashboardCards = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-4 gap-3 mt-4">
+    <div className="grid grid-cols-2 gap-3 mt-4">
       {/* Robot Information Card */}
       <Card className="bg-gradient-to-br from-background to-muted/20">
         <CardHeader className="pb-2">
