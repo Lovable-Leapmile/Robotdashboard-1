@@ -55,10 +55,10 @@ const Racks = () => {
     if (selectedRack !== null) {
       fetchAllSlots(selectedRack);
       
-      // Set up polling interval for 3 seconds
+      // Set up polling interval for 2 seconds
       const intervalId = setInterval(() => {
         fetchAllSlots(selectedRack);
-      }, 3000);
+      }, 2000);
       
       // Cleanup interval on unmount or when selectedRack changes
       return () => clearInterval(intervalId);
