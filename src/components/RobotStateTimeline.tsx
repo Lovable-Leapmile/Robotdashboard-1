@@ -87,7 +87,7 @@ export const RobotStateTimeline = () => {
           Robot Status Timeline
         </div>
         <div className="text-sm" style={{ color: '#9ca3af' }}>
-          {currentTime.toLocaleDateString()} {currentTime.toLocaleTimeString()}
+          {currentTime.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' })} {currentTime.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' })}
         </div>
       </div>
       
