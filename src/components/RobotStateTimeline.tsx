@@ -75,7 +75,7 @@ export const RobotStateTimeline = () => {
         Robot Status Timeline
       </div>
       
-      <div style={{ height: '300px', width: '100%' }}>
+      <div style={{ height: '280px', width: '100%', minWidth: '600px' }}>
         <ResponsiveContainer width="100%" height="100%">
           <ScatterChart margin={{ top: 10, right: 30, bottom: 60, left: 80 }}>
             <XAxis
