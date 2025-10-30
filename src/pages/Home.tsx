@@ -53,8 +53,8 @@ const Home = () => {
     <div className="min-h-screen" style={{ backgroundColor: '#fafafa' }}>
       <AppHeader selectedTab="Robot" />
       
-      <main style={{ margin: '0 15px', paddingTop: '20px' }}>
-        <div className="flex justify-center" style={{ gap: '40px' }}>
+      <main style={{ marginLeft: '15px', paddingTop: '20px', paddingBottom: '20px' }}>
+        <div className="flex" style={{ gap: '40px' }}>
           {/* Row 0 */}
           <div className="flex flex-col items-center">
             <div className="text-xl font-semibold mb-4" style={{ color: '#351c75' }}>
@@ -69,8 +69,9 @@ const Home = () => {
                       style={{
                         width: '75px',
                         height: '25px',
-                        backgroundColor: '#000000',
-                        borderRadius: '2px'
+                        backgroundColor: '#351C75',
+                        borderRadius: '4px',
+                        border: '1px solid #d1d5db'
                       }}
                     />
                   ))}
@@ -93,8 +94,9 @@ const Home = () => {
                       style={{
                         width: '75px',
                         height: '25px',
-                        backgroundColor: '#000000',
-                        borderRadius: '2px'
+                        backgroundColor: '#351C75',
+                        borderRadius: '4px',
+                        border: '1px solid #d1d5db'
                       }}
                     />
                   ))}
