@@ -150,7 +150,7 @@ export const DashboardCards = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-2 gap-3 mt-5">
+    <div className="grid grid-cols-2 gap-3 mt-[15px]">
       {/* Robot Information Card */}
       <Card className="bg-gradient-to-br from-background to-muted/20">
         <CardHeader className="pb-2">
