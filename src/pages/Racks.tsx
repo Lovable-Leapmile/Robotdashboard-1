@@ -184,12 +184,12 @@ const Racks = () => {
     fetchSlotDetails(slotId);
   };
 
-  // Auto-refresh slot details every 3 seconds when a slot is selected
+  // Auto-refresh slot details every 2 seconds when a slot is selected
   useEffect(() => {
     if (selectedSlotId) {
       const intervalId = setInterval(() => {
         fetchSlotDetails(selectedSlotId);
-      }, 3000);
+      }, 2000);
       
       return () => clearInterval(intervalId);
     }
@@ -223,11 +223,11 @@ const Racks = () => {
         </div>
         {!isInactive && (
           <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center pb-1" style={{ gap: '1px' }}>
-            {slot.tags?.includes("station") && (
-              <img src={stationImg} alt="Station" style={{ width: '146px', height: '10px' }} />
-            )}
             {slot.tray_id && (
               <img src={trayImg} alt="Tray" style={{ width: '146px', height: '10px' }} />
+            )}
+            {slot.tags?.includes("station") && (
+              <img src={stationImg} alt="Station" style={{ width: '146px', height: '10px' }} />
             )}
           </div>
         )}

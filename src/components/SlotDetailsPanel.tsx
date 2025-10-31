@@ -122,7 +122,6 @@ const SlotDetailsPanel = ({ slotDetails, isVisible }: SlotDetailsPanelProps) => 
               <CardContent className="py-3 px-4">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
-                    <img src="/src/assets/tray.png" alt="Tray" className="w-6 h-6 object-contain" />
                     <span className="text-sm font-medium text-muted-foreground min-w-fit">Tray ID:</span>
                   </div>
                   <span className="text-base font-semibold flex-1 text-right" style={{ color: '#351c75' }}>
@@ -146,7 +145,6 @@ const SlotDetailsPanel = ({ slotDetails, isVisible }: SlotDetailsPanelProps) => 
               <CardContent className="py-3 px-4">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
-                    <img src="/src/assets/station.png" alt="Station" className="w-6 h-6 object-contain" />
                     <span className="text-sm font-medium text-muted-foreground min-w-fit">Station:</span>
                   </div>
                   <span className="text-base font-semibold flex-1 text-right" style={{ color: '#351c75' }}>
