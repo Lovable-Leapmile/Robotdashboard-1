@@ -3,6 +3,29 @@ import { useNavigate } from "react-router-dom";
 import AppHeader from "@/components/AppHeader";
 import { RobotStateTimeline } from "@/components/RobotStateTimeline";
 import { DashboardCards } from "@/components/DashboardCards";
+import esLeft from "@/assets/es-left.png";
+import esRight from "@/assets/es-right.png";
+import tsLeft from "@/assets/ts-left.png";
+import tsRight from "@/assets/ts-right.png";
+
+interface ShuttleData {
+  row: number;
+  rack: number;
+  depth: number;
+  slot: number;
+  tray_id: string | null;
+  direction: "left" | "right";
+  action: string;
+  status: string;
+}
+
+interface HighlightedRack {
+  row: number;
+  rack: number;
+  depth: number;
+  slot: number;
+  type: "source" | "destination";
+}
 
 const Home = () => {
   const [userName, setUserName] = useState("");
@@ -10,6 +33,9 @@ const Home = () => {
   const [robotNumSlots, setRobotNumSlots] = useState(0);
   const [robotNumDepths, setRobotNumDepths] = useState(0);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [shuttleData, setShuttleData] = useState<ShuttleData[]>([]);
+  const [activeShuttle, setActiveShuttle] = useState<ShuttleData | null>(null);
+  const [highlightedRacks, setHighlightedRacks] = useState<HighlightedRack[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,14 +58,137 @@ const Home = () => {
     return () => clearInterval(timer);
   }, []);
 
+  // Fetch shuttle data from pubsub API
+  useEffect(() => {
+    const fetchShuttleData = async () => {
+      try {
+        const response = await fetch(
+          "https://amsstores1.leapmile.com/pubsub/subscribe?topic=amsstores1-AMSSTORES1-Nano&num_records=10",
+          {
+            method: "GET",
+            headers: {
+              Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2wiOiJhZG1pbiIsImV4cCI6MTkwMDY1MzE0M30.asYhgMAOvrau4G6LI4V4IbgYZ022g_GX0qZxaS57GQc",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch shuttle data");
+        }
+
+        const data = await response.json();
+        console.log("Shuttle API Response:", data);
+
+        if (data.records && data.records.length > 0) {
+          // Get first 2 records
+          const firstTwoRecords = data.records.slice(0, 2);
+          const parsedShuttles: ShuttleData[] = firstTwoRecords.map((record: any) => {
+            const message = typeof record.message === "string" 
+              ? JSON.parse(record.message) 
+              : record.message;
+            
+            return {
+              row: message.row ?? 0,
+              rack: message.rack ?? 0,
+              depth: message.depth ?? 0,
+              slot: message.slot ?? 0,
+              tray_id: message.tray_id ?? null,
+              direction: message.direction ?? "right",
+              action: message.action ?? "store",
+              status: message.status ?? "start",
+            };
+          });
+
+          setShuttleData(parsedShuttles);
+          console.log("Parsed Shuttle Data:", parsedShuttles);
+        }
+      } catch (error) {
+        console.error("Error fetching shuttle data:", error);
+      }
+    };
+
+    fetchShuttleData();
+    const interval = setInterval(fetchShuttleData, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Parallel process logic
+  useEffect(() => {
+    if (shuttleData.length === 0) return;
+
+    const runParallelProcesses = async () => {
+      // Parallel Function 1: store start -> store stop
+      const parallelFunc1 = async () => {
+        const storeStartRecords = shuttleData.filter(
+          (s) => s.action === "store" && s.status === "start"
+        );
+        if (storeStartRecords.length > 0) {
+          const shuttle = storeStartRecords[0];
+          setActiveShuttle(shuttle);
+          setHighlightedRacks([
+            { row: shuttle.row, rack: shuttle.rack, depth: shuttle.depth, slot: shuttle.slot, type: "source" },
+          ]);
+          console.log("Parallel 1 - Store Start:", shuttle);
+          
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+
+          const storeStopRecords = shuttleData.filter(
+            (s) => s.action === "store" && s.status === "stop"
+          );
+          if (storeStopRecords.length > 0) {
+            const destShuttle = storeStopRecords[0];
+            setHighlightedRacks((prev) => [
+              ...prev,
+              { row: destShuttle.row, rack: destShuttle.rack, depth: destShuttle.depth, slot: destShuttle.slot, type: "destination" },
+            ]);
+            console.log("Parallel 1 - Store Stop:", destShuttle);
+            
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+            setActiveShuttle(null);
+            setHighlightedRacks([]);
+          }
+        }
+      };
+
+      // Parallel Function 2: retrieve stop -> store start
+      const parallelFunc2 = async () => {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        
+        const retrieveStopRecords = shuttleData.filter(
+          (s) => s.action === "retrieve" && s.status === "stop"
+        );
+        if (retrieveStopRecords.length > 0) {
+          const shuttle = retrieveStopRecords[0];
+          console.log("Parallel 2 - Retrieve Stop:", shuttle);
+          
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+
+          const storeStartRecords = shuttleData.filter(
+            (s) => s.action === "store" && s.status === "start"
+          );
+          if (storeStartRecords.length > 0) {
+            const storeShuttle = storeStartRecords[0];
+            console.log("Parallel 2 - Store Start:", storeShuttle);
+          }
+        }
+      };
+
+      // Run both parallel functions
+      await Promise.all([parallelFunc1(), parallelFunc2()]);
+    };
+
+    runParallelProcesses();
+  }, [shuttleData]);
+
   const fetchRobotConfig = async () => {
     try {
       const response = await fetch("https://amsstores1.leapmile.com/robotmanager/robots", {
         method: "GET",
         headers: {
-          "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2wiOiJhZG1pbiIsImV4cCI6MTkwMDY1MzE0M30.asYhgMAOvrau4G6LI4V4IbgYZ022g_GX0qZxaS57GQc",
-          "Content-Type": "application/json"
-        }
+          Authorization: "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2wiOiJhZG1pbiIsImV4cCI6MTkwMDY1MzE0M30.asYhgMAOvrau4G6LI4V4IbgYZ022g_GX0qZxaS57GQc",
+          "Content-Type": "application/json",
+        },
       });
 
       if (!response.ok) {
@@ -47,7 +196,7 @@ const Home = () => {
       }
 
       const data = await response.json();
-      
+
       if (data.records && data.records.length > 0) {
         const robotConfig = data.records[0];
         setRobotNumRacks(robotConfig.robot_num_racks || 0);
@@ -59,49 +208,75 @@ const Home = () => {
     }
   };
 
+  const getShuttleImage = () => {
+    if (!activeShuttle) return null;
+
+    const hasTray = activeShuttle.tray_id !== null;
+    const isLeft = activeShuttle.direction === "left";
+
+    if (hasTray && isLeft) return tsLeft;
+    if (hasTray && !isLeft) return tsRight;
+    if (!hasTray && isLeft) return esLeft;
+    return esRight;
+  };
+
+  const isRackHighlighted = (row: number, rack: number, depth: number, slot: number) => {
+    return highlightedRacks.find(
+      (h) => h.row === row && h.rack === rack && h.depth === depth && h.slot === slot
+    );
+  };
+
+  const getRackBorderStyle = (row: number, rack: number, depth: number, slot: number) => {
+    const highlight = isRackHighlighted(row, rack, depth, slot);
+    if (!highlight) return "1px solid #d1d5db";
+    
+    return highlight.type === "source" ? "2px solid #fbbf24" : "2px solid #34d399";
+  };
+
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#fafafa' }}>
+    <div className="min-h-screen" style={{ backgroundColor: "#fafafa" }}>
       <AppHeader selectedTab="Robot" />
-      
-      <main style={{ marginLeft: '15px', paddingTop: '20px', paddingBottom: '20px' }}>
+
+      <main style={{ marginLeft: "15px", paddingTop: "20px", paddingBottom: "20px" }}>
         {/* Header row with all titles */}
-        <div className="flex items-center mb-4" style={{ gap: '100px', paddingLeft: '0' }}>
-          <div className="text-xl font-semibold" style={{ color: '#351c75', width: '155px', textAlign: 'center' }}>
+        <div className="flex items-center mb-4" style={{ gap: "100px", paddingLeft: "0" }}>
+          <div className="text-xl font-semibold" style={{ color: "#351c75", width: "155px", textAlign: "center" }}>
             Row 1
           </div>
-          <div className="text-xl font-semibold" style={{ color: '#351c75', width: '155px', textAlign: 'center' }}>
+          <div className="text-xl font-semibold" style={{ color: "#351c75", width: "155px", textAlign: "center" }}>
             Row 0
           </div>
-          <div className="flex items-center" style={{ gap: '24px' }}>
-            <div className="text-xl font-semibold" style={{ color: '#351c75' }}>
+          <div className="flex items-center" style={{ gap: "24px" }}>
+            <div className="text-xl font-semibold" style={{ color: "#351c75" }}>
               Robot Status Timeline
             </div>
-            <div className="text-sm" style={{ color: '#9ca3af' }}>
-              {currentTime.toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' })} {currentTime.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' })}
+            <div className="text-sm" style={{ color: "#9ca3af" }}>
+              {currentTime.toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })}{" "}
+              {currentTime.toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" })}
             </div>
           </div>
         </div>
 
-        {/* Content row */}
-        <div className="flex" style={{ gap: '100px' }}>
+        {/* Content row - NO GAP between Row 1 and Row 0 */}
+        <div className="flex" style={{ gap: "0px" }}>
           {/* Row 1 */}
-          <div className="flex flex-col items-center">
-            <div className="flex" style={{ gap: '10px' }}>
+          <div className="flex flex-col items-center" style={{ position: "relative" }}>
+            <div className="flex" style={{ gap: "10px" }}>
               {Array.from({ length: robotNumDepths }, (_, depthIdx) => (
-                <div key={`row1-depth${depthIdx}`} className="flex flex-col" style={{ gap: '10px' }}>
+                <div key={`row1-depth${depthIdx}`} className="flex flex-col" style={{ gap: "10px" }}>
                   {Array.from({ length: robotNumRacks }, (_, rackIdx) => (
                     <div
                       key={`row1-depth${depthIdx}-rack${rackIdx}`}
                       className="flex items-center justify-center"
                       style={{
-                        width: '75px',
-                        height: '25px',
-                        backgroundColor: '#ffffff',
-                        borderRadius: '4px',
-                        border: '1px solid #d1d5db',
-                        color: '#351c75',
-                        fontSize: '13px',
-                        fontWeight: '500'
+                        width: "75px",
+                        height: "25px",
+                        backgroundColor: "#ffffff",
+                        borderRadius: "4px",
+                        border: getRackBorderStyle(1, rackIdx, depthIdx, 0),
+                        color: "#351c75",
+                        fontSize: "13px",
+                        fontWeight: "500",
                       }}
                     >
                       {rackIdx}
@@ -110,26 +285,43 @@ const Home = () => {
                 </div>
               ))}
             </div>
+
+            {/* Shuttle image for Row 1 */}
+            {activeShuttle && activeShuttle.row === 1 && (
+              <img
+                src={getShuttleImage()!}
+                alt="shuttle"
+                style={{
+                  position: "absolute",
+                  width: "75px",
+                  height: "25px",
+                  top: `${activeShuttle.rack * 35}px`,
+                  left: `${activeShuttle.depth * 85}px`,
+                  zIndex: 10,
+                  transition: "all 0.5s ease-in-out",
+                }}
+              />
+            )}
           </div>
 
           {/* Row 0 */}
-          <div className="flex flex-col items-center">
-            <div className="flex" style={{ gap: '10px' }}>
+          <div className="flex flex-col items-center" style={{ position: "relative", marginLeft: "100px" }}>
+            <div className="flex" style={{ gap: "10px" }}>
               {Array.from({ length: robotNumDepths }, (_, depthIdx) => (
-                <div key={`row0-depth${depthIdx}`} className="flex flex-col" style={{ gap: '10px' }}>
+                <div key={`row0-depth${depthIdx}`} className="flex flex-col" style={{ gap: "10px" }}>
                   {Array.from({ length: robotNumRacks }, (_, rackIdx) => (
                     <div
                       key={`row0-depth${depthIdx}-rack${rackIdx}`}
                       className="flex items-center justify-center"
                       style={{
-                        width: '75px',
-                        height: '25px',
-                        backgroundColor: '#ffffff',
-                        borderRadius: '4px',
-                        border: '1px solid #d1d5db',
-                        color: '#351c75',
-                        fontSize: '13px',
-                        fontWeight: '500'
+                        width: "75px",
+                        height: "25px",
+                        backgroundColor: "#ffffff",
+                        borderRadius: "4px",
+                        border: getRackBorderStyle(0, rackIdx, depthIdx, 0),
+                        color: "#351c75",
+                        fontSize: "13px",
+                        fontWeight: "500",
                       }}
                     >
                       {rackIdx}
@@ -138,10 +330,27 @@ const Home = () => {
                 </div>
               ))}
             </div>
+
+            {/* Shuttle image for Row 0 */}
+            {activeShuttle && activeShuttle.row === 0 && (
+              <img
+                src={getShuttleImage()!}
+                alt="shuttle"
+                style={{
+                  position: "absolute",
+                  width: "75px",
+                  height: "25px",
+                  top: `${activeShuttle.rack * 35}px`,
+                  left: `${activeShuttle.depth * 85}px`,
+                  zIndex: 10,
+                  transition: "all 0.5s ease-in-out",
+                }}
+              />
+            )}
           </div>
 
           {/* Robot State Timeline with Dashboard Cards */}
-          <div className="flex flex-col" style={{ flex: 1 }}>
+          <div className="flex flex-col" style={{ flex: 1, marginLeft: "100px" }}>
             <RobotStateTimeline />
             <DashboardCards />
           </div>
