@@ -135,9 +135,8 @@ const CameraTaskDetails = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <AppHeader selectedTab="" isCameraPage={true} />
-      <main className="flex-1 p-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-6 flex items-center justify-between">
+      <main className="p-6">
+        <div className="mb-6 flex items-center justify-between">
             <Button
               variant="outline"
               size="sm"
@@ -178,7 +177,6 @@ const CameraTaskDetails = () => {
               />
             </div>
           )}
-        </div>
       </main>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
