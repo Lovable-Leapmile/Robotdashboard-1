@@ -5,7 +5,7 @@ import { AgGridReact } from "ag-grid-react";
 import { ColDef, ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import { Play, Download, ArrowLeft } from "lucide-react";
+import { Play, Download, ArrowLeft, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,6 +13,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -32,12 +39,23 @@ const CameraTaskDetails = () => {
   const [loading, setLoading] = useState(true);
   const [selectedVideo, setSelectedVideo] = useState<CameraEvent | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [autoRefresh, setAutoRefresh] = useState(false);
 
   useEffect(() => {
     if (taskId) {
       fetchCameraEvents(taskId);
     }
   }, [taskId]);
+
+  useEffect(() => {
+    if (!autoRefresh || !taskId) return;
+
+    const interval = setInterval(() => {
+      fetchCameraEvents(taskId);
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [autoRefresh, taskId]);
 
   const fetchCameraEvents = async (task_id: string) => {
     try {
@@ -69,6 +87,43 @@ const CameraTaskDetails = () => {
 
   const handleDownloadClick = (clipUrl: string) => {
     window.open(clipUrl, "_blank");
+  };
+
+  const handleDownloadCSV = () => {
+    if (events.length === 0) return;
+
+    const headers = [
+      "Task ID",
+      "Start Time",
+      "Stop Time",
+      "File Name",
+      "Camera Name",
+      "Clip URL",
+    ];
+
+    const csvContent = [
+      headers.join(","),
+      ...events.map((event) =>
+        [
+          event.task_id,
+          event.clip_start_time,
+          event.clip_stop_time || "",
+          event.clip_filename,
+          event.camera_device_id,
+          event.clip_url,
+        ].join(",")
+      ),
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `camera_events_${taskId}.csv`);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const columnDefs: ColDef[] = [
@@ -137,20 +192,58 @@ const CameraTaskDetails = () => {
       <AppHeader selectedTab="" isCameraPage={true} />
       <main className="p-6">
         <div className="mb-6 flex items-center justify-between">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => navigate("/camera")}
-              className="flex items-center gap-2"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to Tasks
-            </Button>
-            <h1 className="text-2xl font-bold text-foreground absolute left-1/2 transform -translate-x-1/2">
-              Task: {taskId}
-            </h1>
-            <div></div>
-          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate("/camera")}
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Tasks
+          </Button>
+          <h1 className="text-2xl font-bold text-foreground absolute left-1/2 transform -translate-x-1/2">
+            Task: {taskId}
+          </h1>
+          <TooltipProvider>
+            <div className="flex items-center gap-[15px]">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={handleDownloadCSV}
+                    className="p-2 rounded-full hover:bg-accent transition-colors"
+                    disabled={events.length === 0}
+                  >
+                    <Download className="h-5 w-5 text-foreground" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Download CSV</p>
+                </TooltipContent>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="auto-refresh"
+                      checked={autoRefresh}
+                      onCheckedChange={(checked) => setAutoRefresh(checked as boolean)}
+                    />
+                    <label
+                      htmlFor="auto-refresh"
+                      className="cursor-pointer flex items-center"
+                    >
+                      <RefreshCw className="h-5 w-5 text-foreground" />
+                    </label>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Auto Refresh</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          </TooltipProvider>
+        </div>
 
           {loading ? (
             <div className="text-center text-muted-foreground py-12">
