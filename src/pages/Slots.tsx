@@ -186,6 +186,7 @@ const Slots = () => {
               }}
               pagination={true}
               paginationPageSize={50}
+              rowHeight={60}
               onGridReady={(params) => {
                 gridApiRef.current = params.api;
                 params.api.setGridOption('quickFilterText', quickFilter);
