@@ -315,8 +315,8 @@ const CameraTaskDetails = () => {
                   size="icon"
                   onClick={handlePrevVideo}
                   disabled={currentVideoIndex === 0}
-                  className="shrink-0 hover:bg-[#351c75] hover:text-white focus-visible:ring-[#351c75] disabled:opacity-50"
-                  style={{ borderColor: '#351c75', color: '#351c75' }}
+                  className="shrink-0 bg-[#351c75] text-white hover:bg-white hover:text-[#351c75] focus-visible:ring-[#351c75] disabled:opacity-50 transition-colors"
+                  style={{ borderColor: '#351c75' }}
                 >
                   <ChevronLeft className="h-6 w-6" />
                 </Button>
@@ -339,8 +339,8 @@ const CameraTaskDetails = () => {
                   size="icon"
                   onClick={handleNextVideo}
                   disabled={currentVideoIndex === events.length - 1}
-                  className="shrink-0 hover:bg-[#351c75] hover:text-white focus-visible:ring-[#351c75] disabled:opacity-50"
-                  style={{ borderColor: '#351c75', color: '#351c75' }}
+                  className="shrink-0 bg-[#351c75] text-white hover:bg-white hover:text-[#351c75] focus-visible:ring-[#351c75] disabled:opacity-50 transition-colors"
+                  style={{ borderColor: '#351c75' }}
                 >
                   <ChevronRight className="h-6 w-6" />
                 </Button>
