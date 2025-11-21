@@ -150,7 +150,7 @@ const ApkLink = () => {
                   <div className="flex flex-col sm:flex-row gap-2">
                     <Button
                       variant="outline"
-                      className="flex-1 border-purple-500/30 hover:bg-purple-250/10"
+                      className="flex-1 border-purple-500/30 hover:bg-purple-500/50"
                       onClick={() => window.open("https://amsstores1.leapmile.com:6500/", "_blank")}
                     >
                       <ExternalLink className="h-4 w-4 mr-2" />
