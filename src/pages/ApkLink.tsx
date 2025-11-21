@@ -92,7 +92,7 @@ const ApkLink = () => {
             <Card className="bg-gradient-to-br from-purple-500/5 to-purple-500/10 border-purple-500/20 shadow-sm">
               <CardHeader className="pb-3 pt-4 px-5 border-b border-purple-500/20">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-bold text-purple-600 flex items-center gap-2">
+                  <CardTitle className="text-lg font-bold flex items-center gap-2 text-primary">
                     Version 4.0
                     <span className="text-xs bg-purple-600 text-white px-2 py-0.5 rounded-full font-semibold">
                       Latest Release
@@ -130,10 +130,10 @@ const ApkLink = () => {
 
                   {/* Update Highlights */}
                   <div className="bg-purple-500/10 rounded-lg p-3 border border-purple-500/20">
-                    <h3 className="font-semibold text-purple-600 mb-2 text-sm flex items-center gap-1">
+                    <h3 className="font-semibold text-purple-600 mb-2 text-md flex items-center gap-1">
                       🚀 Latest Update Highlights
                     </h3>
-                    <ul className="space-y-1.5 text-s text-foreground/80">
+                    <ul className="space-y-1.5 text-sm text-foreground/80">
                       <li>• Easily track pending orders in one place.</li>
                       <li>• View available trays in the station instantly.</li>
                       <li>• Search by Item ID or Tray ID to call trays on demand.</li>
@@ -176,7 +176,7 @@ const ApkLink = () => {
             {/* Version 3.0 */}
             <Card className="bg-gradient-to-br from-blue-500/5 to-blue-500/10 border-blue-500/20 shadow-sm">
               <CardHeader className="pb-3 pt-4 px-5 border-b border-blue-500/20">
-                <CardTitle className="text-base font-bold text-blue-600">Version 3.0</CardTitle>
+                <CardTitle className="text-base font-bold text-primary">Version 3.0</CardTitle>
               </CardHeader>
               <CardContent className="pt-4 px-5 pb-4">
                 <div className="space-y-3">
