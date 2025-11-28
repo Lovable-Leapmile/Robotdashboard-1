@@ -57,7 +57,8 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, isMonitorPage, isC
       "Slots": "/slots",
       "Station": "/station",
       "Extremes": "/extremes",
-      "APK Link": "/apk-link"
+      "APK Link": "/apk-link",
+      "Admin Console": "/admin-console"
     };
     if (routes[tab]) {
       navigate(routes[tab]);
@@ -272,6 +273,14 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, isMonitorPage, isC
         >
           APK Link
           <span className={`absolute bottom-0 left-0 h-0.5 bg-purple-600 transition-all duration-300 ${selectedTab === "APK Link" ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
+        </span>
+        <span 
+          className="text-sm cursor-pointer px-5 py-2 rounded-md transition-all font-medium relative group" 
+          style={{ color: '#555' }}
+          onClick={() => handleTabClick("Admin Console")}
+        >
+          Admin Console
+          <span className={`absolute bottom-0 left-0 h-0.5 bg-purple-600 transition-all duration-300 ${selectedTab === "Admin Console" ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
         </span>
       </nav>
       )}

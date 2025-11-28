@@ -11,6 +11,7 @@ import Slots from "./pages/Slots";
 import Station from "./pages/Station";
 import Extremes from "./pages/Extremes";
 import ApkLink from "./pages/ApkLink";
+import AdminConsole from "./pages/AdminConsole";
 import Monitor from "./pages/Monitor";
 import Camera from "./pages/Camera";
 import CameraTaskDetails from "./pages/CameraTaskDetails";
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/station" element={<Station />} />
           <Route path="/extremes" element={<Extremes />} />
           <Route path="/apk-link" element={<ApkLink />} />
+          <Route path="/admin-console" element={<AdminConsole />} />
           <Route path="/monitor" element={<Monitor />} />
           <Route path="/camera" element={<Camera />} />
           <Route path="/camera/:taskId" element={<CameraTaskDetails />} />
