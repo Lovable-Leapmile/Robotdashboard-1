@@ -118,10 +118,20 @@ export const DashboardCards = () => {
 
   const fetchPowerInfo = async () => {
     try {
-      const response = await fetch("https://amsstores1.leapmile.com/robotmanager/robot_power?today=true&num_records=1", {
+      // First try to fetch today's data
+      let response = await fetch("https://amsstores1.leapmile.com/robotmanager/robot_power?today=true&num_records=1", {
         headers: { "Authorization": AUTH_TOKEN, "Content-Type": "application/json" }
       });
-      const data = await response.json();
+      let data = await response.json();
+      
+      // If today's data is not available, fetch the most recent data regardless of date
+      if (data.status !== "success" || !data.records || data.records.length === 0) {
+        response = await fetch("https://amsstores1.leapmile.com/robotmanager/robot_power?num_records=1", {
+          headers: { "Authorization": AUTH_TOKEN, "Content-Type": "application/json" }
+        });
+        data = await response.json();
+      }
+      
       if (data.status === "success" && data.records && data.records.length > 0) {
         const record = data.records[0];
         setPowerInfo({
@@ -131,7 +141,7 @@ export const DashboardCards = () => {
           energy: `${record.total_active_energy_kwh ?? 'N/A'} kWh`
         });
       } else {
-        // No data available - show placeholder
+        // No data available at all
         setPowerInfo({
           voltage: "N/A",
           current: "N/A",
