@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AppHeader from "@/components/AppHeader";
 import { RobotStateTimeline } from "@/components/RobotStateTimeline";
 import { DashboardCards } from "@/components/DashboardCards";
+import { PowerHistoryChart } from "@/components/PowerHistoryChart";
 import esLeft from "@/assets/es-left.png";
 import esRight from "@/assets/es-right.png";
 import tsLeft from "@/assets/ts-left.png";
@@ -377,10 +378,13 @@ const Home = () => {
             )}
           </div>
 
-          {/* Robot State Timeline with Dashboard Cards */}
+          {/* Robot State Timeline with Dashboard Cards and Power Chart */}
           <div className="flex flex-col" style={{ flex: 1, marginLeft: "100px" }}>
             <RobotStateTimeline />
             <DashboardCards />
+            <div className="mt-3">
+              <PowerHistoryChart />
+            </div>
           </div>
         </div>
       </main>

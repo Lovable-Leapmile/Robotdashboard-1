@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import { QrCode } from "lucide-react";
+import { QrCode, Ban } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 
 interface SlotDetails {
@@ -35,6 +36,7 @@ const SlotDetailsPanel = ({ slotDetails, isVisible }: SlotDetailsPanelProps) => 
 
   const hasStation = slotDetails.tags?.includes("station");
   const hasTray = slotDetails.tray_id !== null && slotDetails.tray_id !== "";
+  const isBlocked = slotDetails.slot_status === "inactive";
 
   const formattedDate = slotDetails.updated_at 
     ? format(new Date(slotDetails.updated_at), "PPp")
@@ -50,8 +52,16 @@ const SlotDetailsPanel = ({ slotDetails, isVisible }: SlotDetailsPanelProps) => 
           borderRadius: '5px'
         }}
       >
-        <div className="text-xl font-semibold mb-6" style={{ color: '#351c75' }}>
-          Slot Details
+        <div className="flex items-center justify-between mb-6">
+          <div className="text-xl font-semibold" style={{ color: '#351c75' }}>
+            Slot Details
+          </div>
+          {isBlocked && (
+            <Badge variant="destructive" className="flex items-center gap-1 bg-red-500/90 hover:bg-red-500">
+              <Ban className="h-3 w-3" />
+              Blocked
+            </Badge>
+          )}
         </div>
         <div className="space-y-4">
           {/* Slot ID Section */}
