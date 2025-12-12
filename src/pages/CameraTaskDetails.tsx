@@ -209,8 +209,8 @@ const CameraTaskDetails = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <AppHeader selectedTab="" isCameraPage={true} />
-      <main className="p-6">
-        <div className="mb-6 flex items-center justify-between">
+      <main className="p-3 sm:p-6">
+        <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <Button
             variant="outline"
             size="sm"
@@ -218,9 +218,10 @@ const CameraTaskDetails = () => {
             className="flex items-center gap-2"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Tasks
+            <span className="hidden sm:inline">Back to Tasks</span>
+            <span className="sm:hidden">Back</span>
           </Button>
-          <h1 className="text-2xl font-bold text-foreground absolute left-1/2 transform -translate-x-1/2">
+          <h1 className="text-lg sm:text-2xl font-bold text-foreground sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2">
             Task: {taskId}
           </h1>
           <TooltipProvider>

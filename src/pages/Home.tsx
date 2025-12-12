@@ -251,134 +251,130 @@ const Home = () => {
     <div className="min-h-screen" style={{ backgroundColor: "#fafafa" }}>
       <AppHeader selectedTab="Robot" />
 
-      <main style={{ marginLeft: "15px", paddingTop: "20px", paddingBottom: "20px" }}>
+      <main className="px-2 sm:px-4 py-4 sm:py-5 overflow-x-auto">
         {/* Header row with all titles */}
-        <div className="flex items-center mb-4" style={{ gap: "100px", paddingLeft: "0" }}>
-          <div className="text-xl font-semibold" style={{ color: "#351c75", width: "155px", textAlign: "center" }}>
-            Row 1
+        <div className="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-[100px] mb-4 px-2">
+          <div className="flex items-center gap-4 sm:gap-[100px]">
+            <div className="text-base sm:text-xl font-semibold text-center min-w-[80px] sm:min-w-[155px]" style={{ color: "#351c75" }}>
+              Row 1
+            </div>
+            <div className="text-base sm:text-xl font-semibold text-center min-w-[80px] sm:min-w-[155px]" style={{ color: "#351c75" }}>
+              Row 0
+            </div>
           </div>
-          <div className="text-xl font-semibold" style={{ color: "#351c75", width: "155px", textAlign: "center" }}>
-            Row 0
-          </div>
-          <div className="flex items-center" style={{ gap: "24px" }}>
-            <div className="text-xl font-semibold" style={{ color: "#351c75" }}>
+          <div className="flex items-center gap-3 sm:gap-6">
+            <div className="text-base sm:text-xl font-semibold" style={{ color: "#351c75" }}>
               Robot Status Timeline
             </div>
-            <div className="text-sm" style={{ color: "#9ca3af" }}>
+            <div className="text-xs sm:text-sm" style={{ color: "#9ca3af" }}>
               {currentTime.toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata" })}{" "}
               {currentTime.toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" })}
             </div>
           </div>
         </div>
 
-        {/* Content row - NO GAP between Row 1 and Row 0 */}
-        <div className="flex" style={{ gap: "0px" }}>
-          {/* Row 1 */}
-          <div className="flex flex-col items-center" style={{ position: "relative" }}>
-            <div className="flex" style={{ gap: "10px" }}>
-              {Array.from({ length: robotNumDepths }, (_, depthIdx) => (
-                <div key={`row1-depth${depthIdx}`} className="flex flex-col" style={{ gap: "10px" }}>
-                  {Array.from({ length: robotNumRacks }, (_, rackIdx) => (
-                    <div
-                      key={`row1-depth${depthIdx}-rack${rackIdx}`}
-                      className="flex items-center justify-center transition-all duration-500 ease-in-out"
-                      style={{
-                        width: "75px",
-                        height: "25px",
-                        backgroundColor: "#ffffff",
-                        borderRadius: "4px",
-                        border: getRackBorderStyle(1, rackIdx, depthIdx, 0),
-                        color: "#351c75",
-                        fontSize: "13px",
-                        fontWeight: "500",
-                        boxShadow: isRackHighlighted(1, rackIdx, depthIdx, 0) 
-                          ? "0 0 10px rgba(251, 191, 36, 0.3)" 
-                          : "none",
-                      }}
-                    >
-                      {rackIdx}
-                    </div>
-                  ))}
-                </div>
-              ))}
+        {/* Content row */}
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-0">
+          <div className="flex gap-4 sm:gap-0 overflow-x-auto pb-4 lg:pb-0">
+            {/* Row 1 */}
+            <div className="flex flex-col items-center shrink-0" style={{ position: "relative" }}>
+              <div className="flex gap-2 sm:gap-[10px]">
+                {Array.from({ length: robotNumDepths }, (_, depthIdx) => (
+                  <div key={`row1-depth${depthIdx}`} className="flex flex-col gap-2 sm:gap-[10px]">
+                    {Array.from({ length: robotNumRacks }, (_, rackIdx) => (
+                      <div
+                        key={`row1-depth${depthIdx}-rack${rackIdx}`}
+                        className="flex items-center justify-center transition-all duration-500 ease-in-out text-xs sm:text-sm font-medium w-[60px] h-[22px] sm:w-[75px] sm:h-[25px]"
+                        style={{
+                          backgroundColor: "#ffffff",
+                          borderRadius: "4px",
+                          border: getRackBorderStyle(1, rackIdx, depthIdx, 0),
+                          color: "#351c75",
+                          boxShadow: isRackHighlighted(1, rackIdx, depthIdx, 0) 
+                            ? "0 0 10px rgba(251, 191, 36, 0.3)" 
+                            : "none",
+                        }}
+                      >
+                        {rackIdx}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+
+              {/* Shuttle image for Row 1 */}
+              {activeShuttle && activeShuttle.row === 1 && (
+                <img
+                  src={getShuttleImage()!}
+                  alt="shuttle"
+                  className={`${isAnimating ? 'animate-scale-in' : 'animate-fade-out'}`}
+                  style={{
+                    position: "absolute",
+                    width: "75px",
+                    height: "25px",
+                    top: `${activeShuttle.rack * 35}px`,
+                    left: `${activeShuttle.depth * 85}px`,
+                    zIndex: 10,
+                    transition: "all 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
+                    transform: isAnimating ? "scale(1)" : "scale(0.95)",
+                    opacity: isAnimating ? 1 : 0,
+                    filter: isAnimating ? "drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))" : "none",
+                  }}
+                />
+              )}
             </div>
 
-            {/* Shuttle image for Row 1 */}
-            {activeShuttle && activeShuttle.row === 1 && (
-              <img
-                src={getShuttleImage()!}
-                alt="shuttle"
-                className={`${isAnimating ? 'animate-scale-in' : 'animate-fade-out'}`}
-                style={{
-                  position: "absolute",
-                  width: "75px",
-                  height: "25px",
-                  top: `${activeShuttle.rack * 35}px`,
-                  left: `${activeShuttle.depth * 85}px`,
-                  zIndex: 10,
-                  transition: "all 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
-                  transform: isAnimating ? "scale(1)" : "scale(0.95)",
-                  opacity: isAnimating ? 1 : 0,
-                  filter: isAnimating ? "drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))" : "none",
-                }}
-              />
-            )}
-          </div>
+            {/* Row 0 */}
+            <div className="flex flex-col items-center shrink-0 ml-4 sm:ml-[100px]" style={{ position: "relative" }}>
+              <div className="flex gap-2 sm:gap-[10px]">
+                {Array.from({ length: robotNumDepths }, (_, depthIdx) => (
+                  <div key={`row0-depth${depthIdx}`} className="flex flex-col gap-2 sm:gap-[10px]">
+                    {Array.from({ length: robotNumRacks }, (_, rackIdx) => (
+                      <div
+                        key={`row0-depth${depthIdx}-rack${rackIdx}`}
+                        className="flex items-center justify-center transition-all duration-500 ease-in-out text-xs sm:text-sm font-medium w-[60px] h-[22px] sm:w-[75px] sm:h-[25px]"
+                        style={{
+                          backgroundColor: "#ffffff",
+                          borderRadius: "4px",
+                          border: getRackBorderStyle(0, rackIdx, depthIdx, 0),
+                          color: "#351c75",
+                          boxShadow: isRackHighlighted(0, rackIdx, depthIdx, 0) 
+                            ? "0 0 10px rgba(52, 211, 153, 0.3)" 
+                            : "none",
+                        }}
+                      >
+                        {rackIdx}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
 
-          {/* Row 0 */}
-          <div className="flex flex-col items-center" style={{ position: "relative", marginLeft: "100px" }}>
-            <div className="flex" style={{ gap: "10px" }}>
-              {Array.from({ length: robotNumDepths }, (_, depthIdx) => (
-                <div key={`row0-depth${depthIdx}`} className="flex flex-col" style={{ gap: "10px" }}>
-                  {Array.from({ length: robotNumRacks }, (_, rackIdx) => (
-                    <div
-                      key={`row0-depth${depthIdx}-rack${rackIdx}`}
-                      className="flex items-center justify-center transition-all duration-500 ease-in-out"
-                      style={{
-                        width: "75px",
-                        height: "25px",
-                        backgroundColor: "#ffffff",
-                        borderRadius: "4px",
-                        border: getRackBorderStyle(0, rackIdx, depthIdx, 0),
-                        color: "#351c75",
-                        fontSize: "13px",
-                        fontWeight: "500",
-                        boxShadow: isRackHighlighted(0, rackIdx, depthIdx, 0) 
-                          ? "0 0 10px rgba(52, 211, 153, 0.3)" 
-                          : "none",
-                      }}
-                    >
-                      {rackIdx}
-                    </div>
-                  ))}
-                </div>
-              ))}
+              {/* Shuttle image for Row 0 */}
+              {activeShuttle && activeShuttle.row === 0 && (
+                <img
+                  src={getShuttleImage()!}
+                  alt="shuttle"
+                  className={`${isAnimating ? 'animate-scale-in' : 'animate-fade-out'}`}
+                  style={{
+                    position: "absolute",
+                    width: "75px",
+                    height: "25px",
+                    top: `${activeShuttle.rack * 35}px`,
+                    left: `${activeShuttle.depth * 85}px`,
+                    zIndex: 10,
+                    transition: "all 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
+                    transform: isAnimating ? "scale(1)" : "scale(0.95)",
+                    opacity: isAnimating ? 1 : 0,
+                    filter: isAnimating ? "drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))" : "none",
+                  }}
+                />
+              )}
             </div>
-
-            {/* Shuttle image for Row 0 */}
-            {activeShuttle && activeShuttle.row === 0 && (
-              <img
-                src={getShuttleImage()!}
-                alt="shuttle"
-                className={`${isAnimating ? 'animate-scale-in' : 'animate-fade-out'}`}
-                style={{
-                  position: "absolute",
-                  width: "75px",
-                  height: "25px",
-                  top: `${activeShuttle.rack * 35}px`,
-                  left: `${activeShuttle.depth * 85}px`,
-                  zIndex: 10,
-                  transition: "all 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
-                  transform: isAnimating ? "scale(1)" : "scale(0.95)",
-                  opacity: isAnimating ? 1 : 0,
-                  filter: isAnimating ? "drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1))" : "none",
-                }}
-              />
-            )}
           </div>
 
           {/* Robot State Timeline with Dashboard Cards */}
-          <div className="flex flex-col" style={{ flex: 1, marginLeft: "100px" }}>
+          <div className="flex flex-col flex-1 lg:ml-[100px]">
             <RobotStateTimeline />
             <DashboardCards />
           </div>

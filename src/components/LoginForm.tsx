@@ -39,8 +39,14 @@ const LoginForm = () => {
       const data = await response.json();
 
       if (response.ok && data.user_id && data.user_name) {
+        // Store user data
         localStorage.setItem("user_id", data.user_id);
         localStorage.setItem("user_name", data.user_name);
+        
+        // Store login timestamp for 7-day session expiration
+        const loginTimestamp = Date.now();
+        localStorage.setItem("login_timestamp", loginTimestamp.toString());
+        
         navigate("/home");
       } else {
         toast({

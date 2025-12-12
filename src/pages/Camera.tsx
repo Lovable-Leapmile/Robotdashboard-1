@@ -101,10 +101,10 @@ const Camera = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <AppHeader selectedTab="" isCameraPage={true} />
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-3 sm:p-6">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-6 flex items-center gap-3">
-            <div className="relative w-[60%]">
+          <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <div className="relative w-full sm:w-[60%]">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
                 type="text"
@@ -114,32 +114,34 @@ const Camera = () => {
                 className="pl-10 h-10 bg-card border-border"
               />
             </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                className="h-10 w-10 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                style={{ backgroundColor: 'rgba(53, 28, 117, 0.15)' }}
-                aria-label="Toggle filters"
-              >
-                <SlidersHorizontal className="h-[18px] w-[18px]" style={{ color: '#351C75' }} />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-card border-border">
-                <DropdownMenuRadioGroup value={sortOption} onValueChange={handleSortChange}>
-                  <DropdownMenuRadioItem value="latest" className="cursor-pointer">
-                    Latest Task
-                  </DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="task_asc" className="cursor-pointer">
-                    Task (ASC)
-                  </DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="task_desc" className="cursor-pointer">
-                    Task (DESC)
-                  </DropdownMenuRadioItem>
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <div className="h-10 flex items-center justify-center px-3">
-              <span className="text-muted-foreground text-sm">
-                Total Count: <span className="text-foreground font-semibold">{filteredTasks.length}</span>
-              </span>
+            <div className="flex items-center gap-3">
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  className="h-10 w-10 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 shrink-0"
+                  style={{ backgroundColor: 'rgba(53, 28, 117, 0.15)' }}
+                  aria-label="Toggle filters"
+                >
+                  <SlidersHorizontal className="h-[18px] w-[18px]" style={{ color: '#351C75' }} />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48 bg-card border-border">
+                  <DropdownMenuRadioGroup value={sortOption} onValueChange={handleSortChange}>
+                    <DropdownMenuRadioItem value="latest" className="cursor-pointer">
+                      Latest Task
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="task_asc" className="cursor-pointer">
+                      Task (ASC)
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="task_desc" className="cursor-pointer">
+                      Task (DESC)
+                    </DropdownMenuRadioItem>
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <div className="h-10 flex items-center justify-center px-3">
+                <span className="text-muted-foreground text-xs sm:text-sm whitespace-nowrap">
+                  Total: <span className="text-foreground font-semibold">{filteredTasks.length}</span>
+                </span>
+              </div>
             </div>
           </div>
 
@@ -152,15 +154,14 @@ const Camera = () => {
               No tasks found
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
               {filteredTasks.map((task) => (
                 <div
                   key={task.task_id}
                   onClick={() => handleTaskClick(task.task_id)}
-                  className="bg-card border border-border rounded-lg p-4 cursor-pointer hover:bg-primary/5 hover:shadow-md hover:border-primary/30 transition-all duration-200 flex items-center justify-center"
-                  style={{ width: "275px", height: "50px" }}
+                  className="bg-card border border-border rounded-lg p-4 cursor-pointer hover:bg-primary/5 hover:shadow-md hover:border-primary/30 transition-all duration-200 flex items-center justify-center min-h-[50px]"
                 >
-                  <span className="text-foreground font-medium truncate">
+                  <span className="text-foreground font-medium truncate text-sm sm:text-base">
                     {task.task_id}
                   </span>
                 </div>

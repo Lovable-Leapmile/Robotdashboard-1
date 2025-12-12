@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ScrollText, Activity, LogOut, Camera } from "lucide-react";
 import whiteLogo from "@/assets/white_logo.png";
+import fabIcon from "@/assets/fab-icon.png";
 import { useState } from "react";
 import html2canvas from "html2canvas";
 import {
@@ -37,6 +38,7 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, isMonitorPage, isC
   const handleLogout = () => {
     localStorage.removeItem("user_id");
     localStorage.removeItem("user_name");
+    localStorage.removeItem("login_timestamp");
     navigate("/");
   };
 
@@ -89,41 +91,41 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, isMonitorPage, isC
   return (
     <>
       <header 
-        className="flex items-center justify-between px-4"
+        className="flex items-center justify-between px-2 sm:px-4"
         style={{ backgroundColor: '#351C75', height: '55px' }}
       >
-        <div className="flex items-center gap-[10px]">
+        <div className="flex items-center gap-2 sm:gap-[10px]">
           <div 
-            className="rounded-full flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity"
-            style={{ backgroundColor: 'rgba(53, 28, 117, 0.20)', padding: '15px' }}
+            className="rounded-lg flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity shrink-0"
+            style={{ backgroundColor: 'rgba(255, 255, 255, 0.15)', padding: '4px' }}
             onClick={() => navigate("/home")}
           >
-            <img src={whiteLogo} alt="Logo" style={{ width: '75px' }} />
+            <img src={fabIcon} alt="Logo" className="w-8 h-8 sm:w-10 sm:h-10 object-contain" />
           </div>
-          <nav className="flex items-center gap-[15px]">
+          <nav className="flex items-center gap-2 sm:gap-[15px] overflow-x-auto">
             <span 
-              className={`text-base cursor-pointer hover:opacity-80 ${selectedTab && !isTasksPage ? 'font-semibold' : ''}`} 
+              className={`text-xs sm:text-base cursor-pointer hover:opacity-80 whitespace-nowrap ${selectedTab && !isTasksPage ? 'font-semibold' : ''}`} 
               style={{ color: selectedTab && !isTasksPage ? 'white' : '#80ffffff' }}
               onClick={() => navigate("/home")}
             >
               Configuration
             </span>
             <span 
-              className={`text-base cursor-pointer hover:opacity-80 ${isTasksPage ? 'font-semibold' : ''}`} 
+              className={`text-xs sm:text-base cursor-pointer hover:opacity-80 whitespace-nowrap ${isTasksPage ? 'font-semibold' : ''}`} 
               style={{ color: isTasksPage ? 'white' : '#80ffffff' }}
               onClick={() => navigate("/tasks")}
             >
               Tasks
             </span>
             <span 
-              className={`text-base cursor-pointer hover:opacity-80 ${isCameraPage ? 'font-semibold' : ''}`} 
+              className={`text-xs sm:text-base cursor-pointer hover:opacity-80 whitespace-nowrap ${isCameraPage ? 'font-semibold' : ''}`} 
               style={{ color: isCameraPage ? 'white' : '#80ffffff' }}
               onClick={() => navigate("/camera")}
             >
               Camera
             </span>
             <span 
-              className={`text-base cursor-pointer hover:opacity-80 ${isReportsPage ? 'font-semibold' : ''}`} 
+              className={`text-xs sm:text-base cursor-pointer hover:opacity-80 whitespace-nowrap ${isReportsPage ? 'font-semibold' : ''}`} 
               style={{ color: isReportsPage ? 'white' : '#80ffffff' }}
               onClick={() => navigate("/reports")}
             >
@@ -133,20 +135,16 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, isMonitorPage, isC
         </div>
         
         <TooltipProvider>
-          <div className="flex items-center gap-[10px]">
+          <div className="flex items-center gap-1 sm:gap-[10px]">
             {selectedTab === "Robot" && (
               <Tooltip>
                 <TooltipTrigger asChild>
                   <div 
-                    className="rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-white/30"
-                    style={{ 
-                      backgroundColor: 'rgba(255, 255, 255, 0.20)', 
-                      width: '40px', 
-                      height: '40px'
-                    }}
+                    className="rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-white/30 w-8 h-8 sm:w-10 sm:h-10"
+                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.20)' }}
                     onClick={handleScreenshot}
                   >
-                    <Camera className="text-white" size={18} />
+                    <Camera className="text-white w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                   </div>
                 </TooltipTrigger>
                 <TooltipContent side="bottom" className="bg-white text-gray-800 border border-gray-200">
@@ -158,16 +156,14 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, isMonitorPage, isC
             <Tooltip>
               <TooltipTrigger asChild>
                 <div 
-                  className="rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-white/30"
+                  className="rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-white/30 w-8 h-8 sm:w-10 sm:h-10"
                   style={{ 
                     backgroundColor: isLogsPage ? 'rgba(255, 255, 255, 0.40)' : 'rgba(255, 255, 255, 0.20)', 
-                    width: '40px', 
-                    height: '40px',
                     boxShadow: isLogsPage ? '0 0 0 2px rgba(255, 255, 255, 0.5)' : 'none'
                   }}
                   onClick={() => navigate("/logs")}
                 >
-                  <ScrollText className="text-white" size={18} />
+                  <ScrollText className="text-white w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                 </div>
               </TooltipTrigger>
               <TooltipContent side="bottom" className="bg-white text-gray-800 border border-gray-200">
@@ -178,16 +174,14 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, isMonitorPage, isC
             <Tooltip>
               <TooltipTrigger asChild>
                 <div 
-                  className="rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-white/30"
+                  className="rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-white/30 w-8 h-8 sm:w-10 sm:h-10"
                   style={{ 
                     backgroundColor: isMonitorPage ? 'rgba(255, 255, 255, 0.40)' : 'rgba(255, 255, 255, 0.20)', 
-                    width: '40px', 
-                    height: '40px',
                     boxShadow: isMonitorPage ? '0 0 0 2px rgba(255, 255, 255, 0.5)' : 'none'
                   }}
                   onClick={() => navigate("/monitor")}
                 >
-                  <Activity className="text-white" size={18} />
+                  <Activity className="text-white w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                 </div>
               </TooltipTrigger>
               <TooltipContent side="bottom" className="bg-white text-gray-800 border border-gray-200">
@@ -198,11 +192,11 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, isMonitorPage, isC
             <Tooltip>
               <TooltipTrigger asChild>
                 <div 
-                  className="rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-white/30"
-                  style={{ backgroundColor: 'rgba(255, 255, 255, 0.20)', width: '40px', height: '40px' }}
+                  className="rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-white/30 w-8 h-8 sm:w-10 sm:h-10"
+                  style={{ backgroundColor: 'rgba(255, 255, 255, 0.20)' }}
                   onClick={handleLogoutClick}
                 >
-                  <LogOut className="text-white" size={18} />
+                  <LogOut className="text-white w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                 </div>
               </TooltipTrigger>
               <TooltipContent side="bottom" className="bg-white text-gray-800 border border-gray-200">
@@ -215,11 +209,11 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, isMonitorPage, isC
 
       {selectedTab && !isTasksPage && !isCameraPage && !isReportsPage && !isLogsPage && (
         <nav 
-          className="flex items-center px-6 gap-[8px] border-b border-gray-200"
+          className="flex items-center px-2 sm:px-6 gap-1 sm:gap-[8px] border-b border-gray-200 overflow-x-auto"
           style={{ backgroundColor: '#eeeeee', height: '55px' }}
         >
         <span 
-          className="text-sm cursor-pointer px-5 py-2 rounded-md transition-all font-medium relative group" 
+          className="text-xs sm:text-sm cursor-pointer px-2 sm:px-5 py-2 rounded-md transition-all font-medium relative group whitespace-nowrap" 
           style={{ color: '#555' }}
           onClick={() => handleTabClick("Robot")}
         >
@@ -227,7 +221,7 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, isMonitorPage, isC
           <span className={`absolute bottom-0 left-0 h-0.5 bg-purple-600 transition-all duration-300 ${selectedTab === "Robot" ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
         </span>
         <span 
-          className="text-sm cursor-pointer px-5 py-2 rounded-md transition-all font-medium relative group" 
+          className="text-xs sm:text-sm cursor-pointer px-2 sm:px-5 py-2 rounded-md transition-all font-medium relative group whitespace-nowrap" 
           style={{ color: '#555' }}
           onClick={() => handleTabClick("Racks")}
         >
@@ -235,7 +229,7 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, isMonitorPage, isC
           <span className={`absolute bottom-0 left-0 h-0.5 bg-purple-600 transition-all duration-300 ${selectedTab === "Racks" ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
         </span>
         <span 
-          className="text-sm cursor-pointer px-5 py-2 rounded-md transition-all font-medium relative group" 
+          className="text-xs sm:text-sm cursor-pointer px-2 sm:px-5 py-2 rounded-md transition-all font-medium relative group whitespace-nowrap" 
           style={{ color: '#555' }}
           onClick={() => handleTabClick("Trays")}
         >
@@ -243,7 +237,7 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, isMonitorPage, isC
           <span className={`absolute bottom-0 left-0 h-0.5 bg-purple-600 transition-all duration-300 ${selectedTab === "Trays" ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
         </span>
         <span 
-          className="text-sm cursor-pointer px-5 py-2 rounded-md transition-all font-medium relative group" 
+          className="text-xs sm:text-sm cursor-pointer px-2 sm:px-5 py-2 rounded-md transition-all font-medium relative group whitespace-nowrap" 
           style={{ color: '#555' }}
           onClick={() => handleTabClick("Slots")}
         >
@@ -251,7 +245,7 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, isMonitorPage, isC
           <span className={`absolute bottom-0 left-0 h-0.5 bg-purple-600 transition-all duration-300 ${selectedTab === "Slots" ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
         </span>
         <span 
-          className="text-sm cursor-pointer px-5 py-2 rounded-md transition-all font-medium relative group" 
+          className="text-xs sm:text-sm cursor-pointer px-2 sm:px-5 py-2 rounded-md transition-all font-medium relative group whitespace-nowrap" 
           style={{ color: '#555' }}
           onClick={() => handleTabClick("Station")}
         >
@@ -259,7 +253,7 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, isMonitorPage, isC
           <span className={`absolute bottom-0 left-0 h-0.5 bg-purple-600 transition-all duration-300 ${selectedTab === "Station" ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
         </span>
         <span 
-          className="text-sm cursor-pointer px-5 py-2 rounded-md transition-all font-medium relative group" 
+          className="text-xs sm:text-sm cursor-pointer px-2 sm:px-5 py-2 rounded-md transition-all font-medium relative group whitespace-nowrap" 
           style={{ color: '#555' }}
           onClick={() => handleTabClick("Extremes")}
         >
@@ -267,7 +261,7 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, isMonitorPage, isC
           <span className={`absolute bottom-0 left-0 h-0.5 bg-purple-600 transition-all duration-300 ${selectedTab === "Extremes" ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
         </span>
         <span 
-          className="text-sm cursor-pointer px-5 py-2 rounded-md transition-all font-medium relative group" 
+          className="text-xs sm:text-sm cursor-pointer px-2 sm:px-5 py-2 rounded-md transition-all font-medium relative group whitespace-nowrap" 
           style={{ color: '#555' }}
           onClick={() => handleTabClick("APK Link")}
         >
@@ -275,7 +269,7 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, isMonitorPage, isC
           <span className={`absolute bottom-0 left-0 h-0.5 bg-purple-600 transition-all duration-300 ${selectedTab === "APK Link" ? 'w-full' : 'w-0 group-hover:w-full'}`}></span>
         </span>
         <span 
-          className="text-sm cursor-pointer px-5 py-2 rounded-md transition-all font-medium relative group" 
+          className="text-xs sm:text-sm cursor-pointer px-2 sm:px-5 py-2 rounded-md transition-all font-medium relative group whitespace-nowrap" 
           style={{ color: '#555' }}
           onClick={() => handleTabClick("Admin Console")}
         >
@@ -287,13 +281,13 @@ const AppHeader = ({ selectedTab, isTasksPage, activeTaskTab, isMonitorPage, isC
 
       {isTasksPage && (
         <nav 
-          className="flex items-center px-6 gap-[8px] border-b border-gray-200"
+          className="flex items-center px-2 sm:px-6 gap-1 sm:gap-[8px] border-b border-gray-200 overflow-x-auto"
           style={{ backgroundColor: '#eeeeee', height: '55px' }}
         >
           {["Completed", "Pending", "Tray Ready", "Inprogress"].map((tab) => (
             <span
               key={tab}
-              className="text-sm cursor-pointer px-5 py-2 rounded-md transition-all font-medium relative group"
+              className="text-xs sm:text-sm cursor-pointer px-2 sm:px-5 py-2 rounded-md transition-all font-medium relative group whitespace-nowrap"
               style={{ color: '#555' }}
               onClick={() => {
                 if (tab === "Completed") navigate("/completed");

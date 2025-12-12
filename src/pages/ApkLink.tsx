@@ -248,10 +248,10 @@ const ApkLink = () => {
     <div className="min-h-screen" style={{ backgroundColor: "#fafafa" }}>
       <AppHeader selectedTab="APK Link" />
 
-      <main style={{ marginLeft: "15px", paddingTop: "20px", paddingBottom: "20px", paddingRight: "15px" }}>
+      <main className="px-3 sm:px-4 py-4 sm:py-5">
         {/* Search Bar */}
-        <div className="mb-6">
-          <div className="relative max-w-md">
+        <div className="mb-4 sm:mb-6">
+          <div className="relative w-full sm:max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               type="text"
@@ -270,10 +270,10 @@ const ApkLink = () => {
 
         {/* Admin App Section */}
         {adminApps.length > 0 && (
-          <section className="mb-8">
-            <div className="flex items-center gap-2 mb-4">
-              <Shield className="w-6 h-6 text-primary" />
-              <h1 className="text-2xl font-bold text-primary">Admin App</h1>
+          <section className="mb-6 sm:mb-8">
+            <div className="flex items-center gap-2 mb-3 sm:mb-4">
+              <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+              <h1 className="text-xl sm:text-2xl font-bold text-primary">Admin App</h1>
             </div>
             <div className="space-y-4">
               {adminApps.map(renderVersionCard)}
@@ -284,9 +284,9 @@ const ApkLink = () => {
         {/* Store App Section */}
         {storeApps.length > 0 && (
           <section>
-            <div className="flex items-center gap-2 mb-4">
-              <Store className="w-6 h-6 text-primary" />
-              <h1 className="text-2xl font-bold text-primary">Store App</h1>
+            <div className="flex items-center gap-2 mb-3 sm:mb-4">
+              <Store className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+              <h1 className="text-xl sm:text-2xl font-bold text-primary">Store App</h1>
             </div>
             <div className="space-y-4">
               {storeApps.map(renderVersionCard)}

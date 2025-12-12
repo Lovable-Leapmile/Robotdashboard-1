@@ -29,8 +29,8 @@ const AdminConsole = () => {
     <div className="min-h-screen" style={{ backgroundColor: "#fafafa" }}>
       <AppHeader selectedTab="Admin Console" />
 
-      <main style={{ marginLeft: "15px", paddingTop: "20px", paddingBottom: "20px", paddingRight: "15px" }}>
-        <div className="relative w-full" style={{ height: "calc(100vh - 115px)", minHeight: "600px" }}>
+      <main className="p-2 sm:p-4">
+        <div className="relative w-full" style={{ height: "calc(100vh - 130px)", minHeight: "400px" }}>
           {isLoading && (
             <div className="absolute inset-0 flex items-center justify-center bg-gray-50 z-10">
               <div className="text-center space-y-3">
@@ -41,14 +41,9 @@ const AdminConsole = () => {
           )}
           <iframe
             src="https://amsstores1.leapmile.com:5700/"
-            className="w-full h-full border-0"
+            className="w-full h-full border-0 rounded-lg"
             title="Admin Console"
             onLoad={() => setIsLoading(false)}
-            style={{
-              width: "100%",
-              height: "100%",
-              border: "none"
-            }}
             sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-top-navigation"
           />
         </div>
