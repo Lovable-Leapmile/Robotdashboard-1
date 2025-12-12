@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AppHeader from "@/components/AppHeader";
 import { RobotStateTimeline } from "@/components/RobotStateTimeline";
 import { DashboardCards } from "@/components/DashboardCards";
+import { useAuthSession } from "@/hooks/useAuthSession";
 import esLeft from "@/assets/es-left.png";
 import esRight from "@/assets/es-right.png";
 import tsLeft from "@/assets/ts-left.png";
@@ -28,6 +29,7 @@ interface HighlightedRack {
 }
 
 const Home = () => {
+  useAuthSession(); // Session validation
   const [userName, setUserName] = useState("");
   const [robotNumRacks, setRobotNumRacks] = useState(0);
   const [robotNumSlots, setRobotNumSlots] = useState(0);

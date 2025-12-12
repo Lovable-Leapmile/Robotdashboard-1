@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Download, ExternalLink, Calendar, Package, Smartphone, Shield, Store, Search, ChevronDown, FileText } from "lucide-react";
+import { useAuthSession } from "@/hooks/useAuthSession";
 
 interface AppVersion {
   appType: "admin" | "store";
@@ -93,6 +94,7 @@ const appVersions: AppVersion[] = [
 ];
 
 const ApkLink = () => {
+  useAuthSession();
   const [userName, setUserName] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedVersions, setExpandedVersions] = useState<string[]>([]);

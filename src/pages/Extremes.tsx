@@ -6,6 +6,7 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { ColDef, ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 import { useToast } from "@/hooks/use-toast";
+import { useAuthSession } from "@/hooks/useAuthSession";
 import noRecordsImage from "@/assets/no_records.png";
 
 // Register AG Grid Community modules (required in v34+)
@@ -19,6 +20,7 @@ interface ExtremeData {
 }
 
 const Extremes = () => {
+  useAuthSession(); // Session validation
   const [userName, setUserName] = useState("");
   const [rowData, setRowData] = useState<ExtremeData[]>([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -118,13 +120,13 @@ const Extremes = () => {
     <div className="min-h-screen" style={{ backgroundColor: '#fafafa' }}>
       <AppHeader selectedTab="Extremes" />
       
-      <main className="p-6">
+      <main className="p-3 sm:p-6">
         {!loading && rowData.length === 0 ? (
           <div className="flex justify-center items-center" style={{ height: 'calc(100vh - 180px)' }}>
             <img 
               src={noRecordsImage} 
               alt="No records found" 
-              style={{ width: '340px' }}
+              className="w-48 sm:w-[340px]"
             />
           </div>
         ) : (
