@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AppHeader from "@/components/AppHeader";
 import { Input } from "@/components/ui/input";
 import { Search, SlidersHorizontal } from "lucide-react";
+import { useAuthSession } from "@/hooks/useAuthSession";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,6 +22,7 @@ interface Task {
 const FILTER_STORAGE_KEY = "camera_filter_preference";
 
 const Camera = () => {
+  useAuthSession(); // Session validation
   const navigate = useNavigate();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);

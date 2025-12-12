@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import AppHeader from "@/components/AppHeader";
+import { useAuthSession } from "@/hooks/useAuthSession";
 
 const Monitor = () => {
+  useAuthSession();
   const [monitorUrl, setMonitorUrl] = useState("");
 
   useEffect(() => {

@@ -7,6 +7,7 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import { ColDef, ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
+import { useAuthSession } from "@/hooks/useAuthSession";
 import noRecordsImage from "@/assets/no_records.png";
 
 // Register AG Grid Community modules (required in v34+)
@@ -23,6 +24,7 @@ interface TaskData {
 }
 
 const Completed = () => {
+  useAuthSession(); // Session validation
   const [userName, setUserName] = useState("");
   const [rowData, setRowData] = useState<TaskData[]>([]);
   const [totalCount, setTotalCount] = useState(0);

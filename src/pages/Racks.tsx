@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AppHeader from "@/components/AppHeader";
 import SlotDetailsPanel from "@/components/SlotDetailsPanel";
+import { useAuthSession } from "@/hooks/useAuthSession";
 import blockImg from "@/assets/block.png";
 import stationImg from "@/assets/station.png";
 import trayImg from "@/assets/tray.png";
@@ -20,6 +21,7 @@ interface SlotDetails extends Slot {
 }
 
 const Racks = () => {
+  useAuthSession(); // Session validation
   const [userName, setUserName] = useState("");
   const [numRacks, setNumRacks] = useState(0);
   const [selectedRack, setSelectedRack] = useState<number | null>(null);

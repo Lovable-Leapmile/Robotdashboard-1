@@ -7,6 +7,7 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { Play, Download, ArrowLeft, RefreshCw, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuthSession } from "@/hooks/useAuthSession";
 import {
   Dialog,
   DialogContent,
@@ -33,6 +34,7 @@ interface CameraEvent {
 }
 
 const CameraTaskDetails = () => {
+  useAuthSession();
   const { taskId } = useParams<{ taskId: string }>();
   const navigate = useNavigate();
   const [events, setEvents] = useState<CameraEvent[]>([]);
