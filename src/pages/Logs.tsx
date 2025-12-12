@@ -203,32 +203,33 @@ const Logs = () => {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#fafafa' }}>
+    <div className="min-h-screen bg-muted">
       <AppHeader selectedTab="" isLogsPage={true} />
       
-      <main className="p-6">
+      <main className="p-3 sm:p-6">
         {!loading && rowData.length === 0 ? (
           <div className="flex flex-col items-center justify-center" style={{ minHeight: 'calc(100vh - 120px)' }}>
             <img 
               src={noRecordsImage} 
               alt="No Record found" 
-              style={{ width: '340px' }}
+              className="w-48 sm:w-[340px]"
             />
           </div>
         ) : (
-          <div className="ag-theme-quartz w-full" style={{ height: 'calc(100vh - 120px)' }}>
+          <div className="ag-theme-quartz w-full overflow-visible" style={{ height: 'calc(100vh - 120px)' }}>
             <AgGridReact
               rowData={rowData}
               columnDefs={columnDefs}
               defaultColDef={{
                 resizable: true,
-                minWidth: 100,
+                minWidth: 80,
                 sortable: true,
                 filter: true
               }}
               pagination={true}
               paginationPageSize={50}
               rowHeight={60}
+              popupParent={document.body}
               onGridReady={(params) => {
                 gridApiRef.current = params.api;
                 params.api.setGridOption('quickFilterText', quickFilter);

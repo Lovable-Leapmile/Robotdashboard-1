@@ -113,7 +113,15 @@ All colors MUST be HSL.
 /* AG Grid custom styles */
 .ag-theme-quartz {
   border-radius: 10px !important;
-  overflow: hidden !important;
+  overflow: visible !important;
+}
+
+.ag-theme-quartz .ag-root-wrapper {
+  overflow: visible !important;
+}
+
+.ag-theme-quartz .ag-body-viewport {
+  overflow-x: auto !important;
 }
 
 .ag-theme-quartz .ag-header-cell-label {
@@ -125,13 +133,19 @@ All colors MUST be HSL.
 }
 
 .ag-theme-quartz .ag-header-cell {
-  padding: 0 12px !important;
+  padding: 0 8px !important;
   color: white !important;
   display: flex !important;
   align-items: center !important;
   height: 50px !important;
   min-height: 50px !important;
   max-height: 50px !important;
+}
+
+@media (min-width: 640px) {
+  .ag-theme-quartz .ag-header-cell {
+    padding: 0 12px !important;
+  }
 }
 
 .ag-theme-quartz .ag-icon {
@@ -143,11 +157,19 @@ All colors MUST be HSL.
 }
 
 .ag-theme-quartz .ag-cell {
-  padding: 12px !important;
+  padding: 8px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: flex-start !important;
   line-height: normal !important;
+  font-size: 12px;
+}
+
+@media (min-width: 640px) {
+  .ag-theme-quartz .ag-cell {
+    padding: 12px !important;
+    font-size: 14px;
+  }
 }
 
 .ag-theme-quartz .ag-row {
@@ -174,4 +196,111 @@ All colors MUST be HSL.
 .ag-theme-quartz .ag-paging-panel .ag-icon,
 .ag-theme-quartz .ag-paging-panel {
   color: black !important;
+}
+
+/* AG Grid Filter Popup Fixes */
+.ag-popup {
+  z-index: 9999 !important;
+  position: absolute !important;
+}
+
+.ag-popup-child {
+  z-index: 9999 !important;
+}
+
+.ag-filter {
+  z-index: 9999 !important;
+  background-color: hsl(var(--background)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+  min-width: 200px !important;
+  max-width: 300px !important;
+  overflow: visible !important;
+}
+
+.ag-filter-wrapper {
+  overflow: visible !important;
+}
+
+.ag-filter-body-wrapper {
+  padding: 12px !important;
+  overflow: visible !important;
+}
+
+.ag-filter-apply-panel {
+  padding: 8px 12px !important;
+  border-top: 1px solid hsl(var(--border)) !important;
+}
+
+.ag-filter-condition {
+  margin-bottom: 8px !important;
+}
+
+.ag-picker-field-wrapper {
+  background-color: hsl(var(--background)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 4px !important;
+}
+
+.ag-text-field-input,
+.ag-select .ag-picker-field-display {
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.ag-menu {
+  z-index: 9999 !important;
+  background-color: hsl(var(--background)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+  overflow: visible !important;
+}
+
+.ag-menu-list {
+  padding: 4px 0 !important;
+}
+
+.ag-menu-option {
+  padding: 8px 12px !important;
+}
+
+.ag-menu-option:hover {
+  background-color: hsl(var(--muted)) !important;
+}
+
+.ag-select-list {
+  z-index: 10000 !important;
+  background-color: hsl(var(--background)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 4px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.ag-select-list-item {
+  padding: 8px 12px !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.ag-select-list-item:hover {
+  background-color: hsl(var(--muted)) !important;
+}
+
+/* Mobile responsive adjustments for AG Grid */
+@media (max-width: 639px) {
+  .ag-filter {
+    min-width: 180px !important;
+    max-width: calc(100vw - 40px) !important;
+  }
+  
+  .ag-paging-panel {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    padding: 8px !important;
+  }
+  
+  .ag-paging-page-summary-panel {
+    margin: 0 !important;
+  }
 }
