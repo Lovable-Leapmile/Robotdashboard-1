@@ -103,23 +103,24 @@ const Camera = () => {
       <AppHeader selectedTab="" isCameraPage={true} />
       <main className="flex-1 p-6">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-6 flex items-center gap-4">
-            <div className="relative flex-1">
+          <div className="mb-6 flex items-center gap-3">
+            <div className="relative w-80">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
                 type="text"
                 placeholder="Search by Task ID..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 h-12 bg-card border-border"
+                className="pl-10 h-10 bg-card border-border"
               />
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger
-                className="h-12 w-12 flex items-center justify-center rounded-lg border border-border bg-card hover:bg-accent transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                className="h-10 w-10 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                style={{ backgroundColor: 'rgba(53, 28, 117, 0.15)' }}
                 aria-label="Toggle filters"
               >
-                <SlidersHorizontal className="h-5 w-5 text-muted-foreground" />
+                <SlidersHorizontal className="h-[18px] w-[18px]" style={{ color: '#351C75' }} />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48 bg-card border-border">
                 <DropdownMenuRadioGroup value={sortOption} onValueChange={handleSortChange}>
@@ -135,7 +136,7 @@ const Camera = () => {
                 </DropdownMenuRadioGroup>
               </DropdownMenuContent>
             </DropdownMenu>
-            <div className="h-12 flex items-center justify-center px-4">
+            <div className="h-10 flex items-center justify-center px-3">
               <span className="text-muted-foreground text-sm">
                 Total Count: <span className="text-foreground font-semibold">{filteredTasks.length}</span>
               </span>
