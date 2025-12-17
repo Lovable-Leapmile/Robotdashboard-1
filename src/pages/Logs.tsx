@@ -365,7 +365,7 @@ const Logs = () => {
             <img src={noRecordsImage} alt="No Record found" className="w-48 sm:w-[340px]" />
           </div>
         ) : (
-          <div className="ag-theme-quartz w-full overflow-visible" style={{ height: "calc(100vh - 130px)" }}>
+          <div className="ag-theme-quartz w-full overflow-visible" style={{ height: "calc(100vh - 75px)" }}>
             <AgGridReact
               rowData={rowData}
               columnDefs={columnDefs}
