@@ -98,10 +98,10 @@ const Camera = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <AppHeader selectedTab="" isCameraPage={true} />
-      <main className="flex-1 p-2 sm:p-4">
+      <main className="flex-1 p-3 sm:p-6">
         <div className="max-w-7xl mx-auto">
           <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <div className="relative w-full sm:w-[75%]">
+            <div className="relative w-full sm:w-[60%]">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
                 type="text"
@@ -152,7 +152,7 @@ const Camera = () => {
                 <div
                   key={task.task_id}
                   onClick={() => handleTaskClick(task.task_id)}
-                  className="bg-card border border-border rounded-lg p-4 cursor-pointer hover:bg-primary/5 hover:shadow-md hover:border-primary/30 transition-all duration-200 flex items-center justify-center min-h-[50px]"
+                  className="bg-card border border-border rounded-lg p-4 cursor-pointer hover:bg-primary/5 hover:shadow-md hover:border-primary/30 transition-all duration-200 flex items-center justify-center min-h-[40px]"
                 >
                   <span className="text-foreground font-medium truncate text-sm sm:text-base">{task.task_id}</span>
                 </div>
