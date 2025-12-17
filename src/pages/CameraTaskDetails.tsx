@@ -247,7 +247,7 @@ const CameraTaskDetails = () => {
         ) : events.length === 0 ? (
           <div className="text-center text-muted-foreground py-12">No camera events found for this task</div>
         ) : (
-          <div className="ag-theme-quartz w-full" style={{ height: "calc(100vh - 155px)" }}>
+          <div className="ag-theme-quartz w-full" style={{ height: "calc(100vh - 150px)" }}>
             <AgGridReact
               rowData={events}
               columnDefs={columnDefs}
