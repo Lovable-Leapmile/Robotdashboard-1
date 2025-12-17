@@ -40,12 +40,10 @@ const Camera = () => {
   useEffect(() => {
     // Filter to only show task IDs starting with TID- (exclude null/undefined)
     let tidTasks = tasks.filter((task) => task.task_id && task.task_id.startsWith("TID-"));
-    
+
     // Apply search filter
     if (searchQuery.trim() !== "") {
-      tidTasks = tidTasks.filter((task) =>
-        task.task_id.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      tidTasks = tidTasks.filter((task) => task.task_id.toLowerCase().includes(searchQuery.toLowerCase()));
     }
 
     // Apply sorting
@@ -74,16 +72,13 @@ const Camera = () => {
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch(
-        "https://amsstores1.leapmile.com/cameramanager/camera_events/tasks",
-        {
-          headers: {
-            Authorization:
-              "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2wiOiJhZG1pbiIsImV4cCI6MTkwMDY1MzE0M30.asYhgMAOvrau4G6LI4V4IbgYZ022g_GX0qZxaS57GQc",
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch("https://amsstores1.leapmile.com/cameramanager/camera_events/tasks", {
+        headers: {
+          Authorization:
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2wiOiJhZG1pbiIsImV4cCI6MTkwMDY1MzE0M30.asYhgMAOvrau4G6LI4V4IbgYZ022g_GX0qZxaS57GQc",
+          "Content-Type": "application/json",
+        },
+      });
       const data = await response.json();
       if (data.records) {
         setTasks(data.records);
@@ -103,10 +98,10 @@ const Camera = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <AppHeader selectedTab="" isCameraPage={true} />
-      <main className="flex-1 p-3 sm:p-6">
+      <main className="flex-1 p-2 sm:p-4">
         <div className="max-w-7xl mx-auto">
           <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <div className="relative w-full sm:w-[60%]">
+            <div className="relative w-full sm:w-[75%]">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
                 type="text"
@@ -120,10 +115,10 @@ const Camera = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger
                   className="h-10 w-10 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 shrink-0"
-                  style={{ backgroundColor: 'rgba(53, 28, 117, 0.15)' }}
+                  style={{ backgroundColor: "rgba(53, 28, 117, 0.15)" }}
                   aria-label="Toggle filters"
                 >
-                  <SlidersHorizontal className="h-[18px] w-[18px]" style={{ color: '#351C75' }} />
+                  <SlidersHorizontal className="h-[18px] w-[18px]" style={{ color: "#351C75" }} />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48 bg-card border-border">
                   <DropdownMenuRadioGroup value={sortOption} onValueChange={handleSortChange}>
@@ -148,13 +143,9 @@ const Camera = () => {
           </div>
 
           {loading ? (
-            <div className="text-center text-muted-foreground py-12">
-              Loading tasks...
-            </div>
+            <div className="text-center text-muted-foreground py-12">Loading tasks...</div>
           ) : filteredTasks.length === 0 ? (
-            <div className="text-center text-muted-foreground py-12">
-              No tasks found
-            </div>
+            <div className="text-center text-muted-foreground py-12">No tasks found</div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
               {filteredTasks.map((task) => (
@@ -163,9 +154,7 @@ const Camera = () => {
                   onClick={() => handleTaskClick(task.task_id)}
                   className="bg-card border border-border rounded-lg p-4 cursor-pointer hover:bg-primary/5 hover:shadow-md hover:border-primary/30 transition-all duration-200 flex items-center justify-center min-h-[50px]"
                 >
-                  <span className="text-foreground font-medium truncate text-sm sm:text-base">
-                    {task.task_id}
-                  </span>
+                  <span className="text-foreground font-medium truncate text-sm sm:text-base">{task.task_id}</span>
                 </div>
               ))}
             </div>
