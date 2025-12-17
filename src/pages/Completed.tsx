@@ -185,7 +185,7 @@ const Completed = () => {
             <img src={noRecordsImage} alt="No Record found" className="w-48 sm:w-[340px]" />
           </div>
         ) : (
-          <div className="ag-theme-quartz w-full" style={{ height: "calc(100vh - 145px)" }}>
+          <div className="ag-theme-quartz w-full" style={{ height: "calc(100vh - 140px)" }}>
             <AgGridReact
               rowData={rowData}
               columnDefs={columnDefs}
