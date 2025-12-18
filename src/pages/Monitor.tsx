@@ -61,6 +61,14 @@ const Monitor = () => {
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const fetchStatus = useCallback(async () => {
+    const token = localStorage.getItem("auth_token");
+    
+    if (!token) {
+      setError("Not authenticated. Please login first.");
+      setIsLoading(false);
+      return;
+    }
+
     // Cancel previous request if still pending
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -69,7 +77,6 @@ const Monitor = () => {
     abortControllerRef.current = new AbortController();
     
     try {
-      const token = localStorage.getItem("auth_token");
       const response = await fetch(
         "https://amsstores1.leapmile.com/pubsub/subscribe?topic=STATUSMONITOR_EVENTS&num_records=1",
         {
@@ -82,6 +89,10 @@ const Monitor = () => {
       );
 
       if (!response.ok) {
+        if (response.status === 401) {
+          setError("Session expired. Please login again.");
+          return;
+        }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
