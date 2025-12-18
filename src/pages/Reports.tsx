@@ -531,7 +531,7 @@ const Reports = () => {
 
         {/* Data Grid */}
         {!loading && rowData.length === 0 ? (
-          <div className="flex justify-center items-center" style={{ height: "calc(100vh - 180px)" }}>
+          <div className="flex justify-center items-center" style={{ height: "calc(100vh - 145px)" }}>
             <img src={noRecordsImage} alt="No records found" className="w-48 sm:w-[340px]" />
           </div>
         ) : (
