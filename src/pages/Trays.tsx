@@ -16,6 +16,7 @@ interface TrayData {
   tray_id: string;
   tray_status: string;
   tray_divider: number;
+  tray_lockcount: number;
   tray_height: number;
   tray_weight: number;
   tags: string[] | null;
@@ -38,6 +39,7 @@ const Trays = () => {
     { field: "tray_id", headerName: "Tray ID", sortable: true, filter: true, flex: 1 },
     { field: "tray_status", headerName: "Status", sortable: true, filter: true, flex: 1 },
     { field: "tray_divider", headerName: "Divider", sortable: true, filter: true, flex: 1 },
+    { field: "tray_lockcount", headerName: "Lock Count", sortable: true, filter: true, flex: 1 },
     { field: "tray_height", headerName: "Height (mm)", sortable: true, filter: true, flex: 1 },
     { field: "tray_weight", headerName: "Weight", sortable: true, filter: true, flex: 1 },
     {
