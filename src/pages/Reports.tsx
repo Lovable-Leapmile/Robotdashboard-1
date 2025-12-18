@@ -68,8 +68,6 @@ const Reports = () => {
   };
 
   // Product Stock Report: Transaction Date, Receive Date, Item Id, Stock, Tray ID, Tray Weight(Kg), Item Description
-  // API: /nanostore/items - fields: item_id, item_description, item_quantity, updated_at, created_at
-  // Note: tray_id and tray_weight not available in this API - will show N/A
   const productStockColumns: ColDef[] = [
     {
       field: "updated_at",
@@ -89,11 +87,11 @@ const Reports = () => {
     { field: "item_quantity", headerName: "Stock", flex: 0.7, minWidth: 80, valueFormatter: (p) => p.value ?? 0 },
     { field: "tray_id", headerName: "Tray ID", flex: 1, minWidth: 120, valueFormatter: (p) => p.value ?? "N/A" },
     {
-      field: "item_weight",
+      field: "tray_weight",
       headerName: "Tray Weight(Kg)",
       flex: 1,
       minWidth: 130,
-      valueFormatter: (p) => (p.value ? (Number(p.value) / 1000).toFixed(2) : "N/A"),
+      valueFormatter: (p) => (p.value ? (p.value / 1000).toFixed(2) : "N/A"),
     },
     {
       field: "item_description",
@@ -105,7 +103,6 @@ const Reports = () => {
   ];
 
   // Order Product Transaction: Transaction Date, Activity Type, Order Id, User Id, User Name, User Phone, Tray ID, Item Id, Item Processed Quantity
-  // API: /nanostore/items/usage - fields: transaction_type, item_id, item_description, picked_count, updated_at, created_at, order_id, user_id, user_name, user_phone, tray_id
   const orderProductColumns: ColDef[] = [
     {
       field: "updated_at",
@@ -137,7 +134,6 @@ const Reports = () => {
   ];
 
   // Order Tray Transaction: Transaction Date, Order Id, Status, Tray ID, Station, Item Id, Item Order Quantity, Order Ref Id
-  // API: /robotmanager/task - fields: task_id, tray_id, task_status, station_name, order_reference_id, order_number, created_at, updated_at, tags
   const orderTrayColumns: ColDef[] = [
     {
       field: "created_at",
@@ -146,29 +142,20 @@ const Reports = () => {
       minWidth: 150,
       valueFormatter: (p) => formatDateTime(p.value),
     },
-    { field: "order_number", headerName: "Order Id", flex: 1, minWidth: 120, valueFormatter: (p) => p.value ?? "N/A" },
-    { field: "task_status", headerName: "Status", flex: 0.8, minWidth: 100, valueFormatter: (p) => p.value ?? "N/A" },
+    { field: "order_id", headerName: "Order Id", flex: 1, minWidth: 120, valueFormatter: (p) => p.value ?? "N/A" },
+    { field: "status", headerName: "Status", flex: 0.8, minWidth: 100, valueFormatter: (p) => p.value ?? "N/A" },
     { field: "tray_id", headerName: "Tray ID", flex: 1, minWidth: 120, valueFormatter: (p) => p.value ?? "N/A" },
     { field: "station_name", headerName: "Station", flex: 1, minWidth: 120, valueFormatter: (p) => p.value ?? "N/A" },
-    { 
-      field: "tags", 
-      headerName: "Item Id", 
-      flex: 1, 
-      minWidth: 120, 
-      valueFormatter: (p) => {
-        if (Array.isArray(p.value)) return p.value.join(", ");
-        return p.value ?? "N/A";
-      }
-    },
+    { field: "item_id", headerName: "Item Id", flex: 1, minWidth: 120, valueFormatter: (p) => p.value ?? "N/A" },
     {
       field: "item_order_quantity",
       headerName: "Item Order Quantity",
       flex: 1,
       minWidth: 150,
-      valueFormatter: (p) => p.value ?? "N/A",
+      valueFormatter: (p) => p.value ?? 0,
     },
     {
-      field: "order_reference_id",
+      field: "order_ref_id",
       headerName: "Order Ref Id",
       flex: 1,
       minWidth: 120,
@@ -177,7 +164,6 @@ const Reports = () => {
   ];
 
   // Tray Transaction: Transaction Date, Tray Id, Tray Status, Division, Tray Weight(Kg), Tray Height, Number of Items, Total Available Quantity, Has Item
-  // API: /robotmanager/trays - fields: tray_id, tray_status, tray_lockcount, tray_height, tray_weight, tray_divider, created_at, updated_at
   const trayTransactionColumns: ColDef[] = [
     {
       field: "updated_at",
@@ -200,7 +186,7 @@ const Reports = () => {
       headerName: "Tray Weight(Kg)",
       flex: 1,
       minWidth: 130,
-      valueFormatter: (p) => (p.value ? (Number(p.value) / 1000).toFixed(2) : "N/A"),
+      valueFormatter: (p) => (p.value ? (p.value / 1000).toFixed(2) : "N/A"),
     },
     {
       field: "tray_height",
@@ -210,14 +196,14 @@ const Reports = () => {
       valueFormatter: (p) => p.value ?? "N/A",
     },
     {
-      field: "tray_lockcount",
+      field: "number_of_items",
       headerName: "Number of Items",
       flex: 1,
       minWidth: 130,
       valueFormatter: (p) => p.value ?? 0,
     },
     {
-      field: "total_quantity",
+      field: "total_available_quantity",
       headerName: "Total Available Quantity",
       flex: 1,
       minWidth: 170,
@@ -233,7 +219,6 @@ const Reports = () => {
   ];
 
   // Rack Transaction: Transaction Date, Rack, Occupied Slots, Free Slots, Rack Occupancy In %
-  // API: /robotmanager/slots - fields: slot_id, slot_status, tray_id, rack, row, slot, depth, updated_at
   const rackTransactionColumns: ColDef[] = [
     {
       field: "updated_at",
@@ -261,7 +246,6 @@ const Reports = () => {
   ];
 
   // Order Failure Transaction: Transaction Date, Order Id, Activity, Item ID, Movement Type, Order Type, Item Order Quantity, Message
-  // API: /robotmanager/task?task_status=error - fields: task_id, tray_id, task_status, station_name, tags, order_reference_id, order_number, created_at, updated_at
   const orderFailureColumns: ColDef[] = [
     {
       field: "created_at",
@@ -270,40 +254,31 @@ const Reports = () => {
       minWidth: 150,
       valueFormatter: (p) => formatDateTime(p.value),
     },
-    { field: "order_number", headerName: "Order Id", flex: 1, minWidth: 120, valueFormatter: (p) => p.value ?? "N/A" },
-    { 
-      field: "tags", 
-      headerName: "Activity", 
-      flex: 0.8, 
-      minWidth: 100, 
-      valueFormatter: (p) => {
-        if (Array.isArray(p.value)) return p.value.join(", ");
-        return p.value ?? "N/A";
-      }
-    },
-    { field: "tray_id", headerName: "Item ID", flex: 1, minWidth: 120, valueFormatter: (p) => p.value ?? "N/A" },
+    { field: "order_id", headerName: "Order Id", flex: 1, minWidth: 120, valueFormatter: (p) => p.value ?? "N/A" },
+    { field: "activity", headerName: "Activity", flex: 0.8, minWidth: 100, valueFormatter: (p) => p.value ?? "N/A" },
+    { field: "item_id", headerName: "Item ID", flex: 1, minWidth: 120, valueFormatter: (p) => p.value ?? "N/A" },
     {
-      field: "shuttle_id",
+      field: "movement_type",
       headerName: "Movement Type",
       flex: 1,
       minWidth: 130,
       valueFormatter: (p) => p.value ?? "N/A",
     },
     {
-      field: "station_name",
+      field: "order_type",
       headerName: "Order Type",
       flex: 0.8,
       minWidth: 110,
       valueFormatter: (p) => p.value ?? "N/A",
     },
     {
-      field: "station_slot_id",
+      field: "item_order_quantity",
       headerName: "Item Order Quantity",
       flex: 1,
       minWidth: 150,
-      valueFormatter: (p) => p.value ?? "N/A",
+      valueFormatter: (p) => p.value ?? 0,
     },
-    { field: "task_status", headerName: "Message", flex: 1.5, minWidth: 200, valueFormatter: (p) => p.value ?? "N/A" },
+    { field: "message", headerName: "Message", flex: 1.5, minWidth: 200, valueFormatter: (p) => p.value ?? "N/A" },
   ];
 
   const getColumnsForReport = (type: ReportType): ColDef[] => {
@@ -338,26 +313,22 @@ const Reports = () => {
       case "rack_transaction":
         return "https://amsstores1.leapmile.com/robotmanager/slots";
       case "order_failure_transaction":
-        return "https://amsstores1.leapmile.com/robotmanager/task?task_status=error";
+        return "https://amsstores1.leapmile.com/robotmanager/task?task_status=failed";
       default:
         return "https://amsstores1.leapmile.com/nanostore/items";
     }
   };
 
-  // Aggregate slots by rack number (uses 'rack' field which is a number)
   const aggregateSlotsByRack = (slots: any[]) => {
     const rackMap: Record<string, { total: number; occupied: number; updated_at: string }> = {};
 
     slots.forEach((slot) => {
-      // Use the 'rack' field directly (it's a number like 22, 11, etc.)
-      const rackNum = slot.rack ?? 0;
-      const rackName = `Rack ${rackNum}`;
-      
+      // Extract rack name from slot_id (e.g., "R01-C01-L01" -> "R01")
+      const rackName = slot.slot_id?.split("-")[0] || slot.rack_name || "Unknown";
       if (!rackMap[rackName]) {
         rackMap[rackName] = { total: 0, occupied: 0, updated_at: slot.updated_at || "" };
       }
       rackMap[rackName].total++;
-      // Slot is occupied if it has a tray_id
       if (slot.tray_id) {
         rackMap[rackName].occupied++;
       }
@@ -374,12 +345,7 @@ const Reports = () => {
         rack_occupancy_percent: data.total > 0 ? (data.occupied / data.total) * 100 : 0,
         updated_at: data.updated_at,
       }))
-      .sort((a, b) => {
-        // Extract rack number for sorting
-        const numA = parseInt(a.rack_name.replace("Rack ", "")) || 0;
-        const numB = parseInt(b.rack_name.replace("Rack ", "")) || 0;
-        return numA - numB;
-      });
+      .sort((a, b) => a.rack_name.localeCompare(b.rack_name));
   };
 
   const fetchOccupiedPercent = useCallback(async () => {
@@ -415,7 +381,7 @@ const Reports = () => {
         headers: { Authorization: AUTH_TOKEN, "Content-Type": "application/json" },
       });
 
-      if (response.status === 404 || response.status === 422) {
+      if (response.status === 404) {
         setRowData([]);
         setLoading(false);
         return;
@@ -437,12 +403,11 @@ const Reports = () => {
       if (reportType === "tray_transaction") {
         records = records.map((r: any) => ({
           ...r,
-          has_item: r.tray_lockcount > 0 || (r.tray_weight && r.tray_weight > 0),
-          total_quantity: r.tray_lockcount || 0,
+          has_item: r.tray_lockcount > 0 || r.number_of_items > 0,
         }));
       }
 
-      console.log(`Fetched ${reportType}:`, records.length, records.slice(0, 2));
+      console.log(`Fetched ${reportType}:`, records.length);
       setRowData(records);
     } catch (error) {
       toast({
@@ -495,17 +460,14 @@ const Reports = () => {
             if (field.includes("_at")) {
               value = value ? formatDateTime(value) : "N/A";
             }
-            if (field === "tray_weight" || field === "item_weight") {
-              value = value ? (Number(value) / 1000).toFixed(2) : "N/A";
+            if (field === "tray_weight") {
+              value = value ? (value / 1000).toFixed(2) : "N/A";
             }
             if (field === "rack_occupancy_percent") {
               value = value !== undefined ? `${Number(value).toFixed(2)}%` : "N/A";
             }
             if (field === "has_item") {
               value = value ? "Yes" : "No";
-            }
-            if (field === "tags" && Array.isArray(value)) {
-              value = value.join(", ");
             }
             return `"${value ?? "N/A"}"`;
           })
@@ -532,76 +494,70 @@ const Reports = () => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
             <Select value={reportType} onValueChange={(value: ReportType) => setReportType(value)}>
-              <SelectTrigger className="w-full sm:w-[280px] bg-card border-border">
+              <SelectTrigger className="w-full sm:w-[280px] bg-white border-gray-300">
                 <SelectValue placeholder="Select Report Type" />
               </SelectTrigger>
-              <SelectContent className="bg-card border-border z-50">
-                {Object.entries(reportLabels).map(([key, label]) => (
-                  <SelectItem key={key} value={key}>
-                    {label}
-                  </SelectItem>
-                ))}
+              <SelectContent className="bg-white border-gray-300 z-50">
+                <SelectItem value="product_stock">Product Stock Report</SelectItem>
+                <SelectItem value="order_product_transaction">Order Product Transaction</SelectItem>
+                <SelectItem value="order_tray_transaction">Order Tray Transaction</SelectItem>
+                <SelectItem value="tray_transaction">Tray Transaction</SelectItem>
+                <SelectItem value="rack_transaction">Rack Transaction</SelectItem>
+                <SelectItem value="order_failure_transaction">Order Failure Transaction</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleRefresh}
-              disabled={loading}
-              className="flex items-center gap-2"
-            >
-              <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
-              <span className="hidden sm:inline">Refresh</span>
+            <div className="bg-blue-50 px-3 py-1.5 rounded text-sm">
+              Occupied: <span className="font-semibold text-blue-600">{occupiedPercent.toFixed(1)}%</span>
+            </div>
+            <Button variant="outline" size="sm" onClick={handleRefresh} disabled={loading} className="bg-white">
+              <RefreshCw className={`w-4 h-4 mr-1 ${loading ? "animate-spin" : ""}`} />
+              Refresh
             </Button>
             <Button
               variant="outline"
               size="sm"
               onClick={handleDownload}
-              disabled={rowData.length === 0}
-              className="flex items-center gap-2"
+              disabled={loading || rowData.length === 0}
+              className="bg-white"
             >
-              <Download className="h-4 w-4" />
-              <span className="hidden sm:inline">Download</span>
+              <Download className="w-4 h-4 mr-1" />
+              CSV
             </Button>
           </div>
         </div>
 
-        {/* AG Grid Table */}
-        <div
-          className="ag-theme-quartz w-full rounded-lg overflow-hidden shadow-sm"
-          style={{ height: "calc(100vh - 200px)", minHeight: "400px" }}
-        >
-          {loading ? (
-            <div className="flex items-center justify-center h-full">
-              <RefreshCw className="h-8 w-8 animate-spin text-primary" />
-            </div>
-          ) : rowData.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full bg-card">
-              <img src={noRecordsImage} alt="No records" className="w-32 h-32 mb-4 opacity-60" />
-              <p className="text-muted-foreground text-lg">No data available</p>
-            </div>
-          ) : (
+        {/* Data Grid */}
+        {!loading && rowData.length === 0 ? (
+          <div className="flex justify-center items-center" style={{ height: "calc(100vh - 145px)" }}>
+            <img src={noRecordsImage} alt="No records found" className="w-48 sm:w-[340px]" />
+          </div>
+        ) : (
+          <div className="ag-theme-quartz w-full" style={{ height: "calc(100vh - 145px)" }}>
             <AgGridReact
-              ref={gridApiRef}
               rowData={rowData}
               columnDefs={getColumnsForReport(reportType)}
               defaultColDef={{
+                resizable: true,
+                minWidth: 100,
                 sortable: true,
                 filter: true,
-                resizable: true,
               }}
               pagination={true}
-              paginationPageSize={20}
-              paginationPageSizeSelector={[10, 20, 50, 100]}
-              animateRows={true}
-              suppressCellFocus={true}
-              domLayout="normal"
+              paginationPageSize={50}
+              paginationPageSizeSelector={[25, 50, 100, 200]}
+              rowHeight={35}
+              enableCellTextSelection={true}
+              ensureDomOrder={true}
+              onGridReady={(params) => {
+                gridApiRef.current = params.api;
+                params.api.sizeColumnsToFit();
+              }}
             />
-          )}
-        </div>
+          </div>
+        )}
       </main>
     </div>
   );
