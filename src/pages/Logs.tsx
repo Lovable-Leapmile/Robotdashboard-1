@@ -176,6 +176,7 @@ const Logs = () => {
     },
     {
       field: "message",
+      colId: "message_text",
       headerName: "Message",
       sortable: true,
       filter: true,
@@ -203,6 +204,7 @@ const Logs = () => {
     },
     {
       field: "message",
+      colId: "action",
       headerName: "Action",
       sortable: true,
       filter: true,
@@ -217,6 +219,7 @@ const Logs = () => {
     },
     {
       field: "message",
+      colId: "status",
       headerName: "Status",
       sortable: true,
       filter: true,
@@ -231,6 +234,7 @@ const Logs = () => {
     },
     {
       field: "message",
+      colId: "tray_id",
       headerName: "Tray ID",
       sortable: true,
       filter: true,
@@ -245,6 +249,7 @@ const Logs = () => {
     },
     {
       field: "message",
+      colId: "slot_id",
       headerName: "Slot ID",
       sortable: true,
       filter: true,
@@ -259,6 +264,7 @@ const Logs = () => {
     },
     {
       field: "message",
+      colId: "state",
       headerName: "State",
       sortable: true,
       filter: true,
