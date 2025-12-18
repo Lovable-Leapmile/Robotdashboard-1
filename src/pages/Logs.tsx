@@ -374,6 +374,11 @@ const Logs = () => {
                 minWidth: 80,
                 sortable: true,
                 filter: true,
+                cellStyle: {
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                },
               }}
               pagination={true}
               paginationPageSize={50}
