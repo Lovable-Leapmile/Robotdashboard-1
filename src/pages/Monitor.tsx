@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useCallback, memo } from "react";
 import AppHeader from "@/components/AppHeader";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { Skeleton } from "@/components/ui/skeleton";
+import { format } from "date-fns";
 
 interface StatusMessage {
   msg?: string;
@@ -28,16 +29,36 @@ interface StatusCardProps {
   value: string | undefined;
 }
 
-const StatusCard = memo(({ label, value }: StatusCardProps) => (
-  <div className="bg-card border border-border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
-    <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1 truncate">
-      {label.replace(/_/g, " ")}
-    </p>
-    <p className="text-lg font-semibold text-foreground truncate" title={value ?? "N/A"}>
-      {value ?? "N/A"}
-    </p>
-  </div>
-));
+const formatValue = (key: string, value: string | undefined): string => {
+  if (!value) return "N/A";
+  
+  // Format datetime fields
+  if (key === "SUPERVISOR START TIME") {
+    try {
+      const date = new Date(value.replace(" ", "T"));
+      return format(date, "dd MMM yyyy, hh:mm:ss a");
+    } catch {
+      return value;
+    }
+  }
+  
+  return value;
+};
+
+const StatusCard = memo(({ label, value }: StatusCardProps) => {
+  const formattedValue = formatValue(label, value);
+  
+  return (
+    <div className="bg-card border border-border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+      <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1 truncate">
+        {label.replace(/_/g, " ")}
+      </p>
+      <p className="text-lg font-semibold text-foreground truncate" title={formattedValue}>
+        {formattedValue}
+      </p>
+    </div>
+  );
+});
 
 StatusCard.displayName = "StatusCard";
 
