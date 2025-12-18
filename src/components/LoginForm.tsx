@@ -39,8 +39,8 @@ const LoginForm = () => {
       const data = await response.json();
 
       if (response.ok && data.user_id && data.user_name) {
-        // Store user data in cookies
-        setUserSession(data.user_id, data.user_name);
+        // Store user data in cookies (convert to strings)
+        setUserSession(String(data.user_id), String(data.user_name));
         
         navigate("/home");
       } else {
