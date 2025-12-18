@@ -21,6 +21,7 @@ interface SlotData {
   slot_height: number;
   status: string;
   updated_at: string;
+  comment: string;
 }
 
 const Slots = () => {
@@ -100,6 +101,14 @@ const Slots = () => {
           return params.value;
         }
       },
+    },
+    {
+      field: "comment",
+      headerName: "Comment",
+      sortable: true,
+      filter: true,
+      flex: 1.5,
+      valueFormatter: (params) => params.value ?? "N/A",
     },
   ];
 
