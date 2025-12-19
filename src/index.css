@@ -281,75 +281,10 @@ All colors MUST be HSL.
 .ag-select-list-item {
   padding: 8px 12px !important;
   color: hsl(var(--foreground)) !important;
-  background-color: hsl(var(--background)) !important;
 }
 
 .ag-select-list-item:hover {
   background-color: hsl(var(--muted)) !important;
-}
-
-.ag-select-list-item.ag-active-item {
-  background-color: hsl(var(--accent)) !important;
-}
-
-/* AG Grid Virtual List (filter options dropdown) */
-.ag-virtual-list-viewport {
-  background-color: hsl(var(--background)) !important;
-}
-
-.ag-virtual-list-container {
-  background-color: hsl(var(--background)) !important;
-}
-
-.ag-set-filter-list {
-  background-color: hsl(var(--background)) !important;
-}
-
-.ag-set-filter-item {
-  background-color: hsl(var(--background)) !important;
-  color: hsl(var(--foreground)) !important;
-}
-
-.ag-set-filter-item:hover {
-  background-color: hsl(var(--muted)) !important;
-}
-
-.ag-set-filter-item-checkbox {
-  background-color: hsl(var(--background)) !important;
-}
-
-.ag-mini-filter {
-  background-color: hsl(var(--background)) !important;
-}
-
-.ag-mini-filter .ag-text-field-input {
-  background-color: hsl(var(--background)) !important;
-  color: hsl(var(--foreground)) !important;
-  border: 1px solid hsl(var(--border)) !important;
-  border-radius: 4px !important;
-}
-
-.ag-filter-toolpanel-search {
-  background-color: hsl(var(--background)) !important;
-}
-
-/* Ensure all filter popup children have proper background */
-.ag-popup-child,
-.ag-popup-child * {
-  background-color: inherit;
-}
-
-.ag-filter-select {
-  background-color: hsl(var(--background)) !important;
-}
-
-.ag-picker-field-display {
-  background-color: hsl(var(--background)) !important;
-  color: hsl(var(--foreground)) !important;
-}
-
-.ag-picker-field-icon {
-  color: hsl(var(--foreground)) !important;
 }
 
 /* Mobile responsive adjustments for AG Grid */
