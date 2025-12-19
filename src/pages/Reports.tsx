@@ -643,37 +643,41 @@ const Reports = () => {
         </div>
 
         {/* AG Grid Table */}
-        <div
-          className="ag-theme-quartz"
-          style={{
-            height: "calc(100vh - 145px)",
-            width: "100%",
-            backgroundColor: "white",
-            borderRadius: "8px",
-            overflow: "hidden",
-          }}
-        >
-          <AgGridReact
-            ref={gridApiRef}
-            rowData={rowData}
-            columnDefs={getColumnsForReport(reportType)}
-            defaultColDef={{
-              sortable: true,
-              filter: true,
-              resizable: true,
-            }}
-            animateRows={true}
-            pagination={true}
-            paginationPageSize={50}
-            paginationPageSizeSelector={[25, 50, 100, 200]}
-            loading={loading}
-            overlayNoRowsTemplate={`
-              <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
-                <img src="${noRecordsImage}" alt="No records" style="width: 200px; height: 200px;" />
-              </div>
-            `}
-          />
-        </div>
+        {!loading && rowData.length === 0 ? (
+          <div className="flex flex-col items-center justify-center" style={{ minHeight: "calc(100vh - 180px)" }}>
+            <img src={noRecordsImage} alt="No Record found" className="w-48 sm:w-[340px]" />
+          </div>
+        ) : (
+          <div className="ag-theme-quartz w-full overflow-visible" style={{ height: "calc(100vh - 145px)" }}>
+            <AgGridReact
+              ref={gridApiRef}
+              rowData={rowData}
+              columnDefs={getColumnsForReport(reportType)}
+              defaultColDef={{
+                sortable: true,
+                filter: true,
+                resizable: true,
+                minWidth: 80,
+                cellStyle: {
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                },
+              }}
+              animateRows={true}
+              pagination={true}
+              paginationPageSize={50}
+              paginationPageSizeSelector={[25, 50, 100, 200]}
+              rowHeight={35}
+              popupParent={document.body}
+              enableCellTextSelection={true}
+              ensureDomOrder={true}
+              onGridReady={(params) => {
+                params.api.sizeColumnsToFit();
+              }}
+            />
+          </div>
+        )}
       </main>
     </div>
   );
