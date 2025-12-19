@@ -8,6 +8,7 @@ import { ColDef, ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { useAuthSession } from "@/hooks/useAuthSession";
+import { apiGet, NANOSTORE_BASE, ROBOTMANAGER_BASE, withQuery } from "@/lib/api";
 import noRecordsImage from "@/assets/no_records.png";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RefreshCw, Download } from "lucide-react";
@@ -15,9 +16,6 @@ import { Button } from "@/components/ui/button";
 
 // Register AG Grid Community modules
 ModuleRegistry.registerModules([AllCommunityModule]);
-
-const AUTH_TOKEN =
-  "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2wiOiJhZG1pbiIsImV4cCI6MTkwMDY1MzE0M30.asYhgMAOvrau4G6LI4V4IbgYZ022g_GX0qZxaS57GQc";
 
 type ReportType =
   | "product_stock"
@@ -301,21 +299,24 @@ const Reports = () => {
   };
 
   const getEndpointForReport = (type: ReportType): string => {
+    const robotManagerUrl = (path: string) =>
+      robotId ? withQuery(`${ROBOTMANAGER_BASE}${path}`, { robot_id: robotId }) : `${ROBOTMANAGER_BASE}${path}`;
+
     switch (type) {
       case "product_stock":
-        return "https://amsstores1.leapmile.com/nanostore/items";
+        return `${NANOSTORE_BASE}/items`;
       case "order_product_transaction":
-        return "https://amsstores1.leapmile.com/nanostore/items/usage?order_by=DESC";
+        return `${NANOSTORE_BASE}/items/usage?order_by=DESC`;
       case "order_tray_transaction":
-        return "https://amsstores1.leapmile.com/robotmanager/task";
+        return robotManagerUrl("/task");
       case "tray_transaction":
-        return "https://amsstores1.leapmile.com/robotmanager/trays";
+        return robotManagerUrl("/trays");
       case "rack_transaction":
-        return "https://amsstores1.leapmile.com/robotmanager/slots";
+        return robotManagerUrl("/slots");
       case "order_failure_transaction":
-        return "https://amsstores1.leapmile.com/robotmanager/task?task_status=failed";
+        return robotManagerUrl("/task?task_status=failed");
       default:
-        return "https://amsstores1.leapmile.com/nanostore/items";
+        return `${NANOSTORE_BASE}/items`;
     }
   };
 
@@ -350,49 +351,51 @@ const Reports = () => {
 
   const fetchOccupiedPercent = useCallback(async () => {
     try {
-      const [slotsResponse, traysResponse] = await Promise.all([
-        fetch("https://amsstores1.leapmile.com/robotmanager/slots_count?slot_status=active", {
-          headers: { Authorization: AUTH_TOKEN, "Content-Type": "application/json" },
-        }),
-        fetch("https://amsstores1.leapmile.com/robotmanager/trays?tray_status=active", {
-          headers: { Authorization: AUTH_TOKEN, "Content-Type": "application/json" },
-        }),
+      const [slotsResult, traysResult] = await Promise.all([
+        apiGet<any>(`${ROBOTMANAGER_BASE}/slots_count?slot_status=active`),
+        apiGet<any>(`${ROBOTMANAGER_BASE}/trays?tray_status=active`),
       ]);
 
-      const slotsData = await slotsResponse.json();
-      const traysData = await traysResponse.json();
+      const slotsData = slotsResult.data as any;
+      const traysData = traysResult.data as any;
 
       const totalSlots = slotsData.records?.[0]?.total_count || 0;
-      const occupiedSlots = traysData.records ? traysData.records.length : 0;
+      const occupiedSlots = traysData.total_count ?? traysData.count ?? traysData.records?.length ?? 0;
       const percent = totalSlots > 0 ? (occupiedSlots / totalSlots) * 100 : 0;
 
       setOccupiedPercent(percent);
     } catch (error) {
+      if (error instanceof Error && error.message === "AUTH_TOKEN_MISSING") {
+        toast({
+          title: "Session Expired",
+          description: "Please log in again.",
+          variant: "destructive",
+        });
+        navigate("/");
+        return;
+      }
       console.error("Error fetching occupied percent:", error);
     }
-  }, []);
+  }, [navigate, toast]);
 
   const fetchReportData = useCallback(async () => {
     setLoading(true);
     try {
       const endpoint = getEndpointForReport(reportType);
 
-      const response = await fetch(endpoint, {
-        headers: { Authorization: AUTH_TOKEN, "Content-Type": "application/json" },
-      });
+      const { res, data } = await apiGet<any>(endpoint);
 
-      if (response.status === 404) {
+      if (res.status === 404) {
         setRowData([]);
         setLoading(false);
         return;
       }
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
       }
 
-      const data = await response.json();
-      let records = data.records || [];
+      let records = (data as any).records || [];
 
       // For rack transaction, aggregate slots by rack
       if (reportType === "rack_transaction") {
@@ -410,6 +413,15 @@ const Reports = () => {
       console.log(`Fetched ${reportType}:`, records.length);
       setRowData(records);
     } catch (error) {
+      if (error instanceof Error && error.message === "AUTH_TOKEN_MISSING") {
+        toast({
+          title: "Session Expired",
+          description: "Please log in again.",
+          variant: "destructive",
+        });
+        navigate("/");
+        return;
+      }
       toast({
         title: "Error",
         description: "Failed to load report data",
@@ -420,7 +432,7 @@ const Reports = () => {
     } finally {
       setLoading(false);
     }
-  }, [reportType, toast]);
+  }, [reportType, toast, navigate]);
 
   useEffect(() => {
     const storedUserName = localStorage.getItem("user_name");
