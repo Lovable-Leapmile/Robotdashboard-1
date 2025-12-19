@@ -50,7 +50,6 @@ const Reports = () => {
   const [reportType, setReportType] = useState<ReportType>("product_stock");
   const [rowData, setRowData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [occupiedPercent, setOccupiedPercent] = useState(0);
   const gridApiRef = useRef<any>(null);
 
   const reportLabels: Record<ReportType, string> = {
@@ -508,32 +507,6 @@ const Reports = () => {
     return [];
   };
 
-  // Calculate occupied percent (matching Python get_robotUsageTransaction)
-  const fetchOccupiedPercent = useCallback(async () => {
-    try {
-      const [slotsResult, traysResult] = await Promise.all([
-        apiGet<any>(withQuery(`${ROBOTMANAGER_BASE}/slots`, { num_records: "1" })),
-        apiGet<any>(withQuery(`${ROBOTMANAGER_BASE}/trays`, { tray_status: "active" })),
-      ]);
-
-      const totalSlots = slotsResult.data.total_count || 0;
-      const totalTrays = traysResult.data.count || 0;
-      const percent = totalSlots > 0 ? (totalTrays / totalSlots) * 100 : 0;
-
-      setOccupiedPercent(percent);
-    } catch (error) {
-      if (error instanceof Error && error.message === "AUTH_TOKEN_MISSING") {
-        toast({
-          title: "Session Expired",
-          description: "Please log in again.",
-          variant: "destructive",
-        });
-        navigate("/");
-        return;
-      }
-      console.error("Error fetching occupied percent:", error);
-    }
-  }, [navigate, toast]);
 
   const fetchReportData = useCallback(async () => {
     setLoading(true);
@@ -594,9 +567,7 @@ const Reports = () => {
       navigate("/");
       return;
     }
-
-    fetchOccupiedPercent();
-  }, [navigate, fetchOccupiedPercent]);
+  }, [navigate]);
 
   useEffect(() => {
     fetchReportData();
@@ -604,7 +575,6 @@ const Reports = () => {
 
   const handleRefresh = () => {
     fetchReportData();
-    fetchOccupiedPercent();
   };
 
   const handleDownload = () => {
@@ -647,24 +617,18 @@ const Reports = () => {
       <main className="p-2 sm:p-4">
         {/* Header Controls */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-            <Select value={reportType} onValueChange={(value: ReportType) => setReportType(value)}>
-              <SelectTrigger className="w-[280px] bg-white">
-                <SelectValue placeholder="Select Report" />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.entries(reportLabels).map(([key, label]) => (
-                  <SelectItem key={key} value={key}>
-                    {label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-white rounded-md border">
-              <span className="text-sm text-gray-600">Occupied:</span>
-              <span className="text-sm font-semibold text-orange-500">{occupiedPercent.toFixed(2)}%</span>
-            </div>
-          </div>
+          <Select value={reportType} onValueChange={(value: ReportType) => setReportType(value)}>
+            <SelectTrigger className="w-[280px] bg-white">
+              <SelectValue placeholder="Select Report" />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.entries(reportLabels).map(([key, label]) => (
+                <SelectItem key={key} value={key}>
+                  {label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
           <div className="flex gap-2">
             <Button variant="outline" size="sm" onClick={handleRefresh} disabled={loading}>
