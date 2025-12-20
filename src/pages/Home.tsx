@@ -164,7 +164,7 @@ const Home = () => {
         {/* Content row */}
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-0">
           {/* Rack visualization with shuttle between rows */}
-          <div className="flex gap-4 sm:gap-0 overflow-x-auto pb-4 lg:pb-0">
+          <div className="flex gap-4 sm:gap-0 pb-4 lg:pb-0">
             {/* Combined Row 1 and Row 0 with shuttle in between */}
             <div className="flex shrink-0" style={{ position: "relative" }}>
               {/* Row 1 */}
