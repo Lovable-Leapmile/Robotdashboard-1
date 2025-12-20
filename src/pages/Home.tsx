@@ -329,7 +329,7 @@ const Home = () => {
             </div>
 
             {/* Row 0 */}
-            <div className="flex flex-col items-center shrink-0 ml-4 sm:ml-[50px]" style={{ position: "relative" }}>
+            <div className="flex flex-col items-center shrink-0 ml-4 sm:ml-[100px]" style={{ position: "relative" }}>
               <div className="flex gap-2 sm:gap-[10px]">
                 {Array.from({ length: robotNumDepths }, (_, depthIdx) => (
                   <div key={`row0-depth${depthIdx}`} className="flex flex-col gap-2 sm:gap-[10px]">
@@ -378,7 +378,7 @@ const Home = () => {
           </div>
 
           {/* Robot State Timeline with Dashboard Cards */}
-          <div className="flex flex-col flex-1 lg:ml-[100px]">
+          <div className="flex flex-col flex-1 lg:ml-[50px]">
             <RobotStateTimeline />
             <DashboardCards />
           </div>
