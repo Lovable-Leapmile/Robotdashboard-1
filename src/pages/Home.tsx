@@ -170,6 +170,26 @@ const Home = () => {
     return store_row === rowIndex && store_rack === rackIndex && store_depth === depthIndex;
   };
 
+  // Get slot highlight styles based on shuttle action
+  const getSlotHighlightStyles = (rowIndex: number, rackIndex: number, depthIndex: number) => {
+    if (!isSlotHighlighted(rowIndex, rackIndex, depthIndex)) {
+      return {
+        backgroundColor: "#ffffff",
+        border: "1px solid #d1d5db",
+        boxShadow: "none",
+      };
+    }
+
+    const { shuttle_action } = shuttleState;
+    const statusColor = getStatusColor(shuttle_action);
+    
+    return {
+      backgroundColor: statusColor.bg === "transparent" ? "#dcfce7" : "#bbf7d0", // light green bg
+      border: `2px solid ${statusColor.border}`,
+      boxShadow: `0 0 8px rgba(34, 197, 94, 0.4)`,
+    };
+  };
+
   // Calculate total height for the shuttle track based on racks
   const getTrackHeight = () => {
     if (robotNumRacks === 0) return 0;
@@ -225,11 +245,9 @@ const Home = () => {
                           key={`row1-depth${depthIdx}-rack${rackIdx}`}
                           className="flex items-center justify-center text-xs sm:text-sm font-medium w-[60px] h-[22px] sm:w-[75px] sm:h-[25px]"
                           style={{
-                            backgroundColor: isSlotHighlighted(1, rackIdx, depthIdx) ? "#fef3c7" : "#ffffff",
+                            ...getSlotHighlightStyles(1, rackIdx, depthIdx),
                             borderRadius: "4px",
-                            border: isSlotHighlighted(1, rackIdx, depthIdx) ? "2px solid #f59e0b" : "1px solid #d1d5db",
                             color: "#351c75",
-                            boxShadow: isSlotHighlighted(1, rackIdx, depthIdx) ? "0 0 8px rgba(245, 158, 11, 0.4)" : "none",
                             transition: "all 0.3s ease-in-out",
                           }}
                         >
@@ -354,11 +372,9 @@ const Home = () => {
                           key={`row0-depth${depthIdx}-rack${rackIdx}`}
                           className="flex items-center justify-center text-xs sm:text-sm font-medium w-[60px] h-[22px] sm:w-[75px] sm:h-[25px]"
                           style={{
-                            backgroundColor: isSlotHighlighted(0, rackIdx, depthIdx) ? "#fef3c7" : "#ffffff",
+                            ...getSlotHighlightStyles(0, rackIdx, depthIdx),
                             borderRadius: "4px",
-                            border: isSlotHighlighted(0, rackIdx, depthIdx) ? "2px solid #f59e0b" : "1px solid #d1d5db",
                             color: "#351c75",
-                            boxShadow: isSlotHighlighted(0, rackIdx, depthIdx) ? "0 0 8px rgba(245, 158, 11, 0.4)" : "none",
                             transition: "all 0.3s ease-in-out",
                           }}
                         >
