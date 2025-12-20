@@ -111,7 +111,7 @@ export const RobotStateTimeline = () => {
     <div className="flex flex-col" style={{ flex: 1 }}>
       <div style={{ height: "280px", width: "100%" }}>
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 10, right: 30, bottom: 40, left: 50 }}>
+          <LineChart data={data} margin={{ top: 10, right: 30, bottom: 40, left: 40 }}>
             <XAxis
               type="number"
               dataKey="time"
