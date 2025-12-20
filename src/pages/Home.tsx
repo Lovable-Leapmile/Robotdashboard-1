@@ -18,7 +18,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   // Use the PubSub hook for real-time shuttle tracking
-  const { shuttleState } = useShuttlePubSub();
+  const { shuttleState, isLoading } = useShuttlePubSub();
 
   useEffect(() => {
     const storedUserName = localStorage.getItem("user_name");
@@ -109,6 +109,26 @@ const Home = () => {
     return store_row === 0 || store_row === 1;
   };
 
+  // Check if a slot should be highlighted (active target)
+  const isSlotHighlighted = (rowIndex: number, rackIndex: number, depthIndex: number): boolean => {
+    const { store_row, store_rack, store_depth, shuttle_action } = shuttleState;
+    
+    // Only highlight during active operations
+    if (!shuttle_action || shuttle_action === "backward" || shuttle_action === "forward") {
+      return false;
+    }
+
+    // Check if this slot matches the target location
+    return store_row === rowIndex && store_rack === rackIndex && store_depth === depthIndex;
+  };
+
+  // Calculate total height for the shuttle track based on racks
+  const getTrackHeight = () => {
+    if (robotNumRacks === 0) return 0;
+    // Each rack slot is 25px height + 10px gap (except first one)
+    return robotNumRacks * 25 + (robotNumRacks - 1) * 10;
+  };
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#fafafa" }}>
       <AppHeader selectedTab="Robot" />
@@ -157,10 +177,12 @@ const Home = () => {
                           key={`row1-depth${depthIdx}-rack${rackIdx}`}
                           className="flex items-center justify-center text-xs sm:text-sm font-medium w-[60px] h-[22px] sm:w-[75px] sm:h-[25px]"
                           style={{
-                            backgroundColor: "#ffffff",
+                            backgroundColor: isSlotHighlighted(1, rackIdx, depthIdx) ? "#fef3c7" : "#ffffff",
                             borderRadius: "4px",
-                            border: "1px solid #d1d5db",
+                            border: isSlotHighlighted(1, rackIdx, depthIdx) ? "2px solid #f59e0b" : "1px solid #d1d5db",
                             color: "#351c75",
+                            boxShadow: isSlotHighlighted(1, rackIdx, depthIdx) ? "0 0 8px rgba(245, 158, 11, 0.4)" : "none",
+                            transition: "all 0.3s ease-in-out",
                           }}
                         >
                           {rackIdx}
@@ -177,15 +199,16 @@ const Home = () => {
                 style={{ 
                   minWidth: "75px",
                   position: "relative",
+                  height: `${getTrackHeight()}px`,
                 }}
               >
-                {/* Vertical track line - spans full height with low opacity */}
+                {/* Vertical track line - spans same height as rows */}
                 <div
                   style={{
                     position: "absolute",
                     left: "50%",
                     top: 0,
-                    bottom: 0,
+                    height: `${getTrackHeight()}px`,
                     width: "2px",
                     transform: "translateX(-50%)",
                     backgroundColor: "#6b7280",
@@ -193,13 +216,28 @@ const Home = () => {
                     zIndex: 0,
                   }}
                 />
+
+                {/* Loading indicator */}
+                {isLoading && (
+                  <div 
+                    className="absolute inset-0 flex items-center justify-center"
+                    style={{ zIndex: 2 }}
+                  >
+                    <div className="flex flex-col items-center gap-1">
+                      <div 
+                        className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"
+                      />
+                      <span className="text-[8px] text-muted-foreground">Loading...</span>
+                    </div>
+                  </div>
+                )}
                 
                 {Array.from({ length: robotNumRacks }, (_, rackIdx) => (
                   <div
                     key={`shuttle-slot-${rackIdx}`}
                     className="flex flex-col items-center justify-center"
                     style={{
-                      height: "40px",
+                      height: "25px",
                       marginTop: rackIdx === 0 ? "0" : "10px",
                       position: "relative",
                       zIndex: 1,
@@ -220,9 +258,9 @@ const Home = () => {
                     {/* Status label */}
                     {shuttleState.shuttle_action && (
                       <span
-                        className="text-[8px] font-medium text-primary mt-0.5 whitespace-nowrap"
+                        className="absolute -bottom-3 text-[8px] font-medium text-primary whitespace-nowrap"
                         style={{
-                          textShadow: "0 0 2px rgba(0,0,0,0.3)",
+                          textShadow: "0 0 2px rgba(255,255,255,0.8)",
                         }}
                       >
                         {shuttleState.shuttle_action}
@@ -242,10 +280,12 @@ const Home = () => {
                           key={`row0-depth${depthIdx}-rack${rackIdx}`}
                           className="flex items-center justify-center text-xs sm:text-sm font-medium w-[60px] h-[22px] sm:w-[75px] sm:h-[25px]"
                           style={{
-                            backgroundColor: "#ffffff",
+                            backgroundColor: isSlotHighlighted(0, rackIdx, depthIdx) ? "#fef3c7" : "#ffffff",
                             borderRadius: "4px",
-                            border: "1px solid #d1d5db",
+                            border: isSlotHighlighted(0, rackIdx, depthIdx) ? "2px solid #f59e0b" : "1px solid #d1d5db",
                             color: "#351c75",
+                            boxShadow: isSlotHighlighted(0, rackIdx, depthIdx) ? "0 0 8px rgba(245, 158, 11, 0.4)" : "none",
+                            transition: "all 0.3s ease-in-out",
                           }}
                         >
                           {rackIdx}
