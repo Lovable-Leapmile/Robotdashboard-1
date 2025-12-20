@@ -163,6 +163,9 @@ All colors MUST be HSL.
   justify-content: flex-start !important;
   line-height: normal !important;
   font-size: 12px;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
 }
 
 @media (min-width: 640px) {
@@ -180,6 +183,17 @@ All colors MUST be HSL.
   height: 100%;
   display: flex !important;
   align-items: center !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  min-width: 0 !important;
+}
+
+.ag-theme-quartz .ag-cell-value {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  min-width: 0 !important;
 }
 
 .ag-theme-quartz .ag-header {
