@@ -33,6 +33,7 @@ interface PowerInfo {
   current: string;
   power: string;
   energy: string;
+  updatedAt: string | null;
 }
 
 export const DashboardCards = () => {
@@ -138,7 +139,8 @@ export const DashboardCards = () => {
           voltage: `${record.voltage ?? 'N/A'} V`,
           current: `${record.current ?? 'N/A'} A`,
           power: `${record.max_demand_active_power ?? 'N/A'} kW`,
-          energy: `${record.total_active_energy_kwh ?? 'N/A'} kWh`
+          energy: `${record.total_active_energy_kwh ?? 'N/A'} kWh`,
+          updatedAt: record.updated_at || null
         });
       } else {
         // No data available at all
@@ -146,7 +148,8 @@ export const DashboardCards = () => {
           voltage: "N/A",
           current: "N/A",
           power: "N/A",
-          energy: "N/A"
+          energy: "N/A",
+          updatedAt: null
         });
       }
     } catch (error) {
@@ -155,7 +158,8 @@ export const DashboardCards = () => {
         voltage: "N/A",
         current: "N/A",
         power: "N/A",
-        energy: "N/A"
+        energy: "N/A",
+        updatedAt: null
       });
     }
   };
@@ -355,6 +359,11 @@ export const DashboardCards = () => {
                   <span className="text-lg font-bold text-green-600">{powerInfo.energy}</span>
                 </div>
               </div>
+              {powerInfo.updatedAt && (
+                <div className="text-[10px] text-muted-foreground text-right mt-1">
+                  Updated: {new Date(powerInfo.updatedAt).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}
+                </div>
+              )}
             </div>
           ) : (
             <div className="text-muted-foreground text-center py-2 text-sm">Loading...</div>
