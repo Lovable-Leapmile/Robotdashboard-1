@@ -54,7 +54,7 @@ export const createDateColumnDef = (
   valueFormatter: (params) => {
     if (!params.value) return "N/A";
     try {
-      return format(new Date(params.value), "dd-MM-yyyy HH:mm:ss");
+      return format(new Date(params.value), "dd-MM-yyyy hh:mm:ss a");
     } catch {
       return params.value;
     }
