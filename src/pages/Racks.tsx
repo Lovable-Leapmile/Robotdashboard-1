@@ -395,11 +395,31 @@ const Racks = () => {
                     {/* Depth 1 - Vertical Column (Left) */}
                     <div className="flex flex-col items-center gap-2 sm:gap-2.5">
                       <div className="flex flex-col gap-2 sm:gap-2.5">
-                        {row0Depth1Slots.map((slot, idx) => (
-                          <div key={`r0d1-${idx}`}>
-                            <SlotBox slot={slot} />
-                          </div>
-                        ))}
+                        {row0Depth1Slots.map((slot, idx) => {
+                          const isPickingStation = slot.tags?.includes("station");
+                          const isLastTwo = idx >= row0Depth1Slots.length - 2;
+                          const shouldHighlight = isPickingStation || isLastTwo;
+
+                          return (
+                            <div
+                              key={`r0d1-${idx}`}
+                              className={shouldHighlight ? "relative" : ""}
+                              style={
+                                shouldHighlight
+                                  ? {
+                                      backgroundColor: "#fef3c7",
+                                      border: "2px solid #351C75",
+                                      borderRadius: "8px",
+                                      padding: "4px",
+                                      margin: "-4px",
+                                    }
+                                  : {}
+                              }
+                            >
+                              <SlotBox slot={slot} />
+                            </div>
+                          );
+                        })}
                       </div>
                       <div className="text-xs sm:text-sm font-medium mt-2" style={{ color: "#351c75" }}>
                         Depth 1
@@ -408,11 +428,31 @@ const Racks = () => {
                     {/* Depth 2 - Vertical Column (Right) */}
                     <div className="flex flex-col items-center gap-2 sm:gap-2.5">
                       <div className="flex flex-col gap-2 sm:gap-2.5">
-                        {row0Depth0Slots.map((slot, idx) => (
-                          <div key={`r0d0-${idx}`}>
-                            <SlotBox slot={slot} />
-                          </div>
-                        ))}
+                        {row0Depth0Slots.map((slot, idx) => {
+                          const isPickingStation = slot.tags?.includes("station");
+                          const isLastTwo = idx >= row0Depth0Slots.length - 2;
+                          const shouldHighlight = isPickingStation || isLastTwo;
+
+                          return (
+                            <div
+                              key={`r0d0-${idx}`}
+                              className={shouldHighlight ? "relative" : ""}
+                              style={
+                                shouldHighlight
+                                  ? {
+                                      backgroundColor: "#fef3c7",
+                                      border: "2px solid #351C75",
+                                      borderRadius: "8px",
+                                      padding: "4px",
+                                      margin: "-4px",
+                                    }
+                                  : {}
+                              }
+                            >
+                              <SlotBox slot={slot} />
+                            </div>
+                          );
+                        })}
                       </div>
                       <div className="text-xs sm:text-sm font-medium mt-2" style={{ color: "#351c75" }}>
                         Depth 2
