@@ -266,25 +266,23 @@ const Racks = () => {
           <div className="flex justify-center mt-6 sm:mt-8 overflow-x-auto">
             <div className="flex flex-col lg:flex-row gap-6 lg:gap-5">
               {/* Row 1 Section */}
-              <div className="flex items-start gap-3">
-                {/* Picking Station Label - Left aligned with Row 1 */}
-                <div className="hidden lg:flex flex-col justify-end h-full" style={{ minHeight: `${row1Depth1Slots.length * 55}px` }}>
-                  <div 
-                    className="flex items-center justify-center px-3 py-2 rounded-l-lg border-r-0 font-semibold text-xs sm:text-sm whitespace-nowrap"
-                    style={{ 
-                      backgroundColor: "#fef3c7",
-                      borderColor: "#f59e0b",
-                      borderWidth: "2px",
-                      borderRightWidth: "0",
-                      color: "#92400e",
-                      writingMode: "vertical-rl",
-                      textOrientation: "mixed",
-                      transform: "rotate(180deg)",
-                      height: "110px"
-                    }}
-                  >
-                    Picking Station
-                  </div>
+              <div className="flex items-end gap-0">
+                {/* Picking Station Label - Directly in front of station containers */}
+                <div 
+                  className="hidden lg:flex items-center justify-center px-2 py-3 rounded-l-lg font-semibold text-xs whitespace-nowrap"
+                  style={{ 
+                    backgroundColor: "#fef3c7",
+                    border: "2px solid #351C75",
+                    borderRight: "none",
+                    color: "#351C75",
+                    writingMode: "vertical-rl",
+                    textOrientation: "mixed",
+                    transform: "rotate(180deg)",
+                    height: "118px",
+                    marginBottom: "28px"
+                  }}
+                >
+                  Picking Station
                 </div>
 
                 <div className="flex flex-col items-center">
@@ -306,7 +304,7 @@ const Racks = () => {
                               className={shouldHighlight ? "relative" : ""}
                               style={shouldHighlight ? {
                                 backgroundColor: "#fef3c7",
-                                border: "2px solid #f59e0b",
+                                border: "2px solid #351C75",
                                 borderRadius: "8px",
                                 padding: "4px",
                                 margin: "-4px"
@@ -333,7 +331,7 @@ const Racks = () => {
                               className={shouldHighlight ? "relative" : ""}
                               style={shouldHighlight ? {
                                 backgroundColor: "#fef3c7",
-                                border: "2px solid #f59e0b",
+                                border: "2px solid #351C75",
                                 borderRadius: "8px",
                                 padding: "4px",
                                 margin: "-4px"
@@ -353,8 +351,8 @@ const Racks = () => {
                     className="lg:hidden mt-3 px-3 py-1.5 rounded-lg font-semibold text-xs"
                     style={{ 
                       backgroundColor: "#fef3c7",
-                      border: "2px solid #f59e0b",
-                      color: "#92400e"
+                      border: "2px solid #351C75",
+                      color: "#351C75"
                     }}
                   >
                     Picking Station
@@ -396,7 +394,7 @@ const Racks = () => {
                               className={shouldHighlight ? "relative" : ""}
                               style={shouldHighlight ? {
                                 backgroundColor: "#fef3c7",
-                                border: "2px solid #f59e0b",
+                                border: "2px solid #351C75",
                                 borderRadius: "8px",
                                 padding: "4px",
                                 margin: "-4px"
@@ -423,7 +421,7 @@ const Racks = () => {
                               className={shouldHighlight ? "relative" : ""}
                               style={shouldHighlight ? {
                                 backgroundColor: "#fef3c7",
-                                border: "2px solid #f59e0b",
+                                border: "2px solid #351C75",
                                 borderRadius: "8px",
                                 padding: "4px",
                                 margin: "-4px"
