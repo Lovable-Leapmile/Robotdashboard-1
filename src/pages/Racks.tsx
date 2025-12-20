@@ -266,7 +266,7 @@ const Racks = () => {
           <div className="flex justify-center mt-6 sm:mt-8 overflow-x-auto">
             <div className="flex flex-col lg:flex-row gap-6 lg:gap-5">
               {/* Row 1 Section */}
-              <div className="flex items-end gap-0">
+              <div className="flex items-end gap-2">
                 {/* Picking Station Label - Directly in front of station containers */}
                 <div 
                   className="hidden lg:flex items-center justify-center px-2 py-3 rounded-l-lg font-semibold text-xs whitespace-nowrap"
@@ -279,7 +279,7 @@ const Racks = () => {
                     textOrientation: "mixed",
                     transform: "rotate(180deg)",
                     height: "118px",
-                    marginBottom: "28px"
+                    marginBottom: "36px"
                   }}
                 >
                   Picking Station
