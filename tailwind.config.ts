@@ -108,6 +108,14 @@ export default {
             opacity: "1",
           },
         },
+        "pulse-glow": {
+          "0%, 100%": {
+            boxShadow: "0 0 8px rgba(34, 197, 94, 0.4)",
+          },
+          "50%": {
+            boxShadow: "0 0 16px rgba(34, 197, 94, 0.7)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -115,6 +123,7 @@ export default {
         "shimmer": "shimmer 2s infinite",
         "fade-in": "fade-in 0.3s ease-out",
         "scale-in": "scale-in 0.2s ease-out",
+        "pulse-glow": "pulse-glow 1.5s ease-in-out infinite",
       },
     },
   },

@@ -243,12 +243,12 @@ const Home = () => {
                       {Array.from({ length: robotNumRacks }, (_, rackIdx) => (
                         <div
                           key={`row1-depth${depthIdx}-rack${rackIdx}`}
-                          className="flex items-center justify-center text-xs sm:text-sm font-medium w-[60px] h-[22px] sm:w-[75px] sm:h-[25px]"
+                          className={`flex items-center justify-center text-xs sm:text-sm font-medium w-[60px] h-[22px] sm:w-[75px] sm:h-[25px] ${isSlotHighlighted(1, rackIdx, depthIdx) ? "animate-pulse-glow" : ""}`}
                           style={{
                             ...getSlotHighlightStyles(1, rackIdx, depthIdx),
                             borderRadius: "4px",
                             color: "#351c75",
-                            transition: "all 0.3s ease-in-out",
+                            transition: "background-color 0.3s ease-in-out, border 0.3s ease-in-out",
                           }}
                         >
                           {rackIdx}
@@ -370,12 +370,12 @@ const Home = () => {
                       {Array.from({ length: robotNumRacks }, (_, rackIdx) => (
                         <div
                           key={`row0-depth${depthIdx}-rack${rackIdx}`}
-                          className="flex items-center justify-center text-xs sm:text-sm font-medium w-[60px] h-[22px] sm:w-[75px] sm:h-[25px]"
+                          className={`flex items-center justify-center text-xs sm:text-sm font-medium w-[60px] h-[22px] sm:w-[75px] sm:h-[25px] ${isSlotHighlighted(0, rackIdx, depthIdx) ? "animate-pulse-glow" : ""}`}
                           style={{
                             ...getSlotHighlightStyles(0, rackIdx, depthIdx),
                             borderRadius: "4px",
                             color: "#351c75",
-                            transition: "all 0.3s ease-in-out",
+                            transition: "background-color 0.3s ease-in-out, border 0.3s ease-in-out",
                           }}
                         >
                           {rackIdx}
