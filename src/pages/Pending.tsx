@@ -8,7 +8,7 @@ import { ColDef, ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 import { useToast } from "@/hooks/use-toast";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import noRecordsImage from "@/assets/no_records.png";
-import { createDateColumnDef, defaultGridProps } from "@/lib/agGridUtils";
+import { createDateColumnDef, getDefaultGridProps } from "@/lib/agGridUtils";
 
 // Register AG Grid Community modules (required in v34+)
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -170,7 +170,7 @@ const Pending = () => {
               pagination={true}
               paginationPageSize={50}
               rowHeight={35}
-              {...defaultGridProps}
+              {...getDefaultGridProps()}
               onGridReady={(params) => {
                 gridApiRef.current = params.api;
                 params.api.setGridOption("quickFilterText", quickFilter);

@@ -17,7 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { createDateColumnDef, defaultGridProps } from "@/lib/agGridUtils";
+import { createDateColumnDef, getDefaultGridProps } from "@/lib/agGridUtils";
 
 // Register AG Grid Community modules (required in v34+)
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -370,9 +370,7 @@ const Logs = () => {
               pagination={true}
               paginationPageSize={50}
               rowHeight={35}
-              popupParent={document.body}
-              enableCellTextSelection={true}
-              ensureDomOrder={true}
+              {...getDefaultGridProps()}
               onGridReady={(params) => {
                 gridApiRef.current = params.api;
                 params.api.setGridOption("quickFilterText", quickFilter);

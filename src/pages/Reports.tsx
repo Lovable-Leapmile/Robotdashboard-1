@@ -12,7 +12,7 @@ import noRecordsImage from "@/assets/no_records.png";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RefreshCw, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { dateFilterParams, defaultGridProps } from "@/lib/agGridUtils";
+import { dateFilterParams, getDefaultGridProps } from "@/lib/agGridUtils";
 
 // Register AG Grid Community modules
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -678,7 +678,7 @@ const Reports = () => {
               paginationPageSize={50}
               paginationPageSizeSelector={[25, 50, 100, 200]}
               rowHeight={35}
-              {...defaultGridProps}
+              {...getDefaultGridProps()}
               onGridReady={(params) => {
                 gridApiRef.current = params.api;
                 params.api.sizeColumnsToFit();
