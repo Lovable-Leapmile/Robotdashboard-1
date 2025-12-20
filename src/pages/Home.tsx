@@ -171,7 +171,7 @@ const Home = () => {
                 </div>
               </div>
 
-              {/* Shuttle image container - positioned BETWEEN Row 1 and Row 0 */}
+              {/* Shuttle track and image container - positioned BETWEEN Row 1 and Row 0 */}
               <div 
                 className="flex flex-col justify-start ml-2 sm:ml-4 mr-2 sm:mr-4"
                 style={{ 
@@ -179,13 +179,30 @@ const Home = () => {
                   position: "relative",
                 }}
               >
+                {/* Vertical track line - spans full height with low opacity */}
+                <div
+                  style={{
+                    position: "absolute",
+                    left: "50%",
+                    top: 0,
+                    bottom: 0,
+                    width: "2px",
+                    transform: "translateX(-50%)",
+                    backgroundColor: "#6b7280",
+                    opacity: 0.25,
+                    zIndex: 0,
+                  }}
+                />
+                
                 {Array.from({ length: robotNumRacks }, (_, rackIdx) => (
                   <div
                     key={`shuttle-slot-${rackIdx}`}
                     className="flex items-center justify-center"
                     style={{
-                      height: rackIdx === 0 ? "22px" : "32px",
-                      marginTop: rackIdx === 0 ? "0" : "2px",
+                      height: "25px",
+                      marginTop: rackIdx === 0 ? "0" : "10px",
+                      position: "relative",
+                      zIndex: 1,
                     }}
                   >
                     {isShuttleVisibleForRack(rackIdx) && (
@@ -196,7 +213,7 @@ const Home = () => {
                           width: "55px",
                           height: "25px",
                           objectFit: "contain",
-                          transition: "opacity 0.3s ease-in-out",
+                          transition: "all 0.3s ease-in-out",
                         }}
                       />
                     )}
