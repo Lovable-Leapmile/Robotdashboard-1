@@ -47,29 +47,9 @@ const Completed = () => {
       filter: true,
       flex: 1,
       minWidth: 120,
+      checkboxSelection: true,
+      headerCheckboxSelection: true,
       valueFormatter: (params) => params.value ?? "N/A",
-    },
-    {
-      field: "task_type",
-      headerName: "Task Type",
-      sortable: true,
-      filter: true,
-      flex: 1,
-      minWidth: 100,
-      valueFormatter: (params) => params.value ?? "N/A",
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      sortable: true,
-      filter: true,
-      flex: 0.8,
-      minWidth: 100,
-      cellRenderer: (params: any) => (
-        <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300">
-          {params.value || "N/A"}
-        </Badge>
-      ),
     },
     {
       field: "rack_id",
@@ -247,6 +227,7 @@ const Completed = () => {
                 sortable: true,
                 filter: true,
               }}
+              rowSelection="multiple"
               pagination={true}
               paginationPageSize={50}
               paginationPageSizeSelector={[25, 50, 100, 200]}
