@@ -11,6 +11,7 @@ import { useAuthSession } from "@/hooks/useAuthSession";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { getDefaultGridProps } from "@/lib/agGridUtils";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -260,6 +261,7 @@ const CameraTaskDetails = () => {
               pagination={true}
               paginationPageSize={50}
               domLayout="normal"
+              {...getDefaultGridProps()}
             />
           </div>
         )}

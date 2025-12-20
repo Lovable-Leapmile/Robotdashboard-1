@@ -9,6 +9,7 @@ import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import noRecordsImage from "@/assets/no_records.png";
+import { getDefaultGridProps } from "@/lib/agGridUtils";
 
 // Register AG Grid Community modules (required in v34+)
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -189,8 +190,7 @@ const Station = () => {
               pagination={true}
               paginationPageSize={50}
               rowHeight={35}
-              enableCellTextSelection={true}
-              ensureDomOrder={true}
+              {...getDefaultGridProps()}
               onGridReady={(params) => {
                 gridApiRef.current = params.api;
                 params.api.setGridOption("quickFilterText", quickFilter);

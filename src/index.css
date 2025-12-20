@@ -201,7 +201,6 @@ All colors MUST be HSL.
 /* AG Grid Filter Popup Fixes */
 .ag-popup {
   z-index: 9999 !important;
-  position: absolute !important;
 }
 
 .ag-popup-child {
