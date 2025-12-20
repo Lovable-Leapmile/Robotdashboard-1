@@ -185,7 +185,7 @@ const Completed = () => {
             <img src={noRecordsImage} alt="No Record found" className="w-48 sm:w-[340px]" />
           </div>
         ) : (
-          <div className="ag-theme-quartz w-full" style={{ height: "calc(100vh - 143px)" }}>
+          <div className="ag-theme-quartz w-full overflow-visible" style={{ height: "calc(100vh - 143px)" }}>
             <AgGridReact
               rowData={rowData}
               columnDefs={columnDefs}
@@ -197,9 +197,12 @@ const Completed = () => {
               }}
               pagination={true}
               paginationPageSize={50}
+              paginationPageSizeSelector={[25, 50, 100, 200]}
               rowHeight={35}
-              enableRangeSelection={true}
               headerHeight={35}
+              popupParent={document.body}
+              enableCellTextSelection={true}
+              ensureDomOrder={true}
               onGridReady={(params) => {
                 gridApiRef.current = params.api;
                 params.api.setGridOption("quickFilterText", quickFilter);

@@ -45,11 +45,12 @@ const SlotDetailsPanel = ({ slotDetails, isVisible }: SlotDetailsPanelProps) => 
   return (
     <>
       <div 
-        className="animate-slide-in-right"
+        className="animate-slide-in-right flex flex-col"
         style={{ 
           width: '280px',
-          marginLeft: '30px',
-          borderRadius: '5px'
+          marginRight: '30px',
+          borderRadius: '5px',
+          minHeight: '100%',
         }}
       >
         <div className="flex items-center justify-between mb-6">
