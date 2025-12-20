@@ -65,8 +65,16 @@ export const createDateColumnDef = (
 /**
  * Default AG Grid props to ensure popups work correctly
  */
-export const defaultGridProps = {
-  popupParent: typeof document !== "undefined" ? document.body : undefined,
+export const getDefaultGridProps = () => ({
+  popupParent: typeof document !== "undefined" ? document.body : null,
   enableCellTextSelection: true,
   ensureDomOrder: true,
+  suppressMenuHide: true,
+});
+
+// Legacy export for backward compatibility
+export const defaultGridProps = {
+  enableCellTextSelection: true,
+  ensureDomOrder: true,
+  suppressMenuHide: true,
 };

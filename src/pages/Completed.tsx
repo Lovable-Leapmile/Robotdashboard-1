@@ -11,7 +11,7 @@ import { apiGet, ROBOTMANAGER_BASE, withQuery } from "@/lib/api";
 import noRecordsImage from "@/assets/no_records.png";
 import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
-import { createDateColumnDef, defaultGridProps } from "@/lib/agGridUtils";
+import { createDateColumnDef, getDefaultGridProps } from "@/lib/agGridUtils";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -252,7 +252,7 @@ const Completed = () => {
               paginationPageSizeSelector={[25, 50, 100, 200]}
               rowHeight={35}
               headerHeight={35}
-              {...defaultGridProps}
+              {...getDefaultGridProps()}
               onGridReady={(params) => {
                 gridApiRef.current = params.api;
                 params.api.sizeColumnsToFit();
