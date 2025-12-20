@@ -143,9 +143,9 @@ const Home = () => {
 
         {/* Content row */}
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-0">
-          {/* Rack visualization with shuttle between rows */}
+          {/* Rack visualization with shuttle track between rows */}
           <div className="flex gap-4 sm:gap-0 overflow-x-auto pb-4 lg:pb-0">
-            {/* Combined Row 1 and Row 0 with shuttle in between */}
+            {/* Combined Row 1 and Row 0 with shuttle track in between */}
             <div className="flex shrink-0" style={{ position: "relative" }}>
               {/* Row 1 */}
               <div className="flex flex-col items-center">
@@ -171,37 +171,59 @@ const Home = () => {
                 </div>
               </div>
 
-              {/* Shuttle image container - positioned BETWEEN Row 1 and Row 0 */}
+              {/* Shuttle Track Container - positioned BETWEEN Row 1 and Row 0 */}
               <div 
-                className="flex flex-col justify-start ml-2 sm:ml-4 mr-2 sm:mr-4"
+                className="flex flex-col ml-3 sm:ml-5 mr-3 sm:mr-5"
                 style={{ 
-                  minWidth: "55px",
+                  minWidth: "60px",
                   position: "relative",
                 }}
               >
-                {Array.from({ length: robotNumRacks }, (_, rackIdx) => (
-                  <div
-                    key={`shuttle-slot-${rackIdx}`}
-                    className="flex items-center justify-center"
-                    style={{
-                      height: rackIdx === 0 ? "22px" : "32px",
-                      marginTop: rackIdx === 0 ? "0" : "2px",
-                    }}
-                  >
-                    {isShuttleVisibleForRack(rackIdx) && (
-                      <img
-                        src={getShuttleImageForRack(rackIdx)!}
-                        alt="shuttle"
+                {Array.from({ length: robotNumRacks }, (_, rackIdx) => {
+                  const rackHeight = 25; // Height of each rack cell
+                  const gapHeight = rackIdx === 0 ? 0 : 10; // Gap between racks (matching gap-[10px])
+                  
+                  return (
+                    <div
+                      key={`shuttle-track-${rackIdx}`}
+                      className="relative flex items-center justify-center"
+                      style={{
+                        height: `${rackHeight}px`,
+                        marginTop: rackIdx === 0 ? "0" : `${gapHeight}px`,
+                      }}
+                    >
+                      {/* Horizontal Track Line - always visible */}
+                      <div
                         style={{
-                          width: "55px",
-                          height: "25px",
-                          objectFit: "contain",
-                          transition: "opacity 0.3s ease-in-out",
+                          position: "absolute",
+                          left: 0,
+                          right: 0,
+                          top: "50%",
+                          transform: "translateY(-50%)",
+                          height: "2px",
+                          backgroundColor: "#6b7280",
+                          opacity: 0.25,
                         }}
                       />
-                    )}
-                  </div>
-                ))}
+                      
+                      {/* Shuttle Icon - positioned on track when active */}
+                      {isShuttleVisibleForRack(rackIdx) && (
+                        <img
+                          src={getShuttleImageForRack(rackIdx)!}
+                          alt="shuttle"
+                          style={{
+                            position: "relative",
+                            zIndex: 10,
+                            width: "55px",
+                            height: "25px",
+                            objectFit: "contain",
+                            transition: "all 0.3s ease-in-out",
+                          }}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Row 0 */}
