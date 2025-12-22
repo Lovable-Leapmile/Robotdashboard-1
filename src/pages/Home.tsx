@@ -288,9 +288,9 @@ const Home = () => {
 
               {/* Shuttle track and image container - positioned BETWEEN Row 1 and Row 0 */}
               <div 
-                className="flex flex-col justify-start ml-2 sm:ml-4 mr-2 sm:mr-4"
+                className="flex flex-col justify-start ml-1 sm:ml-2 mr-1 sm:mr-2"
                 style={{ 
-                  minWidth: "75px",
+                  minWidth: "70px",
                   position: "relative",
                   height: `${getTrackHeight()}px`,
                 }}
