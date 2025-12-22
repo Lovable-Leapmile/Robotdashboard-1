@@ -74,7 +74,7 @@ const Home = () => {
       // Clear animating flag after animation completes
       const timer = setTimeout(() => {
         setIsAnimating(false);
-      }, 500); // Match animation duration
+      }, 1500); // Match animation duration
 
       return () => clearTimeout(timer);
     }
@@ -319,7 +319,7 @@ const Home = () => {
                       left: "50%",
                       top: 0,
                       transform: `translate(-50%, ${animatedRackPosition}px)`,
-                      transition: "transform 500ms cubic-bezier(0.4, 0, 0.2, 1)",
+                      transition: "transform 1.5s cubic-bezier(0.25, 0.1, 0.25, 1)",
                       height: "25px",
                       zIndex: 1,
                       willChange: "transform",
