@@ -81,6 +81,7 @@ const Reports = () => {
       filterParams: dateFilterParams,
     },
     { field: "item_id", headerName: "Item Id", flex: 1, minWidth: 120, valueFormatter: (p) => p.value ?? "N/A" },
+    { field: "tray_divider", headerName: "Dividers", flex: 1, minWidth: 120, valueFormatter: (p) => p.value ?? "N/A" },
     { field: "stock", headerName: "Stock", flex: 0.7, minWidth: 80, valueFormatter: (p) => p.value ?? 0 },
     { field: "tray_id", headerName: "Tray ID", flex: 1, minWidth: 120, valueFormatter: (p) => p.value ?? "N/A" },
     {
@@ -521,7 +522,6 @@ const Reports = () => {
     }
     return [];
   };
-
 
   const fetchReportData = useCallback(async () => {
     setLoading(true);
