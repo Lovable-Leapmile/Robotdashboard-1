@@ -32,29 +32,51 @@ const ApiConfigModal = ({ onConfigured, open, onOpenChange, prefillApiName }: Ap
 
   const validateApiName = (value: string): string | null => {
     const trimmed = value.trim();
+    
     if (!trimmed) {
-      return "API name is required";
+      return "API endpoint is required";
     }
-    // Allow alphanumeric, hyphens, underscores, and dots for domain-style values
-    if (!/^[a-zA-Z0-9._-]+$/.test(trimmed)) {
-      return "API name can only contain letters, numbers, dots, hyphens, and underscores";
+    
+    // Check for spaces
+    if (/\s/.test(trimmed)) {
+      return "Spaces are not allowed";
     }
-    // Must not start or end with a dot
-    if (trimmed.startsWith('.') || trimmed.endsWith('.')) {
-      return "API name cannot start or end with a dot";
+    
+    // Check for special characters (only allow letters, numbers, and single dot)
+    if (!/^[a-zA-Z0-9.]+$/.test(trimmed)) {
+      return "Only letters, numbers, and dot are allowed";
     }
-    // No consecutive dots
-    if (trimmed.includes('..')) {
-      return "API name cannot contain consecutive dots";
+    
+    // Must be in format: apiname.domainname (exactly one dot)
+    const parts = trimmed.split('.');
+    if (parts.length !== 2) {
+      return "Format must be: apiname.domainname (e.g. compasalary.api)";
     }
-    if (trimmed.length < 2) {
-      return "API name must be at least 2 characters";
+    
+    // Both parts must have at least 1 character
+    if (parts[0].length < 1 || parts[1].length < 1) {
+      return "Both apiname and domainname are required";
     }
+    
+    // Both parts must start with a letter
+    if (!/^[a-zA-Z]/.test(parts[0]) || !/^[a-zA-Z]/.test(parts[1])) {
+      return "Both parts must start with a letter";
+    }
+    
     if (trimmed.length > 100) {
-      return "API name must be less than 100 characters";
+      return "API endpoint must be less than 100 characters";
     }
+    
     return null;
   };
+
+  // Real-time validation message
+  const getValidationMessage = (): string | null => {
+    if (!apiName.trim()) return null;
+    return validateApiName(apiName);
+  };
+
+  const validationMessage = getValidationMessage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -91,18 +113,18 @@ const ApiConfigModal = ({ onConfigured, open, onOpenChange, prefillApiName }: Ap
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setApiName(value);
-    // Clear error when user starts typing
+    // Clear manual error when user starts typing (validation message handles real-time feedback)
     if (error) {
       setError("");
     }
   };
 
+  const isValid = apiName.trim().length > 0 && !validateApiName(apiName);
+
   const handleClose = () => {
     onOpenChange?.(false);
     setError("");
   };
-
-  const isValid = apiName.trim().length > 0 && !validateApiName(apiName);
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center">
@@ -148,7 +170,7 @@ const ApiConfigModal = ({ onConfigured, open, onOpenChange, prefillApiName }: Ap
             Configure API Endpoint
           </h2>
           <p className="text-sm text-gray-500 mt-2">
-            Enter the API name to connect to your environment
+            Enter the API endpoint in the format: apiname.domainname
           </p>
         </div>
 
@@ -156,7 +178,7 @@ const ApiConfigModal = ({ onConfigured, open, onOpenChange, prefillApiName }: Ap
         <form onSubmit={handleSubmit} className="px-6 pb-8 space-y-5">
           <div className="space-y-2">
             <Label htmlFor="api-name" className="text-sm font-semibold text-gray-700">
-              API Name
+              API Endpoint
             </Label>
             <Input
               id="api-name"
@@ -164,20 +186,28 @@ const ApiConfigModal = ({ onConfigured, open, onOpenChange, prefillApiName }: Ap
               value={apiName}
               onChange={handleInputChange}
               className={`w-full rounded-xl border-2 ${
-                error ? "border-red-400 focus:border-red-500" : "border-gray-200 focus:border-primary"
+                validationMessage || error ? "border-red-400 focus:border-red-500" : isValid ? "border-green-400 focus:border-green-500" : "border-gray-200 focus:border-primary"
               } focus-visible:ring-0 focus-visible:ring-offset-0 transition-all py-5 text-base`}
-              placeholder="Enter API name (e.g. prod, staging, test)"
+              placeholder="e.g. compasalary.api"
               autoFocus
               autoComplete="off"
             />
-            {error && (
+            {/* Real-time validation message */}
+            {validationMessage && (
+              <p className="text-sm text-red-500 mt-1 animate-fade-in">
+                {validationMessage}
+              </p>
+            )}
+            {/* Submit error message */}
+            {error && !validationMessage && (
               <p className="text-sm text-red-500 mt-1 animate-fade-in">
                 {error}
               </p>
             )}
-            {apiName.trim() && !error && (
-              <p className="text-xs text-gray-400 mt-1">
-                Will connect to: <span className="font-mono text-primary">https://{apiName.trim()}.leapmile.com</span>
+            {/* Success indicator */}
+            {isValid && !error && (
+              <p className="text-xs text-green-600 mt-1">
+                ✓ Valid format
               </p>
             )}
           </div>
