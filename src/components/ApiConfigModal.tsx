@@ -16,6 +16,7 @@ const ApiConfigModal = ({ onConfigured, open, onOpenChange, prefillApiName }: Ap
   const [apiName, setApiName] = useState(prefillApiName || "");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [hasBlurred, setHasBlurred] = useState(false);
 
   // Update apiName when prefillApiName changes
   useEffect(() => {
@@ -70,10 +71,28 @@ const ApiConfigModal = ({ onConfigured, open, onOpenChange, prefillApiName }: Ap
     return null;
   };
 
-  // Real-time validation message
+  // Real-time validation message - only show after blur or if user has typed a dot
   const getValidationMessage = (): string | null => {
     if (!apiName.trim()) return null;
-    return validateApiName(apiName);
+    
+    const trimmed = apiName.trim();
+    
+    // Only show format error if user has blurred OR has typed a dot (indicating they're trying the format)
+    // But always show errors for spaces or invalid characters immediately
+    if (/\s/.test(trimmed)) {
+      return "Spaces are not allowed";
+    }
+    
+    if (!/^[a-zA-Z0-9.]+$/.test(trimmed)) {
+      return "Only letters, numbers, and dot are allowed";
+    }
+    
+    // For format-related errors, only show after blur or if they've typed a dot
+    if (hasBlurred || trimmed.includes('.')) {
+      return validateApiName(apiName);
+    }
+    
+    return null;
   };
 
   const validationMessage = getValidationMessage();
@@ -117,6 +136,10 @@ const ApiConfigModal = ({ onConfigured, open, onOpenChange, prefillApiName }: Ap
     if (error) {
       setError("");
     }
+  };
+
+  const handleBlur = () => {
+    setHasBlurred(true);
   };
 
   const isValid = apiName.trim().length > 0 && !validateApiName(apiName);
@@ -185,6 +208,7 @@ const ApiConfigModal = ({ onConfigured, open, onOpenChange, prefillApiName }: Ap
               type="text"
               value={apiName}
               onChange={handleInputChange}
+              onBlur={handleBlur}
               className={`w-full rounded-xl border-2 ${
                 validationMessage || error ? "border-red-400 focus:border-red-500" : isValid ? "border-green-400 focus:border-green-500" : "border-gray-200 focus:border-primary"
               } focus-visible:ring-0 focus-visible:ring-offset-0 transition-all py-5 text-base`}
