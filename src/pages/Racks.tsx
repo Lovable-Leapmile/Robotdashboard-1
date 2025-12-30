@@ -5,6 +5,7 @@ import SlotDetailsPanel from "@/components/SlotDetailsPanel";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { getRobotManagerBase } from "@/lib/api";
 import { getStoredAuthToken } from "@/lib/auth";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import blockImg from "@/assets/block.png";
 import stationImg from "@/assets/station.png";
 import trayImg from "@/assets/tray.png";
@@ -34,6 +35,7 @@ const Racks = () => {
   const [row0Depth0Slots, setRow0Depth0Slots] = useState<Slot[]>([]);
   const [selectedSlotId, setSelectedSlotId] = useState<string | null>(null);
   const [slotDetails, setSlotDetails] = useState<SlotDetails | null>(null);
+  const [activeStationSlotIds, setActiveStationSlotIds] = useState<Set<string>>(new Set());
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -62,16 +64,49 @@ const Racks = () => {
   useEffect(() => {
     if (selectedRack !== null) {
       fetchAllSlots(selectedRack);
+      fetchActiveTasks();
 
       // Set up polling interval for 2 seconds
       const intervalId = setInterval(() => {
         fetchAllSlots(selectedRack);
+        fetchActiveTasks();
       }, 2000);
 
       // Cleanup interval on unmount or when selectedRack changes
       return () => clearInterval(intervalId);
     }
   }, [selectedRack]);
+
+  const fetchActiveTasks = async () => {
+    try {
+      const token = getStoredAuthToken();
+      if (!token) return;
+      const response = await fetch(`${getRobotManagerBase()}/task?task_status=inprogress`, {
+        method: "GET",
+        headers: {
+          Authorization: token,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      
+      if (response.status === 404 || !data.records) {
+        setActiveStationSlotIds(new Set());
+        return;
+      }
+
+      const activeIds = new Set<string>(
+        data.records
+          .filter((task: any) => task.station_slot_id)
+          .map((task: any) => task.station_slot_id)
+      );
+      setActiveStationSlotIds(activeIds);
+    } catch (error) {
+      console.error("Error fetching active tasks:", error);
+      setActiveStationSlotIds(new Set());
+    }
+  };
 
   const fetchRobotConfig = async () => {
     try {
@@ -206,6 +241,8 @@ const Racks = () => {
   const SlotBox = ({ slot }: { slot: Slot }) => {
     const isInactive = slot.slot_status === "inactive";
     const isSelected = selectedSlotId === slot.slot_id;
+    const isStation = slot.tags?.includes("station");
+    const isStationActive = isStation && activeStationSlotIds.has(slot.slot_id);
 
     return (
       <div
@@ -228,17 +265,31 @@ const Racks = () => {
         {!isInactive && (
           <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center pb-1" style={{ gap: "1px" }}>
             {slot.tray_id && <img src={trayImg} alt="Tray" className="w-[116px] h-[8px] sm:w-[146px] sm:h-[10px]" />}
-            {slot.tags?.includes("station") && (
-              <div 
-                className="relative flex items-center justify-center rounded-sm animate-pulse-station"
-                style={{
-                  background: "linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)",
-                  border: "2px solid #f59e0b",
-                  padding: "2px 4px",
-                }}
-              >
-                <img src={stationImg} alt="Station" className="w-[108px] h-[8px] sm:w-[138px] sm:h-[10px]" />
-              </div>
+            {isStation && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div 
+                      className={`relative flex items-center justify-center rounded-sm ${isStationActive ? "animate-pulse-station" : ""}`}
+                      style={{
+                        background: "linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)",
+                        border: "2px solid #f59e0b",
+                        padding: "2px 4px",
+                        boxShadow: isStationActive ? undefined : "0 2px 8px rgba(245, 158, 11, 0.3)",
+                      }}
+                    >
+                      <img src={stationImg} alt="Station" className="w-[108px] h-[8px] sm:w-[138px] sm:h-[10px]" />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="bg-amber-50 border-amber-300 text-amber-900">
+                    <div className="text-xs font-medium">
+                      <p className="font-semibold">Picking Station</p>
+                      <p className="text-amber-700">Slot: {slot.slot_id}</p>
+                      {isStationActive && <p className="text-green-600 font-semibold">● Active Task</p>}
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             )}
           </div>
         )}
