@@ -270,12 +270,14 @@ const Racks = () => {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <div 
-                      className={`relative flex items-center justify-center rounded-sm ${isStationActive ? "animate-pulse-station" : ""}`}
+                      className={`relative flex items-center justify-center ${isStationActive ? "animate-pulse-station" : ""}`}
                       style={{
                         background: "linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)",
                         border: "2px solid #f59e0b",
                         padding: "2px 4px",
                         boxShadow: isStationActive ? undefined : "0 2px 8px rgba(245, 158, 11, 0.3)",
+                        borderRadius: "4px 4px 0 0",
+                        marginBottom: 0,
                       }}
                     >
                       <img src={stationImg} alt="Station" className="w-[108px] h-[8px] sm:w-[138px] sm:h-[10px]" />
