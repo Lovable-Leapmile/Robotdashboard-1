@@ -84,13 +84,28 @@ export const dateFilterComparator = (filterLocalDateAtMidnight: Date, cellValue:
 
 /**
  * Date filter params configuration for AG Grid
+ * Configured for date-only filtering (no time picker)
  */
 export const dateFilterParams = {
   comparator: dateFilterComparator,
   browserDatePicker: true,
   minValidYear: 2000,
   maxValidYear: 2100,
-  inRangeFloatingFilterDateFormat: "dd-MM-yyyy",
+  inRangeFloatingFilterDateFormat: "yyyy-MM-dd",
+  // Ensure date-only comparison and display
+  filterOptions: [
+    "equals",
+    "notEqual", 
+    "lessThan",
+    "greaterThan",
+    "inRange",
+    "blank",
+    "notBlank",
+  ],
+  defaultOption: "equals",
+  // Suppress time-related UI elements
+  suppressAndOrCondition: false,
+  buttons: ["apply", "reset", "cancel"],
 };
 
 export const formatDateTime12 = (value: unknown): string => {
