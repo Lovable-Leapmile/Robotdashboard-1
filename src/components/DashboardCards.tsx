@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Bot, Package, Layers, Zap, Activity, Flame, Battery } from "lucide-react";
-
-const AUTH_TOKEN = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2wiOiJhZG1pbiIsImV4cCI6MTkwMDY1MzE0M30.asYhgMAOvrau4G6LI4V4IbgYZ022g_GX0qZxaS57GQc";
+import { getRobotManagerBase, getNanostoreBase } from "@/lib/api";
+import { getStoredAuthToken } from "@/lib/auth";
 
 interface RobotInfo {
   robot_name: string;
@@ -55,8 +55,10 @@ export const DashboardCards = () => {
 
   const fetchRobotInfo = async () => {
     try {
-      const response = await fetch("https://amsstores1.leapmile.com/robotmanager/robots", {
-        headers: { "Authorization": AUTH_TOKEN, "Content-Type": "application/json" }
+      const token = getStoredAuthToken();
+      if (!token) return;
+      const response = await fetch(`${getRobotManagerBase()}/robots`, {
+        headers: { "Authorization": token, "Content-Type": "application/json" }
       });
       const data = await response.json();
       if (data.records && data.records.length > 0) {
@@ -69,12 +71,14 @@ export const DashboardCards = () => {
 
   const fetchSlotInfo = async () => {
     try {
+      const token = getStoredAuthToken();
+      if (!token) return;
       const [slotsResponse, traysResponse] = await Promise.all([
-        fetch("https://amsstores1.leapmile.com/robotmanager/slots_count?slot_status=active", {
-          headers: { "Authorization": AUTH_TOKEN, "Content-Type": "application/json" }
+        fetch(`${getRobotManagerBase()}/slots_count?slot_status=active`, {
+          headers: { "Authorization": token, "Content-Type": "application/json" }
         }),
-        fetch("https://amsstores1.leapmile.com/robotmanager/trays?tray_status=active", {
-          headers: { "Authorization": AUTH_TOKEN, "Content-Type": "application/json" }
+        fetch(`${getRobotManagerBase()}/trays?tray_status=active`, {
+          headers: { "Authorization": token, "Content-Type": "application/json" }
         })
       ]);
 
@@ -94,12 +98,14 @@ export const DashboardCards = () => {
 
   const fetchTrayInfo = async () => {
     try {
+      const token = getStoredAuthToken();
+      if (!token) return;
       const [occupiedResponse, freeResponse] = await Promise.all([
-        fetch("https://amsstores1.leapmile.com/nanostore/occupied_trays?occupied=true", {
-          headers: { "Authorization": AUTH_TOKEN, "Content-Type": "application/json" }
+        fetch(`${getNanostoreBase()}/occupied_trays?occupied=true`, {
+          headers: { "Authorization": token, "Content-Type": "application/json" }
         }),
-        fetch("https://amsstores1.leapmile.com/nanostore/occupied_trays?occupied=false", {
-          headers: { "Authorization": AUTH_TOKEN, "Content-Type": "application/json" }
+        fetch(`${getNanostoreBase()}/occupied_trays?occupied=false`, {
+          headers: { "Authorization": token, "Content-Type": "application/json" }
         })
       ]);
 
@@ -119,16 +125,18 @@ export const DashboardCards = () => {
 
   const fetchPowerInfo = async () => {
     try {
+      const token = getStoredAuthToken();
+      if (!token) return;
       // First try to fetch today's data
-      let response = await fetch("https://amsstores1.leapmile.com/robotmanager/robot_power?today=true&num_records=1", {
-        headers: { "Authorization": AUTH_TOKEN, "Content-Type": "application/json" }
+      let response = await fetch(`${getRobotManagerBase()}/robot_power?today=true&num_records=1`, {
+        headers: { "Authorization": token, "Content-Type": "application/json" }
       });
       let data = await response.json();
       
       // If today's data is not available, fetch the most recent data regardless of date
       if (data.status !== "success" || !data.records || data.records.length === 0) {
-        response = await fetch("https://amsstores1.leapmile.com/robotmanager/robot_power?num_records=1", {
-          headers: { "Authorization": AUTH_TOKEN, "Content-Type": "application/json" }
+        response = await fetch(`${getRobotManagerBase()}/robot_power?num_records=1`, {
+          headers: { "Authorization": token, "Content-Type": "application/json" }
         });
         data = await response.json();
       }

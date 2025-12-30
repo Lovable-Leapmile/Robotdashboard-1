@@ -6,6 +6,7 @@ import { DashboardCards } from "@/components/DashboardCards";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { useShuttlePubSub } from "@/hooks/useShuttlePubSub";
 import { getStoredAuthToken } from "@/lib/auth";
+import { getRobotManagerBase } from "@/lib/api";
 import {
   Tooltip,
   TooltipContent,
@@ -138,7 +139,7 @@ const Home = () => {
       const token = getStoredAuthToken();
       if (!token) return;
 
-      const response = await fetch("https://amsstores1.leapmile.com/robotmanager/robots", {
+      const response = await fetch(`${getRobotManagerBase()}/robots`, {
         method: "GET",
         headers: {
           Authorization: token,

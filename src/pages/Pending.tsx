@@ -7,6 +7,8 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import { ColDef, ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 import { useToast } from "@/hooks/use-toast";
 import { useAuthSession } from "@/hooks/useAuthSession";
+import { getRobotManagerBase } from "@/lib/api";
+import { getStoredAuthToken } from "@/lib/auth";
 import noRecordsImage from "@/assets/no_records.png";
 import { createDateColumnDef, getDefaultGridProps } from "@/lib/agGridUtils";
 
@@ -98,11 +100,12 @@ const Pending = () => {
   const fetchTasksData = async () => {
     try {
       setLoading(true);
-      const response = await fetch("https://amsstores1.leapmile.com/robotmanager/task?task_status=pending", {
+      const token = getStoredAuthToken();
+      if (!token) return;
+      const response = await fetch(`${getRobotManagerBase()}/task?task_status=pending`, {
         method: "GET",
         headers: {
-          Authorization:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2wiOiJhZG1pbiIsImV4cCI6MTkwMDY1MzE0M30.asYhgMAOvrau4G6LI4V4IbgYZ022g_GX0qZxaS57GQc",
+          Authorization: token,
           "Content-Type": "application/json",
         },
       });

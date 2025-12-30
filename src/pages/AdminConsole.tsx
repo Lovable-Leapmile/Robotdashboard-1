@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AppHeader from "@/components/AppHeader";
 import { useAuthSession } from "@/hooks/useAuthSession";
+import { getAdminConsoleUrl } from "@/lib/api";
 
 const AdminConsole = () => {
   useAuthSession();
   const [userName, setUserName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [adminUrl, setAdminUrl] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,6 +21,7 @@ const AdminConsole = () => {
     }
 
     setUserName(storedUserName);
+    setAdminUrl(getAdminConsoleUrl());
     // Simulate loading time for the iframe
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -42,7 +45,7 @@ const AdminConsole = () => {
             </div>
           )}
           <iframe
-            src="https://amsstores1.leapmile.com:5700/"
+            src={adminUrl}
             className="w-full h-full border-0 rounded-lg"
             title="Admin Console"
             onLoad={() => setIsLoading(false)}

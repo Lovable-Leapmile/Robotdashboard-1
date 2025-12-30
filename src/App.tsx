@@ -1,8 +1,11 @@
+import { useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { isApiConfigured } from "@/lib/apiConfig";
+import ApiConfigModal from "@/components/ApiConfigModal";
 import Index from "./pages/Index";
 import Home from "./pages/Home";
 import Racks from "./pages/Racks";
@@ -26,38 +29,65 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter basename={import.meta.env.VITE_APP_BASE || "/"}>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/racks" element={<Racks />} />
-          <Route path="/trays" element={<Trays />} />
-          <Route path="/slots" element={<Slots />} />
-          <Route path="/station" element={<Station />} />
-          <Route path="/extremes" element={<Extremes />} />
-          <Route path="/apk-link" element={<ApkLink />} />
-          <Route path="/admin-console" element={<AdminConsole />} />
-          <Route path="/monitor" element={<Monitor />} />
-          <Route path="/camera" element={<Camera />} />
-          <Route path="/camera/:taskId" element={<CameraTaskDetails />} />
-          <Route path="/reports" element={<Reports />} />
-          <Route path="/logs" element={<Logs />} />
-          <Route path="/tasks" element={<Tasks />} />
-          <Route path="/pending" element={<Pending />} />
-          <Route path="/tray-ready" element={<TrayReady />} />
-          <Route path="/inprogress" element={<Inprogress />} />
-          <Route path="/completed" element={<Completed />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  const [apiConfigured, setApiConfigured] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    // Check if API is already configured on mount
+    setApiConfigured(isApiConfigured());
+  }, []);
+
+  const handleApiConfigured = () => {
+    setApiConfigured(true);
+  };
+
+  // Show loading state while checking configuration
+  if (apiConfigured === null) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-pulse text-gray-500">Loading...</div>
+      </div>
+    );
+  }
+
+  // Show API configuration modal if not configured
+  if (!apiConfigured) {
+    return <ApiConfigModal onConfigured={handleApiConfigured} />;
+  }
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter basename={import.meta.env.VITE_APP_BASE || "/"}>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/racks" element={<Racks />} />
+            <Route path="/trays" element={<Trays />} />
+            <Route path="/slots" element={<Slots />} />
+            <Route path="/station" element={<Station />} />
+            <Route path="/extremes" element={<Extremes />} />
+            <Route path="/apk-link" element={<ApkLink />} />
+            <Route path="/admin-console" element={<AdminConsole />} />
+            <Route path="/monitor" element={<Monitor />} />
+            <Route path="/camera" element={<Camera />} />
+            <Route path="/camera/:taskId" element={<CameraTaskDetails />} />
+            <Route path="/reports" element={<Reports />} />
+            <Route path="/logs" element={<Logs />} />
+            <Route path="/tasks" element={<Tasks />} />
+            <Route path="/pending" element={<Pending />} />
+            <Route path="/tray-ready" element={<TrayReady />} />
+            <Route path="/inprogress" element={<Inprogress />} />
+            <Route path="/completed" element={<Completed />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

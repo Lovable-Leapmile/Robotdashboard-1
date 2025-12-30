@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import AppHeader from "@/components/AppHeader";
 import SlotDetailsPanel from "@/components/SlotDetailsPanel";
 import { useAuthSession } from "@/hooks/useAuthSession";
+import { getRobotManagerBase } from "@/lib/api";
+import { getStoredAuthToken } from "@/lib/auth";
 import blockImg from "@/assets/block.png";
 import stationImg from "@/assets/station.png";
 import trayImg from "@/assets/tray.png";
@@ -73,11 +75,12 @@ const Racks = () => {
 
   const fetchRobotConfig = async () => {
     try {
-      const response = await fetch("https://amsstores1.leapmile.com/robotmanager/robots", {
+      const token = getStoredAuthToken();
+      if (!token) return;
+      const response = await fetch(`${getRobotManagerBase()}/robots`, {
         method: "GET",
         headers: {
-          Authorization:
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2wiOiJhZG1pbiIsImV4cCI6MTkwMDY1MzE0M30.asYhgMAOvrau4G6LI4V4IbgYZ022g_GX0qZxaS57GQc",
+          Authorization: token,
           "Content-Type": "application/json",
         },
       });
@@ -121,22 +124,23 @@ const Racks = () => {
   };
 
   const fetchAllSlots = async (rackValue: number) => {
-    const authToken =
-      "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2wiOiJhZG1pbiIsImV4cCI6MTkwMDY1MzE0M30.asYhgMAOvrau4G6LI4V4IbgYZ022g_GX0qZxaS57GQc";
+    const token = getStoredAuthToken();
+    if (!token) return;
+    const robotManagerBase = getRobotManagerBase();
 
     try {
       const [res1, res2, res3, res4] = await Promise.all([
-        fetch(`https://amsstores1.leapmile.com/robotmanager/slots?row=1&depth=1&rack=${rackValue}`, {
-          headers: { Authorization: authToken, "Content-Type": "application/json" },
+        fetch(`${robotManagerBase}/slots?row=1&depth=1&rack=${rackValue}`, {
+          headers: { Authorization: token, "Content-Type": "application/json" },
         }),
-        fetch(`https://amsstores1.leapmile.com/robotmanager/slots?row=1&depth=0&rack=${rackValue}`, {
-          headers: { Authorization: authToken, "Content-Type": "application/json" },
+        fetch(`${robotManagerBase}/slots?row=1&depth=0&rack=${rackValue}`, {
+          headers: { Authorization: token, "Content-Type": "application/json" },
         }),
-        fetch(`https://amsstores1.leapmile.com/robotmanager/slots?row=0&depth=0&rack=${rackValue}`, {
-          headers: { Authorization: authToken, "Content-Type": "application/json" },
+        fetch(`${robotManagerBase}/slots?row=0&depth=0&rack=${rackValue}`, {
+          headers: { Authorization: token, "Content-Type": "application/json" },
         }),
-        fetch(`https://amsstores1.leapmile.com/robotmanager/slots?row=0&depth=1&rack=${rackValue}`, {
-          headers: { Authorization: authToken, "Content-Type": "application/json" },
+        fetch(`${robotManagerBase}/slots?row=0&depth=1&rack=${rackValue}`, {
+          headers: { Authorization: token, "Content-Type": "application/json" },
         }),
       ]);
 
@@ -159,13 +163,13 @@ const Racks = () => {
   };
 
   const fetchSlotDetails = async (slotId: string) => {
-    const authToken =
-      "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2wiOiJhZG1pbiIsImV4cCI6MTkwMDY1MzE0M30.asYhgMAOvrau4G6LI4V4IbgYZ022g_GX0qZxaS57GQc";
+    const token = getStoredAuthToken();
+    if (!token) return;
 
     try {
-      const response = await fetch(`https://amsstores1.leapmile.com/robotmanager/slots?slot_id=${slotId}`, {
+      const response = await fetch(`${getRobotManagerBase()}/slots?slot_id=${slotId}`, {
         headers: {
-          Authorization: authToken,
+          Authorization: token,
           "Content-Type": "application/json",
         },
       });

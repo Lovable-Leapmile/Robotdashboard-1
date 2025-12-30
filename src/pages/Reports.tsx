@@ -7,7 +7,7 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import { ColDef, ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 import { useToast } from "@/hooks/use-toast";
 import { useAuthSession } from "@/hooks/useAuthSession";
-import { apiGet, NANOSTORE_BASE, ROBOTMANAGER_BASE, withQuery } from "@/lib/api";
+import { apiGet, getNanostoreBase, getRobotManagerBase, withQuery } from "@/lib/api";
 import noRecordsImage from "@/assets/no_records.png";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RefreshCw, Download } from "lucide-react";

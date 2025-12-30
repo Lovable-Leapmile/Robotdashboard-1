@@ -3,6 +3,8 @@ import AppHeader from "@/components/AppHeader";
 import { useAuthSession } from "@/hooks/useAuthSession";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
+import { getPubSubBase } from "@/lib/api";
+import { getStoredAuthToken } from "@/lib/auth";
 
 interface StatusMessage {
   msg?: string;
@@ -88,13 +90,14 @@ const Monitor = () => {
     abortControllerRef.current = new AbortController();
 
     try {
+      const token = getStoredAuthToken();
+      if (!token) return;
       const response = await fetch(
-        "https://amsstores1.leapmile.com/pubsub/subscribe?topic=STATUSMONITOR_EVENTS&num_records=1",
+        `${getPubSubBase()}/subscribe?topic=STATUSMONITOR_EVENTS&num_records=1`,
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization:
-              "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2wiOiJhZG1pbiIsImV4cCI6MTkwMDY1MzE0M30.asYhgMAOvrau4G6LI4V4IbgYZ022g_GX0qZxaS57GQc",
+            Authorization: token,
           },
           signal: abortControllerRef.current.signal,
         },

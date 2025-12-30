@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { storeAuthToken } from "@/lib/auth";
+import { getUserBase } from "@/lib/api";
 import { Eye, EyeOff } from "lucide-react";
 import loginIllustration from "@/assets/login.gif";
 import logo from "@/assets/logo.png";
@@ -34,8 +35,9 @@ const LoginForm = () => {
     setIsLoading(true);
     
     try {
+      const userBase = getUserBase();
       const response = await fetch(
-        `https://amsstores1.leapmile.com/user/validate?user_phone=${mobileNumber}&password=${password}`
+        `${userBase}/validate?user_phone=${mobileNumber}&password=${password}`
       );
       const data = await response.json();
 

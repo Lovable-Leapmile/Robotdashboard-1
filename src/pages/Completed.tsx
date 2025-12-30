@@ -7,7 +7,7 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import { ColDef, ModuleRegistry, AllCommunityModule } from "ag-grid-community";
 import { useToast } from "@/hooks/use-toast";
 import { useAuthSession } from "@/hooks/useAuthSession";
-import { apiGet, ROBOTMANAGER_BASE, withQuery } from "@/lib/api";
+import { apiGet, getRobotManagerBase, withQuery } from "@/lib/api";
 import noRecordsImage from "@/assets/no_records.png";
 import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
@@ -127,7 +127,7 @@ const Completed = () => {
       setLoading(true);
       setError(null);
 
-      const url = withQuery(`${ROBOTMANAGER_BASE}/task`, {
+      const url = withQuery(`${getRobotManagerBase()}/task`, {
         task_status: "completed",
         order_by_field: "updated_at",
         order_by_type: "DESC",
