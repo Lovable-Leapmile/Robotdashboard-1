@@ -1,18 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { storeApiConfig, isApiConfigured } from "@/lib/apiConfig";
-import { Server } from "lucide-react";
+import { storeApiConfig, isApiConfigured, getStoredApiConfig } from "@/lib/apiConfig";
+import { Server, X } from "lucide-react";
 
 interface ApiConfigModalProps {
   onConfigured: () => void;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  prefillApiName?: string;
 }
 
-const ApiConfigModal = ({ onConfigured }: ApiConfigModalProps) => {
-  const [apiName, setApiName] = useState("");
+const ApiConfigModal = ({ onConfigured, open, onOpenChange, prefillApiName }: ApiConfigModalProps) => {
+  const [apiName, setApiName] = useState(prefillApiName || "");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Update apiName when prefillApiName changes
+  useEffect(() => {
+    if (prefillApiName) {
+      setApiName(prefillApiName);
+    }
+  }, [prefillApiName]);
+
+  // If controlled mode (open prop provided), check if should render
+  const isControlled = open !== undefined;
+  if (isControlled && !open) {
+    return null;
+  }
 
   const validateApiName = (value: string): string | null => {
     const trimmed = value.trim();
@@ -53,6 +69,7 @@ const ApiConfigModal = ({ onConfigured }: ApiConfigModalProps) => {
       
       if (isApiConfigured()) {
         onConfigured();
+        onOpenChange?.(false);
       } else {
         setError("Failed to save configuration. Please try again.");
       }
@@ -72,6 +89,11 @@ const ApiConfigModal = ({ onConfigured }: ApiConfigModalProps) => {
     }
   };
 
+  const handleClose = () => {
+    onOpenChange?.(false);
+    setError("");
+  };
+
   const isValid = apiName.trim().length > 0 && !validateApiName(apiName);
 
   return (
@@ -80,6 +102,7 @@ const ApiConfigModal = ({ onConfigured }: ApiConfigModalProps) => {
       <div 
         className="absolute inset-0 bg-black/70 backdrop-blur-sm"
         aria-hidden="true"
+        onClick={isControlled ? handleClose : undefined}
       />
       
       {/* Modal Content */}
@@ -89,6 +112,17 @@ const ApiConfigModal = ({ onConfigured }: ApiConfigModalProps) => {
         aria-modal="true"
         aria-labelledby="api-config-title"
       >
+        {/* Close button - only show in controlled mode */}
+        {isControlled && (
+          <button
+            onClick={handleClose}
+            className="absolute top-4 right-4 z-20 p-1 rounded-full hover:bg-gray-100 transition-colors"
+            aria-label="Close"
+          >
+            <X className="w-5 h-5 text-gray-500" />
+          </button>
+        )}
+
         {/* Decorative Top Border */}
         <div className="h-2 bg-gradient-to-r from-primary via-accent to-primary relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-[shimmer_2s_infinite]"></div>
@@ -140,14 +174,26 @@ const ApiConfigModal = ({ onConfigured }: ApiConfigModalProps) => {
             )}
           </div>
 
-          <Button
-            type="submit"
-            disabled={!isValid || isSubmitting}
-            className="w-full rounded-xl py-5 font-semibold text-base transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-            style={{ backgroundColor: '#351C75' }}
-          >
-            {isSubmitting ? "Configuring..." : "Continue"}
-          </Button>
+          <div className={`flex ${isControlled ? 'gap-3' : ''}`}>
+            {isControlled && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleClose}
+                className="flex-1 rounded-xl py-5 font-semibold text-base"
+              >
+                Cancel
+              </Button>
+            )}
+            <Button
+              type="submit"
+              disabled={!isValid || isSubmitting}
+              className={`${isControlled ? 'flex-1' : 'w-full'} rounded-xl py-5 font-semibold text-base transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100`}
+              style={{ backgroundColor: '#351C75' }}
+            >
+              {isSubmitting ? "Configuring..." : isControlled ? "Update" : "Continue"}
+            </Button>
+          </div>
         </form>
       </div>
     </div>

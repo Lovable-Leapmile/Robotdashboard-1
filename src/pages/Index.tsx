@@ -1,16 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 import LoginForm from "@/components/LoginForm";
 import ApiConfigModal from "@/components/ApiConfigModal";
-import ApiTesterModal from "@/components/ApiTesterModal";
 import backgroundImage from "@/assets/dashboard_login_bg.png";
-import { isApiConfigured } from "@/lib/apiConfig";
+import { isApiConfigured, getStoredApiConfig } from "@/lib/apiConfig";
 import { getStoredAuthToken } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Settings } from "lucide-react";
 
 const Index = () => {
   const [showApiModal, setShowApiModal] = useState(false);
-  const [showApiTesterModal, setShowApiTesterModal] = useState(false);
+  const [showChangeApiModal, setShowChangeApiModal] = useState(false);
+  const [currentApiName, setCurrentApiName] = useState("");
   const hasCheckedRef = useRef(false);
 
   useEffect(() => {
@@ -37,10 +37,21 @@ const Index = () => {
     if (noAuthData && !apiConfigured) {
       setShowApiModal(true);
     }
+
+    // Get current API name for pre-filling
+    const config = getStoredApiConfig();
+    if (config?.apiName) {
+      setCurrentApiName(config.apiName);
+    }
   }, []);
 
   const handleApiConfigured = () => {
     setShowApiModal(false);
+    // Update current API name after configuration
+    const config = getStoredApiConfig();
+    if (config?.apiName) {
+      setCurrentApiName(config.apiName);
+    }
   };
 
   const handleChangeApiName = () => {
@@ -57,8 +68,17 @@ const Index = () => {
     // Clear sessionStorage
     sessionStorage.clear();
 
-    // Open the API Tester modal
-    setShowApiTesterModal(true);
+    // Open the same API Config modal
+    setShowChangeApiModal(true);
+  };
+
+  const handleChangeApiConfigured = () => {
+    setShowChangeApiModal(false);
+    // Update current API name after change
+    const config = getStoredApiConfig();
+    if (config?.apiName) {
+      setCurrentApiName(config.apiName);
+    }
   };
 
   return (
@@ -66,10 +86,12 @@ const Index = () => {
       {/* API Config Modal - shown after logout when all auth data is cleared */}
       {showApiModal && <ApiConfigModal onConfigured={handleApiConfigured} />}
 
-      {/* API Tester Modal */}
-      <ApiTesterModal 
-        open={showApiTesterModal} 
-        onOpenChange={setShowApiTesterModal} 
+      {/* Change API Modal - reuses same component with controlled mode */}
+      <ApiConfigModal 
+        open={showChangeApiModal} 
+        onOpenChange={setShowChangeApiModal}
+        onConfigured={handleChangeApiConfigured}
+        prefillApiName={currentApiName}
       />
 
       {/* Background Image */}
