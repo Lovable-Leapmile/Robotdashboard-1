@@ -230,16 +230,15 @@ const Racks = () => {
             {slot.tray_id && <img src={trayImg} alt="Tray" className="w-[116px] h-[8px] sm:w-[146px] sm:h-[10px]" />}
             {slot.tags?.includes("station") && (
               <div 
-                className="flex flex-col items-center justify-center rounded px-1 py-0.5"
+                className="relative flex items-center justify-center rounded-sm"
                 style={{
-                  backgroundColor: "#fef3c7",
-                  border: "1.5px solid #d97706",
+                  background: "linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)",
+                  border: "2px solid #f59e0b",
+                  boxShadow: "0 2px 8px rgba(245, 158, 11, 0.3)",
+                  padding: "2px 4px",
                 }}
               >
-                <img src={stationImg} alt="Station" className="w-[110px] h-[8px] sm:w-[140px] sm:h-[10px]" />
-                <span className="text-[8px] sm:text-[9px] font-bold" style={{ color: "#92400e" }}>
-                  Picking Station
-                </span>
+                <img src={stationImg} alt="Station" className="w-[108px] h-[8px] sm:w-[138px] sm:h-[10px]" />
               </div>
             )}
           </div>
@@ -282,24 +281,6 @@ const Racks = () => {
             <div className="flex flex-col lg:flex-row gap-6 lg:gap-5">
               {/* Row 1 Section */}
               <div className="flex items-end gap-2">
-                {/* Picking Station Label - Directly in front of station containers */}
-                <div
-                  className="hidden lg:flex items-center justify-center px-2 py-3 rounded-l-lg font-semibold text-xs whitespace-nowrap"
-                  style={{
-                    backgroundColor: "#fef3c7",
-                    border: "2px solid #351C75",
-                    borderRight: "none",
-                    color: "#351C75",
-                    writingMode: "vertical-rl",
-                    textOrientation: "mixed",
-                    transform: "rotate(180deg)",
-                    height: "118px",
-                    marginBottom: "36px",
-                  }}
-                >
-                  Picking Station
-                </div>
-
                 <div className="flex flex-col items-center">
                   <div className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6" style={{ color: "#351c75" }}>
                     Row 1
@@ -308,31 +289,11 @@ const Racks = () => {
                     {/* Depth 2 - Vertical Column (Left) */}
                     <div className="flex flex-col items-center gap-2 sm:gap-2.5">
                       <div className="flex flex-col gap-2 sm:gap-2.5">
-                        {row1Depth1Slots.map((slot, idx) => {
-                          const isPickingStation = slot.tags?.includes("station");
-                          const isLastTwo = idx >= row1Depth1Slots.length - 2;
-                          const shouldHighlight = isPickingStation || isLastTwo;
-
-                          return (
-                            <div
-                              key={`r1d1-${idx}`}
-                              className={shouldHighlight ? "relative" : ""}
-                              style={
-                                shouldHighlight
-                                  ? {
-                                      backgroundColor: "#fef3c7",
-                                      border: "2px solid #351C75",
-                                      borderRadius: "8px",
-                                      padding: "4px",
-                                      margin: "-4px",
-                                    }
-                                  : {}
-                              }
-                            >
-                              <SlotBox slot={slot} />
-                            </div>
-                          );
-                        })}
+                        {row1Depth1Slots.map((slot, idx) => (
+                          <div key={`r1d1-${idx}`}>
+                            <SlotBox slot={slot} />
+                          </div>
+                        ))}
                       </div>
                       <div className="text-xs sm:text-sm font-medium mt-2" style={{ color: "#351c75" }}>
                         Depth 2
@@ -351,18 +312,6 @@ const Racks = () => {
                         Depth 1
                       </div>
                     </div>
-                  </div>
-
-                  {/* Mobile Picking Station Label */}
-                  <div
-                    className="lg:hidden mt-3 px-3 py-1.5 rounded-lg font-semibold text-xs"
-                    style={{
-                      backgroundColor: "#fef3c7",
-                      border: "2px solid #351C75",
-                      color: "#351C75",
-                    }}
-                  >
-                    Picking Station
                   </div>
                 </div>
               </div>
