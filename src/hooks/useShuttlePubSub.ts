@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { getStoredAuthToken } from "@/lib/auth";
 import { getPubSubBase } from "@/lib/api";
+import { getPubSubTopic } from "@/lib/apiConfig";
 
 export interface ShuttleState {
   // Initial data from first record
@@ -96,6 +97,13 @@ export const useShuttlePubSub = () => {
       return;
     }
 
+    // Get dynamic topic from localStorage
+    const topic = getPubSubTopic();
+    if (!topic) {
+      setError("PubSub topic not configured. Missing apiname or robotname.");
+      return;
+    }
+
     // Cancel any pending request
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -105,7 +113,7 @@ export const useShuttlePubSub = () => {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `${getPubSubBase()}/subscribe?topic=amsstores1_AMSSTORES1-Nano&num_records=4`,
+        `${getPubSubBase()}/subscribe?topic=${topic}&num_records=4`,
         {
           method: "GET",
           headers: {

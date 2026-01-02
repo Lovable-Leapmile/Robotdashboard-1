@@ -4,6 +4,7 @@ import ApiConfigModal from "@/components/ApiConfigModal";
 import backgroundImage from "@/assets/dashboard_login_bg.png";
 import { isApiConfigured, getStoredApiConfig } from "@/lib/apiConfig";
 import { getStoredAuthToken } from "@/lib/auth";
+import { useRobotFetch } from "@/hooks/useRobotFetch";
 import { Button } from "@/components/ui/button";
 import { Settings } from "lucide-react";
 
@@ -12,6 +13,9 @@ const Index = () => {
   const [showChangeApiModal, setShowChangeApiModal] = useState(false);
   const [currentApiName, setCurrentApiName] = useState("");
   const hasCheckedRef = useRef(false);
+  
+  // Fetch robots on page load to get robot_name
+  useRobotFetch();
 
   useEffect(() => {
     // Only run check once on mount to avoid repeated renders

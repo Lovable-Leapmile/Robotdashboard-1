@@ -177,7 +177,7 @@ const ApiConfigModal = ({ onConfigured, open, onOpenChange, prefillApiName }: Ap
             )}
             {apiName.trim() && !error && (
               <p className="text-xs text-gray-400 mt-1">
-                Will connect to: <span className="font-mono text-primary">https://{apiName.trim()}.leapmile.com</span>
+                Will connect to: <span className="font-mono text-primary">https://{apiName.trim()}.com</span>
               </p>
             )}
           </div>
