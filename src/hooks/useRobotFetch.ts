@@ -51,10 +51,12 @@ export const useRobotFetch = (): UseRobotFetchResult => {
       console.log("Robots API Response:", data);
 
       // Extract robot_name from the response
-      // Handle both array response and single object response
+      // Handle various response formats: records array, robots array, direct array, or single object
       let robotNameValue: string | null = null;
 
-      if (Array.isArray(data) && data.length > 0) {
+      if (data.records && Array.isArray(data.records) && data.records.length > 0) {
+        robotNameValue = data.records[0].robot_name;
+      } else if (Array.isArray(data) && data.length > 0) {
         robotNameValue = data[0].robot_name;
       } else if (data.robots && Array.isArray(data.robots) && data.robots.length > 0) {
         robotNameValue = data.robots[0].robot_name;

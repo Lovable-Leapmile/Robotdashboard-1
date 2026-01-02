@@ -65,9 +65,13 @@ export const storeRobotName = (robotName: string): void => {
 };
 
 // Get the pubsub topic constructed from apiname and robotname
+// Extract just the first part of the apiname (before the first dot) for the topic
 export const getPubSubTopic = (): string | null => {
   const apiName = getStoredApiName();
   const robotName = getStoredRobotName();
   if (!apiName || !robotName) return null;
-  return `${apiName}_${robotName}`;
+  
+  // Extract apiname prefix (e.g., "amsstores1" from "amsstores1.leapmile")
+  const apiNamePrefix = apiName.split('.')[0];
+  return `${apiNamePrefix}_${robotName}`;
 };
